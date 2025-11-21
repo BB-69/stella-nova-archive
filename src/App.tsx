@@ -17,39 +17,42 @@ function App() {
   const navigate = useNavigate();
   const { setCurrentRoute } = useDebugVars();
 
-  const routes = new Map<string, JSX.Element | null>([
-    ["———DEV———", null],
-    ["/testcss", <_Test />],
-    ["———MAIN———", null],
-    ["/home", <HomePage />],
-    ["/browse", <BrowsePage />],
-  ]);
-  const defaultRoute = "/home";
+  const routes = new Map<string, JSX.Element | null>();
+  if (import.meta.env.DEV) {
+    routes.set("———DEV———", null);
+    routes.set("/testcss", <_Test />);
+  }
+  routes.set("———MAIN———", null);
+  routes.set("/home", <HomePage />);
+  routes.set("/browse", <BrowsePage />);
 
+  const defaultRoute = "/home";
   const title = "DEBUG";
 
   return (
     <div className="app">
-      <DebugBox title={title}>
-        <div className="mb-2">
-          <ThemeSwitcher />
-        </div>
-        <Collapsible title="Route Navigator" key={title}>
-          <RouteNavigator
-            routes={Array.from(routes, ([path, element]) => ({
-              path,
-              disabled: element === null,
-            }))}
-            onSelect={(route) => {
-              navigate(route);
-              setCurrentRoute(route);
-            }}
-          />
-        </Collapsible>
-        <Collapsible title="Variables" key={title}>
-          <VariableInspector />
-        </Collapsible>
-      </DebugBox>
+      {import.meta.env.DEV && (
+        <DebugBox title={title}>
+          <div className="mb-2">
+            <ThemeSwitcher />
+          </div>
+          <Collapsible title="Route Navigator" subtitle={title}>
+            <RouteNavigator
+              routes={Array.from(routes, ([path, element]) => ({
+                path,
+                disabled: element === null,
+              }))}
+              onSelect={(route) => {
+                navigate(route);
+                setCurrentRoute(route);
+              }}
+            />
+          </Collapsible>
+          <Collapsible title="Variables" subtitle={title}>
+            <VariableInspector />
+          </Collapsible>
+        </DebugBox>
+      )}
       <Routes>
         <Route path="/" element={<Navigate to={defaultRoute} replace />} />
         {Array.from(routes)

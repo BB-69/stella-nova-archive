@@ -18,8 +18,8 @@ interface Position {
 }
 
 export default function DebugBox({ title, children }: Props) {
-  const KEY = "DEBUGBOX";
-  const storageKey = `collapsible-${KEY}-${title}`;
+  const subtitle = "DEBUGBOX";
+  const storageKey = `collapsible-${subtitle}-${title}`;
 
   const [open, setOpen] = useState(() => {
     const saved = localStorage?.getItem(storageKey);

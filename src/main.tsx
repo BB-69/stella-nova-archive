@@ -13,7 +13,7 @@ import "./css/collapsible.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/nova-archive/">
       <DebugProvider>
         <ThemeProvider>
           <App />
