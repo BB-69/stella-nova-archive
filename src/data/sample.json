@@ -1,0 +1,23 @@
+{
+  "id": "bg-forest-01",
+  "type": "image", 
+  "category": "background",
+  "title": "Forest Clearing",
+  "source": "assets/backgrounds/forest_01.png",
+
+  "meta": {
+    "width": 1920,
+    "height": 1080
+  },
+
+  "overlays": [
+    {
+      "id": "t1",
+      "bounds": { "x": 450, "y": 290, "w": 280, "h": 130 },
+      "original": "ᚼᛝꖎ ᛜⱷ",
+      "translated": "The trees are whispering...",
+      "notes": "Low confidence",
+      "frames": null
+    }
+  ]
+}

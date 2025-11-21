@@ -1,0 +1,15 @@
+#theme-toggle {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #ebebeb77;
+    color: var(--text);
+    font-weight: 600;
+    transition: all .3s;
+}
+.dark #theme-toggle {
+    background: #2a2a2a77;
+}

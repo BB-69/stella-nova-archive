@@ -1,0 +1,38 @@
+.floating-box {
+    position: absolute;
+    z-index: 9999;
+    padding: 8px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.1);
+    user-select: none;
+    font-size: 14px;
+}
+.dark .floating-box {
+    background: rgba(0, 0, 0, 0.55);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.content-box > * {
+    font-size: 12px;
+}
+.content-box > *:not(.content-text) {
+    width: 100%;
+    padding: 6px 8px;
+    margin-block: 2px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: white;
+}
+.dark .content-box > *:not(.content-text) {
+    border-radius: 10px;
+    border: 1px solid #636363;
+    background: black;
+}
+
+.content-text {
+    opacity: .8;
+}
