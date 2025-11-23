@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { ThemeProvider } from "./components/common/theme.tsx";
 import { DebugProvider } from "./components/_DebugTools/VariableContext.tsx";
 import App from "./App.tsx";
@@ -13,12 +13,12 @@ import "./css/collapsible.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter basename="/nova-archive/">
+    <HashRouter>
       <DebugProvider>
         <ThemeProvider>
           <App />
         </ThemeProvider>
       </DebugProvider>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>
 );
