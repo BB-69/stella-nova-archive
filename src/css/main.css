@@ -35,9 +35,13 @@ img {
   pointer-events: all;
 }
 
-.novamodern {
+@font-face {
   font-family: 'NovaModern';
   src: url('../assets/fonts/NovaModern.woff2') format('woff2');
+}
+
+.novamodern {
+  font-family: 'NovaModern';
 }
 
 /*
