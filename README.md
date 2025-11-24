@@ -1,13 +1,22 @@
-React + Vite + Tailwind
+# STELLA NOVA ARCHIVE
 
-# DEVELOPMENT
+A website that acts like an archive containing inscriptions and translations of 'Nova' language from the game 'Stella Sora'
+
+## DEVELOPMENT
+
+React + Vite + Tailwind
 
 _nothing interesting yet..._
 _coming soon..._
 
-# LICENSE & CREDITS
+## CONTRIBUTION
+
+For now make an issue first, we'll discuss from there.
+
+_full version coming soon..._
+
+## LICENSE & CREDITS
 
 [MIT](./LICENSE)
 
-This fan-made, non-commercial project is not affiliated with Yostar. All Stella Sora assets and materials are the exclusive property of Yostar.
-Any game content shown here is used only for informational and educational purposes.
+This fan-made, non-commercial project is not affiliated with Yostar and is only for informational and educational purposes.
