@@ -115,7 +115,9 @@ export function ThemeSwitcher() {
 
   return (
     <button
-      id="theme-toggle"
+      className="relative w-[40px] h-[40px] rounded-[8px]
+      p-[8px] bg-[#ebebeb77] [.dark_&]:bg-[#2a2a2a77]
+      cursor-pointer font-bold"
       onClick={cycle}
       style={{
         cursor: "pointer",
