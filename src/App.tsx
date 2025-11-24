@@ -35,7 +35,7 @@ function App() {
     [routes]
   );
 
-  const defaultRoute = "/home";
+  const defaultRoute = "/browse";
   const title = "DEBUG";
 
   return (

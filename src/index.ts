@@ -11,7 +11,7 @@ export interface AppRoute {
 export const appRoutes: AppRoute[] = [
   { path: "———DEV———", element: null, devOnly: true }, // keep null element for dropdown convenience lol
   { path: "/testcss", element: _Test, devOnly: true },
+  { path: "/home", element: HomePage, devOnly: true },
   { path: "———MAIN———", element: null },
-  { path: "/home", element: HomePage },
   { path: "/browse", element: BrowsePage }
 ];
