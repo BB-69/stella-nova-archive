@@ -36,12 +36,20 @@ export default function Collapsible({
   }, [open, storageKey]);
 
   return (
-    <div className="collapsible">
-      <div className="collapsible-header" ref={headerRef}>
+    <div className="mb-[8px]">
+      <div
+        className="flex justify-between items-center
+        bg-[#ffffff99] [.dark_&]:bg-[#1f1f1f99]
+        px-[8px] py-[6px] rounded-t-[8px] font-bold"
+        ref={headerRef}
+      >
         <span>{title}</span>
 
         <button
-          className="collapse-btn"
+          className="w-[20px] h-[20px] rounded-[3px]
+          text-black [.dark_&]:text-white text-[14px]/[20px]
+          hover:bg-[#cecece] [.dark_&]:hover:bg-[#555]
+          cursor-pointer"
           onClick={() => setOpen((v) => !v)}
           aria-label="toggle section"
         >
@@ -49,7 +57,14 @@ export default function Collapsible({
         </button>
       </div>
 
-      {open && <div className="collapsible-body">{children}</div>}
+      {open && (
+        <div
+          className="bg-[#ebebeb77] [.dark_&]:bg-[#2a2a2a77]
+          rounded-b-[8px] mb-[4px] p-[8px]"
+        >
+          {children}
+        </div>
+      )}
     </div>
   );
 }

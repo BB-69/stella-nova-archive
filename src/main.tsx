@@ -7,9 +7,7 @@ import App from "./App.tsx";
 
 /* css */
 import "./css/main.css";
-import "./css/debug.css";
-import "./css/themeToggle.css";
-import "./css/collapsible.css";
+import "./css/floating-box.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
