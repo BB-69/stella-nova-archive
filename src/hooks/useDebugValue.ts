@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDebugVars } from "../VariableContext";
+import { useDebugVars } from "../components/_DebugTools/VariableContext";
 
 export function useDebugValue(key: string, value: unknown, route?: string) {
   const { setVar } = useDebugVars();

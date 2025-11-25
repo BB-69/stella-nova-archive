@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useDebugValue } from "../_DebugTools/hooks/useDebugValue";
+import { useDebugValue } from "../../hooks/useDebugValue";
 
 export const backgroundColorLight = "#f0f9ff";
 export const themeColorLight = "#b8d9fe";
