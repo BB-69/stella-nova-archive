@@ -3,17 +3,17 @@
     z-index: 9999;
     padding: 8px;
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.55);
+    background: var(--d1);
     backdrop-filter: blur(6px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 2px solid rgba(0,0,0,0.1);
     user-select: none;
     font-size: 14px;
 }
 .dark .floating-box {
-    background: rgba(0, 0, 0, 0.55);
+    background: var(--d1-dark);
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .content-box > * {

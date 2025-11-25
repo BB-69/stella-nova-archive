@@ -6,7 +6,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgb(36,36,36);
+  color: var(--t);
   transition: background .5s, color .5s;
 
   font-synthesis: none;
@@ -15,16 +15,40 @@
   -moz-osx-font-smoothing: grayscale;
 
   user-select: none;
+
+  /* background */
+  --bg: rgb(210, 210, 210);
+  --bg-dark: rgb(40, 40, 40);
+  --bg-hover: #cecece;
+  --bg-hover-dark: #555;
+  /* depth
+  h: head
+  c: content
+  */
+  --d1: #e0e0e080;
+  --d2-h: #ffffff99;
+  --d2-c: #ebebeb88;
+  --d1-dark: #00000080;
+  --d2-h-dark: #1f1f1f99;
+  --d2-c-dark: #2d2d2d88;
+
+  /* text
+  c: content
+  */
+  --t: rgb(36,36,36);
+  --t-dark: rgb(240, 240, 240);;
+  --t-c: black;
+  --t-c-dark: white;
 }
 :root .dark {
-  color: rgb(240, 240, 240);
+  color: var(--t-dark);
 }
 
 .app {
-  background: rgb(150, 150, 150);
+  background: var(--bg);
 }
 .dark .app {
-  background: rgb(54, 54, 54);
+  background: var(--bg-dark);
 }
 
 img {
