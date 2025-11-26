@@ -7,11 +7,6 @@ import {
 } from "react";
 import { useDebugValue } from "../../hooks/useDebugValue";
 
-export const backgroundColorLight = "#f0f9ff";
-export const themeColorLight = "#b8d9fe";
-export const backgroundColorDark = "#061144";
-export const themeColorDark = "#0d0a20";
-
 export interface ThemeState {
   theme: "dark" | "light" | null;
   isDark: boolean;
@@ -102,12 +97,16 @@ export function ThemeProvider(props: { children: ReactNode }) {
   );
 }
 
-export function ThemeSwitcher() {
+export function ThemeSwitcher({
+  systemTheme = false,
+}: {
+  systemTheme?: boolean;
+}) {
   const { theme, setTheme } = useTheme();
 
   const cycle = () => {
     if (theme === "light") setTheme("dark");
-    else if (theme === "dark") setTheme(null);
+    else if (theme === "dark" && systemTheme) setTheme(null);
     else setTheme("light");
   };
 
@@ -116,7 +115,8 @@ export function ThemeSwitcher() {
   return (
     <button
       className="relative w-[40px] h-[40px] rounded-[8px]
-      p-[8px] bg-[#ebebeb77] [.dark_&]:bg-[#2a2a2a77]
+      p-[8px] bg-[var(--d2-c)] [.dark_&]:bg-[var(--d2-c-dark)]
+      border-1 border-black/20 [.dark_&]:border-white/20
       cursor-pointer font-bold"
       onClick={cycle}
       style={{

@@ -8,7 +8,6 @@ import VariableInspector, {
 import Collapsible from "./components/common/collapsible";
 import { ThemeSwitcher } from "./components/common/theme";
 
-import "./App.css";
 import { appRoutes } from ".";
 
 function App() {
@@ -43,7 +42,7 @@ function App() {
       {import.meta.env.DEV && (
         <DebugBox title={title}>
           <div className="mb-2">
-            <ThemeSwitcher />
+            <ThemeSwitcher systemTheme={true} />
           </div>
           <Collapsible title="Route Navigator" subtitle={title}>
             <RouteNavigator

@@ -122,10 +122,9 @@ export default function DebugBox({ title, children }: Props) {
           ⠿ {title}
         </div>
         <button
-          className="w-[20px] h-[20px] rounded-[3px]
-          text-black [.dark_&]:text-white text-[14px]/[20px]
-          hover:bg-[#cecece] [.dark_&]:hover:bg-[#555]
-          cursor-pointer"
+          className="w-[20px] h-[20px] rounded-[3px] cursor-pointer
+          text-[var(--t-c)] [.dark_&]:text-[--var(t-c-dark)] text-[14px]/[20px]
+          hover:bg-[var(--bg-hover)] [.dark_&]:hover:bg-[var(--bg-hover-dark)]"
           onClick={() => setOpen((v) => !v)}
           aria-label="toggle section"
         >

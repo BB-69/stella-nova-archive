@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import EntryCard from "./EntryCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useDebugValue } from "../../hooks/useDebugValue";
+import { useDebugValue } from "../../../hooks/useDebugValue";
 
 type Card = {
   id: number;
