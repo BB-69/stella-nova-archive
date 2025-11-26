@@ -1,62 +1,40 @@
-const Header = ({
-  onToggleSidebar,
-  collapsed,
-}: {
-  onToggleSidebar: () => void;
-  collapsed: boolean;
-}) => {
+import StellaSoraLogo from "@/assets/stellasora-logo-white.webp";
+import { ThemeSwitcher } from "../../common/theme";
+
+
+const Header = () => {
   return (
-    <header className="header">
-      {/* Top row */}
-      <div className="header-row header-row--top">
-        <div className="brand">
-          <button
-            className="sidebar-toggle"
-            onClick={onToggleSidebar}
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          >
-            {/* simple icon */}
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-              <path
-                fill="currentColor"
-                d="M3 6h18v2H3zM3 11h12v2H3zM3 16h18v2H3z"
-              />
-            </svg>
-          </button>
-          <span className="brand-name">My App</span>
+    <header className="flex flex-col h-[64px]
+      border-b border-black/30 [.dark_&]:border-white/30
+      shadow-md shadow-black/20 [.dark_&]:shadow-white/20
+      bg-white [.dark_&]:bg-black overflow-hidden
+      gap-[6px] p-[10px_18px] sticky z-20"
+    >
+      <div className="flex items-center justify-between gap-4 h-full">
+        <div className="max-[720px]:hidden">
+          <img
+            src={StellaSoraLogo}
+            alt="Stella Sora Logo"
+            className="h-8 w-auto"
+          />
         </div>
 
-        <div className="header-actions">
-          <div className="search">
-            <input placeholder="Search..." aria-label="Search" />
-          </div>
-          <div className="user-actions">
-            <button className="icon-btn" title="Notifications">
-              🔔
-            </button>
-            <button className="icon-btn" title="Profile">
-              👤
-            </button>
+        <span className="overflow-hidden novamodern pt-2
+        font-semibold text-xl whitespace-nowrap">
+          Stella Nova Archive
+        </span>
+
+        <div className="flex flex-row flex-1 min-w-0 max-w-[280px] gap-3">
+          <input
+            className="flex-1 min-w-[120px] px-3 py-2 rounded-xl
+            border border-black/20 [.dark_&]:border-white/20"
+            placeholder="Search..."
+          />
+
+          <div className="flex gap-2">
+            <ThemeSwitcher />
           </div>
         </div>
-      </div>
-
-      {/* Bottom row (nav tabs) */}
-      <div className="header-row header-row--bottom">
-        <nav className="top-nav" aria-label="Primary">
-          <a className="nav-link" href="#">
-            Overview
-          </a>
-          <a className="nav-link" href="#">
-            Projects
-          </a>
-          <a className="nav-link" href="#">
-            Teams
-          </a>
-          <a className="nav-link" href="#">
-            Reports
-          </a>
-        </nav>
       </div>
     </header>
   );

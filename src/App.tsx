@@ -8,7 +8,6 @@ import VariableInspector, {
 import Collapsible from "./components/common/collapsible";
 import { ThemeSwitcher } from "./components/common/theme";
 
-import "./App.css";
 import { appRoutes } from ".";
 
 function App() {

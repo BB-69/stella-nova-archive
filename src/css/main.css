@@ -7,7 +7,8 @@
 
   color-scheme: light dark;
   color: var(--t);
-  transition: background .5s, color .5s;
+  transition-property: background, color;
+  transition-duration: .5s;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,11 +17,17 @@
 
   user-select: none;
 
-  /* background */
+  /* background
+  a: accent
+  */
   --bg: rgb(210, 210, 210);
   --bg-dark: rgb(40, 40, 40);
   --bg-hover: #cecece;
   --bg-hover-dark: #555;
+  --bg-a1: #0055dd;
+  --bg-a2: #88ccff;
+  --bg-a1-dark: #221129;
+  --bg-a2-dark: #113366;
   /* depth
   h: head
   c: content
