@@ -18,7 +18,7 @@ const BrowseLayout = () => {
       <div
         className={
           `grid transition-[grid-template-columns] duration-200` +
-          ` ${collapsed ? "grid-cols-[64px_1fr]" : "grid-cols-[260px_1fr]"}`
+          ` ${collapsed ? "grid-cols-[72px_1fr]" : "grid-cols-[260px_1fr]"}`
         }
         style={{ height: "calc(100vh - 64px)" }}
       >
