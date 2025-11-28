@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FetchFilesFromFolder } from "../../../scripts/database-loader";
 import QMark from "/assets/fallback/question-mark.svg";
+import { isItemData } from "../../../scripts/structs/item-data";
 
 /* ---LOCAL_TEST--- */
 // const items = [
@@ -42,9 +43,12 @@ const Browser = () => {
     if (!data) return;
 
     data.forEach(async (d) => {
-      if (d.item.source?.length > 0) {
-        const img = await FetchFilesFromFolder(d.item.source[0], "webp");
-        setImages((prev) => ({ ...prev, [d.item.id]: img[0].url }));
+      const item = d.item;
+      if (!isItemData(item)) return;
+
+      if (item.source.length > 0) {
+        const img = await FetchFilesFromFolder(item.source[0], "webp");
+        setImages((prev) => ({ ...prev, [item.id]: img[0].url }));
       }
     });
   }, [data]);
@@ -56,9 +60,12 @@ const Browser = () => {
         grid-cols-[repeat(auto-fit,minmax(220px,1fr))]"
       >
         {data != null &&
-          data.map((d) => {
+          data.map((d, idx) => {
+            const item = d.item;
+            if (!isItemData(item)) return;
+
             return (
-              <article key={d.item.id} className="h-[220px]">
+              <article key={`${idx}-${item.id}`} className="h-[220px]">
                 <div
                   className="flex flex-col bg-white [.dark_&]:bg-black p-4 h-full w-[220px]
               rounded-xl shadow-lg shadow-black/20 [.dark_&]:shadow-white/20"
@@ -67,14 +74,14 @@ const Browser = () => {
                     className="font-semibold text-lg
                 pb-1 border-b border-black/30 [.dark_&]:border-white/30"
                   >
-                    {d.item.title || "< Untitled >"}
+                    {item.title || "< Untitled >"}
                   </h3>
                   <div
                     className="mt-2 flex w-full h-[150px]
                 border-x-2 border-black/30 [.dark_&]:border-white/30 rounded-lg"
                   >
                     <img
-                      src={` ${images[d.item.id] || ""}`}
+                      src={` ${images[item.id] || ""}`}
                       onError={(e) => {
                         const img = e.currentTarget;
                         img.onerror = null;
@@ -82,7 +89,7 @@ const Browser = () => {
                         img.classList.add("[.dark_&]:invert");
                       }}
                       className="p-1 w-auto h-auto object-contain"
-                      alt={d.item.title}
+                      alt={item.title}
                     />
                   </div>
                 </div>

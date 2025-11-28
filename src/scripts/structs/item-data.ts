@@ -27,3 +27,13 @@ export interface ItemData {
     }
   ];
 }
+
+export function isItemData(x: any): x is ItemData {
+  return (
+    typeof x === "object" &&
+    x !== null &&
+    typeof x.id === "string" &&
+    typeof x.type === "string" &&
+    Array.isArray(x.source)
+  );
+}

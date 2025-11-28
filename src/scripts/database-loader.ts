@@ -4,41 +4,26 @@ type FileType = "json" | "webp" | "jpg" | "png";
 
 interface FetchedFile {
   url: string;
-  item: ItemData;
+  item: ItemData | string;
 }
 
-const baseUrl: string = "https://api.github.com";
+const baseUrl: string = "https://raw.githubusercontent.com";
 const owner: string = "BB-69";
 const repo: string = "stella-nova-archive-db";
-const token: string = import.meta.env.VITE_GITHUB_TOKEN || "";
-
-function GetHeaders(): Record<string, string> {
-  const headers: Record<string, string> = {
-    Accept: "application/vnd.github.v3+json",
-    "Content-Type": "application/json",
-  };
-
-  if (token) {
-    headers["Authorization"] = `token ${token}`;
-  }
-
-  return headers;
-}
+const branch: string = "main";
 
 async function _TestRepositoryAccess(): Promise<void> {
   try {
-    const rootUrl = `https://api.github.com/repos/${owner}/${repo}/contents`;
+    const rootUrl = `${baseUrl}/${owner}/${repo}/${branch}/fileIndex.json`;
     console.log("Testing URL:", rootUrl);
 
-    const response = await fetch(rootUrl, {
-      headers: GetHeaders(),
-    });
+    const response = await fetch(rootUrl);
 
     console.log("Response status:", response.status);
 
     if (response.ok) {
       const rootContents = await response.json();
-      console.log("Root contents:", rootContents);
+      console.log("Paths:", rootContents);
     } else {
       const errorText = await response.text();
       console.log("Error response:", errorText);
@@ -50,15 +35,15 @@ async function _TestRepositoryAccess(): Promise<void> {
 
 _TestRepositoryAccess();
 
-async function FetchContent(f: any, type: FileType) {
+async function FetchContent(url: string, type: FileType) {
   switch (type) {
     case "json":
-      const itemResponse = await fetch(f.download_url);
-      return await itemResponse.json();
+      const res = await fetch(url);
+      return await res.json();
     case "webp":
     case "jpg":
     case "png":
-      return f.download_url;
+      return url;
   }
 }
 
@@ -67,39 +52,24 @@ async function FetchFilesFromFolder(
   fileType: FileType
 ): Promise<FetchedFile[]> {
   try {
-    const url = `${baseUrl}/repos/${owner}/${repo}/contents/${folderPath}`;
+    const indexRes = await fetch(
+      `${baseUrl}/${owner}/${repo}/${branch}/fileIndex.json`
+    );
+    const allFiles: string[] = await indexRes.json();
 
-    const response = await fetch(url, {
-      headers: GetHeaders(),
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `GitHub API error: ${response.status} ${response.statusText}`
-      );
-    }
-
-    const files = await response.json();
-    const fileList = Array.isArray(files) ? files : [files];
-
-    const items = await Promise.all(
-      fileList
-        .filter(
-          (f: any) =>
-            f.type === "file" &&
-            f.name.toLowerCase().endsWith(`.${fileType}`) &&
-            f.download_url
-        )
-        .map(async (file: any): Promise<FetchedFile> => {
-          const item = await FetchContent(file, fileType);
-          return {
-            url: file.download_url,
-            item,
-          };
-        })
+    const filteredFiles = allFiles.filter(
+      (file) =>
+        file.startsWith(folderPath) &&
+        file.toLowerCase().endsWith(`.${fileType}`)
     );
 
-    return items;
+    return Promise.all(
+      filteredFiles.map(async (file) => {
+        const url = `${baseUrl}/${owner}/${repo}/${branch}/${file}`;
+        const item = await FetchContent(url, fileType);
+        return { url, item };
+      })
+    );
   } catch (error) {
     console.error("Error fetching files:", error);
     throw error;
