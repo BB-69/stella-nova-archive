@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { FetchFilesFromFolder } from "../../../scripts/database-loader";
 import { isItemData } from "../../../scripts/structs/item-data";
 import BrowseItem from "./BrowseItem";
+import { useSearchContext } from "./SearchBrowser";
+import { useDebugValue } from "../../../hooks/useDebugValue";
 
 /* ---LOCAL_TEST--- */
 // const items = [
@@ -36,8 +38,9 @@ import BrowseItem from "./BrowseItem";
 
 const data = await FetchFilesFromFolder("data/", "json");
 
-const Browser = () => {
+const Browser = ({ collapsed }: { collapsed: boolean }) => {
   const [images, setImages] = useState<{ [key: string]: string }>({});
+  const { searchQuery } = useSearchContext();
 
   useEffect(() => {
     if (!data) return;
@@ -48,63 +51,94 @@ const Browser = () => {
 
       if (item.source.length > 0) {
         const img = await FetchFilesFromFolder(item.source[0], "webp");
-        setImages((prev) => ({ ...prev, [item.id]: img[0].url }));
+        if (img && img.length > 0)
+          setImages((prev) => ({ ...prev, [item.id]: img[0].url }));
       }
     });
   }, [data]);
 
+  const items = data
+    ?.map((d, idx) => {
+      const item = d.item;
+      if (!isItemData(item) || !item.title.includes(searchQuery))
+        return undefined;
+
+      return (
+        <article key={`${idx}-${item.id}`} className="h-[220px]">
+          <BrowseItem item={item} imgSrc={images[item.id]} />
+        </article>
+      );
+    })
+    .filter((i) => i !== undefined);
+
+  {
+    const [itemsCount, setItemsCount] = useState(0);
+
+    useEffect(() => {
+      setItemsCount(items ? items.length : 0);
+    }, [items]);
+
+    useDebugValue("itemsCount", itemsCount, "/browse");
+  }
+
   return (
-    <div className="p-5 overflow-auto">
-      <section
-        className="grid gap-4 justify-items-start
-        grid-cols-[repeat(auto-fit,minmax(220px,1fr))]"
-      >
-        {data != null &&
-          data.map((d, idx) => {
-            const item = d.item;
-            if (!isItemData(item)) return;
+    <div
+      className={`border-1 p-5 overflow-auto
+      ${collapsed ? "w-[calc(100vw-72px)]" : "w-[calc(100vw-260px)]"}`}
+    >
+      {items != undefined && items?.length > 0 ? (
+        <section
+          className="grid gap-4 justify-items-start
+          grid-cols-[repeat(auto-fit,minmax(220px,1fr))]"
+        >
+          {items}
 
-            return (
-              <article key={`${idx}-${item.id}`} className="h-[220px]">
-                <BrowseItem item={item} imgSrc={images[item.id]} />
-              </article>
-            );
-          })}
+          {/* ---LOCAL_TEST--- */}
 
-        {/* ---LOCAL_TEST--- */}
-
-        {/* {items.map((it) => (
-          <article key={"test-" + it.id} className="h-[220px]">
-            <div
-              className="flex flex-col bg-white [.dark_&]:bg-black p-4 h-full w-[220px]
-              rounded-xl shadow-lg shadow-black/20 [.dark_&]:shadow-white/20"
-            >
-              <h3
-                className="font-semibold text-lg
-                pb-1 border-b border-black/30 [.dark_&]:border-white/30"
-              >
-                {it.title}
-              </h3>
+          {/* {items.map((it) => (
+            <article key={"test-" + it.id} className="h-[220px]">
               <div
-                className="mt-2 flex w-full h-[150px]
-                border-x-2 border-black/30 [.dark_&]:border-white/30 rounded-lg"
+                className="flex flex-col bg-white [.dark_&]:bg-black p-4 h-full w-[220px]
+                rounded-xl shadow-lg shadow-black/20 [.dark_&]:shadow-white/20"
               >
-                <img
-                  src={` ${it.src}`}
-                  onError={(e) => {
-                    const img = e.currentTarget;
-                    img.onerror = null;
-                    img.src = QMark;
-                    img.classList.add("[.dark_&]:invert");
-                  }}
-                  className="p-1 w-auto h-auto object-contain"
-                  alt={it.title}
-                />
+                <h3
+                  className="font-semibold text-lg
+                  pb-1 border-b border-black/30 [.dark_&]:border-white/30"
+                >
+                  {it.title}
+                </h3>
+                <div
+                  className="mt-2 flex w-full h-[150px]
+                  border-x-2 border-black/30 [.dark_&]:border-white/30 rounded-lg"
+                >
+                  <img
+                    src={` ${it.src}`}
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      img.onerror = null;
+                      img.src = QMark;
+                      img.classList.add("[.dark_&]:invert");
+                    }}
+                    className="p-1 w-auto h-auto object-contain"
+                    alt={it.title}
+                  />
+                </div>
               </div>
-            </div>
-          </article>
-        ))} */}
-      </section>
+            </article>
+          ))} */}
+        </section>
+      ) : (
+        <div
+          className="flex w-full h-full justify-center items-center
+          text-center font-semibold text-xl opacity-50"
+        >
+          {data === null || items === undefined ? (
+            <p>! Failed to fetch items !</p>
+          ) : (
+            <p>No items matched...</p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
