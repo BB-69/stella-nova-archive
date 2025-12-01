@@ -27,7 +27,7 @@ const BrowseLayout = () => {
           collapsed={collapsed}
         />
 
-        <Browser />
+        <Browser collapsed={collapsed} />
       </div>
     </div>
   );

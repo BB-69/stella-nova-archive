@@ -1,8 +1,12 @@
 import type { ItemData } from "../../../scripts/structs/item-data";
+import HighlightedText from "../../common/highlighted-text";
 import TagLabels from "../../common/tag-labels";
+import { useSearchContext } from "./SearchBrowser";
 import QMark from "/assets/fallback/question-mark.svg";
 
 const BrowseItem = ({ item, imgSrc }: { item: ItemData; imgSrc: string }) => {
+  const { searchQuery } = useSearchContext();
+
   return (
     <div
       className="flex flex-col bg-white [.dark_&]:bg-black p-4 h-full w-[220px]
@@ -12,7 +16,11 @@ const BrowseItem = ({ item, imgSrc }: { item: ItemData; imgSrc: string }) => {
         className="font-semibold text-lg
         pb-1 border-b border-black/30 [.dark_&]:border-white/30"
       >
-        {item.title || "< Untitled >"}
+        {item.title ? (
+          <HighlightedText text={item.title} highlight={searchQuery} />
+        ) : (
+          "< Untitled >"
+        )}
       </h3>
       <div>
         <TagLabels tags={[item.category, ...(item.sub_category ?? [])]} />

@@ -8,13 +8,16 @@ import App from "./App.tsx";
 /* css */
 import "./css/main.css";
 import "./css/floating-box.css";
+import { SearchProvider } from "./components/layout/page-browse/SearchBrowser.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <HashRouter>
       <DebugProvider>
         <ThemeProvider>
-          <App />
+          <SearchProvider>
+            <App />
+          </SearchProvider>
         </ThemeProvider>
       </DebugProvider>
     </HashRouter>

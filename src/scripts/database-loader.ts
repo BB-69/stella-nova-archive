@@ -51,7 +51,7 @@ async function FetchContent(url: string, type: FileType) {
 async function FetchFilesFromFolder(
   folderPath: string,
   fileType: FileType
-): Promise<FetchedFile[]> {
+): Promise<FetchedFile[] | null> {
   try {
     const indexRes = await fetch(
       `${baseUrl}/${owner}/${repo}/${branch}/fileIndex.json`
@@ -73,7 +73,7 @@ async function FetchFilesFromFolder(
     );
   } catch (error) {
     console.error("Error fetching files:", error);
-    throw error;
+    return null;
   }
 }
 

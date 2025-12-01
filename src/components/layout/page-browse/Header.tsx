@@ -1,5 +1,6 @@
 // import StellaSoraLogo from "/assets/stellasora-logo-white.webp";
 import { ThemeSwitcher } from "../../common/theme";
+import SearchBar from "../../common/search-bar";
 
 const Header = () => {
   return (
@@ -28,11 +29,7 @@ const Header = () => {
         </span>
 
         <div className="flex flex-row flex-1 min-w-0 max-w-[280px] gap-3">
-          <input
-            className="flex-1 min-w-[120px] px-3 py-2 rounded-xl
-            border border-black/20 [.dark_&]:border-white/20"
-            placeholder="Search..."
-          />
+          <SearchBar />
 
           <div className="flex gap-2">
             <ThemeSwitcher />
