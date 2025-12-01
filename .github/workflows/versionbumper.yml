@@ -19,6 +19,11 @@ jobs:
         with:
           node-version: "18"
 
+      - name: Set Git Identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Bump patch version
         run: npm version patch
 
@@ -28,8 +33,6 @@ jobs:
 
       - name: Create new branch & push
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
           git checkout -b update-version || git checkout update-version
           git add package.json
           git diff --quiet && echo "No changes to commit" || git commit -m "chore: bump patch version to ${{ env.VERSION }}"

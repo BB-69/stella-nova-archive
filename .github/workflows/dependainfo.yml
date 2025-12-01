@@ -24,8 +24,8 @@ jobs:
 
       - name: Create new branch & push
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b dependabot-readme-update || git checkout dependabot-readme-update
           git add README.md
           git commit -m "Update dependencies list in README" || echo "No changes to commit"
