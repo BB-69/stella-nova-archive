@@ -1,0 +1,46 @@
+name: Update minor version on user PR
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]' && github.actor != 'github-actions[bot]' # ignore Dependabot and GitHub Actions PRs
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Bump minor version
+        run: npx npm-version minor
+
+      - name: Get new version
+        id: version
+        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+
+      - name: Create new branch & push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git checkout -b update-version || git checkout update-version
+          git add package.json
+          git diff --quiet && echo "No changes to commit" || git commit -m "chore: bump minor version to ${{ env.VERSION }}"
+          git push -u origin update-version --force
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: bump minor version to ${{ env.VERSION }}"
+          branch: update-version
+          title: "Bump minor version to ${{ env.VERSION }}"
+          body: "This PR bumps the minor version in package.json."
+          base: main
