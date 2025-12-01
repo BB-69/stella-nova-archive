@@ -23,15 +23,6 @@ jobs:
       - name: Update README.md
         run: node .github/scripts/update-dependency-info.js
 
-      - name: Create new branch & push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b dependabot-readme-update || git checkout dependabot-readme-update
-          git add README.md
-          git commit -m "Update dependencies list in README" || echo "No changes to commit"
-          git push -u origin dependabot-readme-update --force
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
