@@ -17,10 +17,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Update README.md
-        run: node scripts/update-dependency-info.js
+        run: node .github/scripts/update-dependency-info.js
 
       - name: Create new branch & push
         run: |
