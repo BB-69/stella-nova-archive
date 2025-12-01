@@ -60,7 +60,10 @@ const Browser = ({ collapsed }: { collapsed: boolean }) => {
   const items = data
     ?.map((d, idx) => {
       const item = d.item;
-      if (!isItemData(item) || !item.title.includes(searchQuery))
+      if (
+        !isItemData(item) ||
+        !item.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
         return undefined;
 
       return (
