@@ -5,11 +5,12 @@ on:
     types: [opened, synchronize]
     branches:
       - main
+  workflow_dispatch: {}
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' # only trigger on Dependabot PRs
+    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
