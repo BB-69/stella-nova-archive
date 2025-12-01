@@ -5,9 +5,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const packageJsonPath = path.join(__dirname, '../package.json');
+const packageJsonPath = path.join(__dirname, '../../package.json');
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-const readmePath = path.join(__dirname, '../README.md');
+const readmePath = path.join(__dirname, '../../README.md');
 
 const deps = packageJson.dependencies || {};
 const devDeps = packageJson.devDependencies || {};
