@@ -21,7 +21,6 @@ Static database: https://github.com/BB-69/stella-nova-archive-db.git
 | Package | Version |
 |---|---|
 | @tailwindcss/vite | ^4.1.17 |
-| bootstrap | ^5.3.8 |
 | framer-motion | ^12.23.24 |
 | lucide-react | ^0.554.0 |
 | react | ^19.2.0 |
