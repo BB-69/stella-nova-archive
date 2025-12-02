@@ -3,14 +3,46 @@ name: Update README on Dependabot PR
 on:
   pull_request:
     types: [opened, synchronize]
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  update-readme:
+  create-readme-pr:
+    name: Manual Update
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Update README.md
+        run: node .github/scripts/update-dependency-info.js
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update dependency info in README.md"
+          branch: manual-readme-update
+          title: "Update dependency info in README.md"
+          body: "This PR updates the README with current dependency versions."
+          base: main
+
+  update-dependabot-branch:
+    name: Dependabot Auto-Update
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]'
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
