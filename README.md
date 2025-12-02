@@ -21,8 +21,8 @@ Static database: https://github.com/BB-69/stella-nova-archive-db.git
 | Package | Version |
 |---|---|
 | @tailwindcss/vite | ^4.1.17 |
-| framer-motion | ^12.23.24 |
-| lucide-react | ^0.554.0 |
+| framer-motion | ^12.23.25 |
+| lucide-react | ^0.555.0 |
 | react | ^19.2.0 |
 | react-dom | ^19.2.0 |
 | react-router-dom | ^7.9.6 |
@@ -41,7 +41,7 @@ Static database: https://github.com/BB-69/stella-nova-archive-db.git
 | postcss | ^8.5.6 |
 | typescript | ~5.9.3 |
 | typescript-eslint | ^8.48.0 |
-| vite | ^7.2.4 |
+| vite | ^7.2.6 |
 <!-- DEPENDENCIES_END -->
 
 ## CONTRIBUTION
