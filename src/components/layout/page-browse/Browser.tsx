@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { FetchFilesFromFolder } from "../../../scripts/database-loader";
 import { isItemData } from "../../../scripts/structs/item-data";
 import BrowseItem from "./BrowseItem";
-import { useSearchContext } from "./SearchBrowser";
+import { useSearchContext } from "./SearchContext";
 import { useDebugValue } from "../../../hooks/useDebugValue";
+import { useFilterContext } from "./FilterContext";
 
 /* ---LOCAL_TEST--- */
 // const items = [
@@ -41,6 +42,7 @@ const data = await FetchFilesFromFolder("data/", "json");
 const Browser = () => {
   const [images, setImages] = useState<{ [key: string]: string }>({});
   const { searchQuery } = useSearchContext();
+  const { filterQuery } = useFilterContext();
 
   useEffect(() => {
     if (!data) return;
@@ -60,9 +62,19 @@ const Browser = () => {
   const items = data
     ?.map((d, idx) => {
       const item = d.item;
+      const itemTag = isItemData(item)
+        ? [
+            // mapped as from <sub> to <main>-<sub>
+            ...(item.sub_category?.map((t) => `${item.category}-${t}`) ?? []),
+            item.category,
+          ]
+        : [];
       if (
         !isItemData(item) ||
-        !item.title.toLowerCase().includes(searchQuery.toLowerCase())
+        !item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (filterQuery.length != 0
+          ? filterQuery.some((t) => !itemTag.includes(t))
+          : false)
       )
         return undefined;
 
