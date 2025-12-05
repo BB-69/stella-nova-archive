@@ -8,7 +8,8 @@ import App from "./App.tsx";
 /* css */
 import "./css/main.css";
 import "./css/floating-box.css";
-import { SearchProvider } from "./components/layout/page-browse/SearchBrowser.tsx";
+import { SearchProvider } from "./components/layout/page-browse/SearchContext.tsx";
+import { FilterProvider } from "./components/layout/page-browse/FilterContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -16,7 +17,9 @@ createRoot(document.getElementById("root")!).render(
       <DebugProvider>
         <ThemeProvider>
           <SearchProvider>
-            <App />
+            <FilterProvider>
+              <App />
+            </FilterProvider>
           </SearchProvider>
         </ThemeProvider>
       </DebugProvider>

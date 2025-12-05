@@ -1,7 +1,7 @@
 import type { ItemData } from "../../../scripts/structs/item-data";
 import HighlightedText from "../../common/highlighted-text";
 import TagLabels from "../../common/tag-labels";
-import { useSearchContext } from "./SearchBrowser";
+import { useSearchContext } from "./SearchContext";
 import QMark from "/assets/fallback/question-mark.svg";
 
 const BrowseItem = ({ item, imgSrc }: { item: ItemData; imgSrc: string }) => {

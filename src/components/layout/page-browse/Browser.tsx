@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { FetchFilesFromFolder } from "../../../scripts/database-loader";
 import { isItemData } from "../../../scripts/structs/item-data";
 import BrowseItem from "./BrowseItem";
-import { useSearchContext } from "./SearchBrowser";
+import { useSearchContext } from "./SearchContext";
 import { useDebugValue } from "../../../hooks/useDebugValue";
+import { useFilterContext } from "./FilterContext";
 
 /* ---LOCAL_TEST--- */
 // const items = [
@@ -38,9 +39,10 @@ import { useDebugValue } from "../../../hooks/useDebugValue";
 
 const data = await FetchFilesFromFolder("data/", "json");
 
-const Browser = ({ collapsed }: { collapsed: boolean }) => {
+const Browser = () => {
   const [images, setImages] = useState<{ [key: string]: string }>({});
   const { searchQuery } = useSearchContext();
+  const { filterQuery } = useFilterContext();
 
   useEffect(() => {
     if (!data) return;
@@ -60,9 +62,19 @@ const Browser = ({ collapsed }: { collapsed: boolean }) => {
   const items = data
     ?.map((d, idx) => {
       const item = d.item;
+      const itemTag = isItemData(item)
+        ? [
+            // mapped as from <sub> to <main>-<sub>
+            ...(item.sub_category?.map((t) => `${item.category}-${t}`) ?? []),
+            item.category,
+          ]
+        : [];
       if (
         !isItemData(item) ||
-        !item.title.toLowerCase().includes(searchQuery.toLowerCase())
+        !item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (filterQuery.length != 0
+          ? filterQuery.some((t) => !itemTag.includes(t))
+          : false)
       )
         return undefined;
 
@@ -85,10 +97,7 @@ const Browser = ({ collapsed }: { collapsed: boolean }) => {
   }
 
   return (
-    <div
-      className={`border-1 p-5 overflow-auto
-      ${collapsed ? "w-[calc(100vw-72px)]" : "w-[calc(100vw-260px)]"}`}
-    >
+    <div className={`p-5 overflow-auto w-full`}>
       {items != undefined && items?.length > 0 ? (
         <section
           className="grid gap-4 justify-items-start

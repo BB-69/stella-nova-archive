@@ -5,11 +5,41 @@ const tags = [
   },
   {
     level: "secondary",
-    tag: ["background", "character", "disc", "ascension", "encyclopedia"],
+    tag: [
+      "background",
+      "character",
+      "disc",
+      "ascension",
+      "in-game",
+      "encyclopedia",
+    ],
   },
   {
     level: "tertiary",
     tag: ["element", "rarity", "domain"],
+  },
+];
+
+export const filterTags = [
+  {
+    main: "illustration",
+    sub: ["background", "character", "disc"],
+  },
+  {
+    main: "live2d",
+    sub: ["background", "character"],
+  },
+  {
+    main: "battle_stage",
+    sub: ["ascension"],
+  },
+  {
+    main: "ui",
+    sub: ["in-game", "encyclopedia"],
+  },
+  {
+    main: "other",
+    sub: [],
   },
 ];
 

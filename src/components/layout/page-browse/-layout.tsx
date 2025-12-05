@@ -2,32 +2,44 @@ import { useState } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Browser from "./Browser";
+import FilterSelector from "./FilterSelector";
 
 const BrowseLayout = () => {
-  const [collapsed, setCollapsed] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const [filterbarCollapsed, setFilterbarCollapsed] = useState(true);
 
   return (
     <div
       className="flex flex-col w-full h-full
       bg-gradient-to-b from-[var(--bg-a2)] to-white
       [.dark_&]:from-[var(--bg-a2-dark)] [.dark_&]:to-black"
-      data-collapsed={collapsed ? "true" : "false"}
+      data-collapsed={sidebarCollapsed ? "true" : "false"}
     >
-      <Header />
+      <Header
+        onToggleFilterbar={() => setFilterbarCollapsed((s) => !s)}
+        collapsed={filterbarCollapsed}
+      />
 
       <div
         className={
           `grid transition-[grid-template-columns] duration-200` +
-          ` ${collapsed ? "grid-cols-[72px_1fr]" : "grid-cols-[260px_1fr]"}`
+          ` ${
+            sidebarCollapsed ? "grid-cols-[72px_1fr]" : "grid-cols-[260px_1fr]"
+          }`
         }
         style={{ height: "calc(100vh - 64px)" }}
       >
         <Sidebar
-          onToggleSidebar={() => setCollapsed((s) => !s)}
-          collapsed={collapsed}
+          onToggleSidebar={() => setSidebarCollapsed((s) => !s)}
+          collapsed={sidebarCollapsed}
         />
 
-        <Browser collapsed={collapsed} />
+        <div className="flex flex-col h-full overflow-hidden">
+          <FilterSelector collapsed={filterbarCollapsed} />
+          <div className="flex-1 overflow-auto">
+            <Browser />
+          </div>
+        </div>
       </div>
     </div>
   );
