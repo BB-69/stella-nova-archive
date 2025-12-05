@@ -9,22 +9,25 @@ const FilterSelector = ({ collapsed }: { collapsed: boolean }) => {
 
   useEffect(() => {
     // Initialize all tags as unchecked
-    Object.keys(filterTags).forEach((tag) => {
-      setCheckedTags((prev) => ({ ...prev, [tag]: false }));
+    filterTags.forEach(({ main, sub }) => {
+      setCheckedTags((prev) => ({ ...prev, [main]: false }));
+      sub.forEach((s) => {
+        setCheckedTags((prev) => ({ ...prev, [`${main}-${s}`]: false }));
+      });
     });
   }, []);
 
-  function toggleTag(tag: string) {
+  function toggleTag(tag: string, to?: boolean) {
     setCheckedTags((prev) => ({
       ...prev,
-      [tag]: !prev[tag],
+      [tag]: to == undefined ? !prev[tag] : to,
     }));
   }
 
   return (
     <div
       className={`transition-[height] duration-200 ${
-        collapsed ? "h-[0] overflow-hidden" : "h-[180px]"
+        collapsed ? "h-[0] overflow-hidden" : "h-[160px]"
       }`}
     >
       <div
@@ -35,16 +38,16 @@ const FilterSelector = ({ collapsed }: { collapsed: boolean }) => {
       >
         {filterTags && (
           <div
-            className="h-full pb-2 px-2 grid grid-cols-[repeat(auto-fit,minmax(110px,1fr))]
+            className="h-full pb-2 px-2 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))]
             justify-center items-top overflow-x-hidden"
           >
-            {Object.entries(filterTags).map(([key, tags]) => (
-              <div key={key} className="p-2 flex flex-col min-w-max">
+            {Object.entries(filterTags).map(([_, { main, sub }]) => (
+              <div key={main} className="p-2 flex flex-col min-w-max">
                 <button
-                  className={`flex px-2 py-1 items-center
-                  border-b-1 border-black/30 [.dark_&]:border-white/30
+                  className={`flex px-2 py-1 items-center rounded-md
+                  border-1
                   ${
-                    checkedTags[key]
+                    checkedTags[main]
                       ? `
                     justify-between
                     bg-blue-500/10 [.dark_&]:bg-blue-300/10
@@ -53,24 +56,53 @@ const FilterSelector = ({ collapsed }: { collapsed: boolean }) => {
                   `
                       : `
                     justify-start
+                    border-black/30 [.dark_&]:border-white/30
                     hover:bg-black/10 [.dark_&]:hover:bg-white/10
                   `
                   }`}
-                  onClick={() => toggleTag(key)}
+                  onClick={() => {
+                    toggleTag(main);
+                    sub.forEach((subTag) => {
+                      if (checkedTags[`${main}-${subTag}`] == true)
+                        toggleTag(`${main}-${subTag}`, false);
+                    });
+                  }}
                 >
-                  <span className="font-semibold text-sm">{key}</span>
-                  {checkedTags[key] && <Check size={16} />}
+                  <span className="font-bold text-sm">{main}</span>
+                  {checkedTags[main] && <Check size={16} />}
                 </button>
-                <div className="flex flex-col gap-2 mt-1 px-1">
-                  {tags.sub.length > 0 &&
-                    tags.sub.map((subTag) => (
+                <div className="flex flex-col px-1">
+                  {sub.length > 0 &&
+                    sub.map((subTag, idx) => (
                       <button
-                        key={subTag}
-                        className="px-3 py-1 bg-[var(--btn-bg)] [.dark_&]:bg-[var(--btn-bg-dark)]
-                        text-sm rounded-full shadow-sm shadow-black/20 [.dark_&]:shadow-white/20
-                        hover:bg-[var(--btn-bg-hover)] [.dark_&]:hover:bg-[var(--btn-bg-hover-dark)]"
+                        key={`${main}-${subTag}`}
+                        className={`flex px-2 py-0.5 items-center
+                        border-b-1
+                        ${
+                          checkedTags[`${main}-${subTag}`]
+                            ? `
+                          justify-between
+                          bg-blue-500/10 [.dark_&]:bg-blue-300/10
+                          text-blue-600 [.dark_&]:text-blue-400
+                          hover:bg-blue-500/20 [.dark_&]:hover:bg-blue-300/20
+                        `
+                            : `
+                          justify-start
+                          border-black/20 [.dark_&]:border-white/30
+                          hover:bg-black/10 [.dark_&]:hover:bg-white/10
+                        `
+                        }`}
+                        onClick={() => {
+                          toggleTag(`${main}-${subTag}`);
+                          if (checkedTags[main] == false) toggleTag(main, true);
+                        }}
                       >
-                        {subTag}
+                        <span className="text-sm">
+                          {`${idx == sub.length - 1 ? "└" : "├"} ${subTag}`}
+                        </span>
+                        {checkedTags[`${main}-${subTag}`] && (
+                          <Check size={16} />
+                        )}
                       </button>
                     ))}
                 </div>
