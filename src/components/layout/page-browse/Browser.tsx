@@ -5,44 +5,83 @@ import BrowseItem from "./BrowseItem";
 import { useSearchContext } from "./SearchContext";
 import { useDebugValue } from "../../../hooks/useDebugValue";
 import { useFilterContext } from "./FilterContext";
+import { useSortContext } from "./SortContext";
 
 /* ---LOCAL_TEST--- */
-// const items = [
+// const test_items: FetchedFile[] = [
 //   {
-//     id: "test-item1",
-//     type: "image",
-//     cat: "other",
-//     sub_cat: null,
-//     title: "Test Item 1",
-//     desc: "Alienating",
-//     src: "a/b",
+//     url: "",
+//     item: {
+//       id: "test-item1",
+//       type: "image",
+//       category: "other",
+//       sub_category: null,
+//       title: "Test Item 1",
+//       description: "Alienating",
+//       source: ["a/b"],
+
+//       meta: {
+//         width: 0,
+//         height: 0,
+//         frames: null,
+//         version: "0.0.2",
+//       },
+
+//       overlays: [],
+//     },
 //   },
 //   {
-//     id: "test-item2",
-//     type: "image",
-//     cat: "other",
-//     sub_cat: null,
-//     title: "Test Item 2",
-//     desc: "Alienating",
-//     src: "assets/nova-alphabet-table.jpg",
+//     url: "",
+//     item: {
+//       id: "test-item2",
+//       type: "image",
+//       category: "other",
+//       sub_category: null,
+//       title: "Test Item 2",
+//       description: "Alienating",
+//       source: ["assets/nova-alphabet-table.jpg"],
+
+//       meta: {
+//         width: 0,
+//         height: 0,
+//         frames: null,
+//         version: "0.0.1",
+//       },
+
+//       overlays: [],
+//     },
 //   },
 //   {
-//     id: "test-item3",
-//     type: "image",
-//     cat: "other",
-//     sub_cat: null,
-//     title: "Test Item 3",
-//     desc: "Alienating",
-//     src: "",
+//     url: "",
+//     item: {
+//       id: "test-item3",
+//       type: "image",
+//       category: "illustration",
+//       sub_category: ["disc"],
+//       title: "Test Item 3",
+//       description: "Alienating",
+//       source: [""],
+
+//       meta: {
+//         width: 0,
+//         height: 0,
+//         frames: null,
+//         version: "0.0.3",
+//       },
+
+//       overlays: [],
+//     },
 //   },
 // ];
 
-const data = await FetchFilesFromFolder("data/", "json");
+let data = await FetchFilesFromFolder("data/", "json");
+// if (data != null) data = [...data, ...test_items];
 
 const Browser = () => {
   const [images, setImages] = useState<{ [key: string]: string }>({});
   const { searchQuery } = useSearchContext();
   const { filterQuery } = useFilterContext();
+  const { sortQuery } = useSortContext();
 
   useEffect(() => {
     if (!data) return;
@@ -72,19 +111,34 @@ const Browser = () => {
       if (
         !isItemData(item) ||
         !item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        // filter
         (filterQuery.length != 0
           ? filterQuery.some((t) => !itemTag.includes(t))
           : false)
       )
         return undefined;
 
-      return (
-        <article key={`${idx}-${item.id}`} className="h-[220px]">
-          <BrowseItem item={item} imgSrc={images[item.id]} />
-        </article>
-      );
+      return {
+        node: (
+          <article key={`${idx}-${item.id}`} className="h-[220px]">
+            <BrowseItem item={item} imgSrc={images[item.id]} />
+          </article>
+        ),
+        data: item,
+      };
     })
-    .filter((i) => i !== undefined);
+    .filter((i) => i !== undefined)
+    // sort
+    .sort((a, b) =>
+      sortQuery != null
+        ? sortQuery.type == "name"
+          ? a.data.title.localeCompare(b.data.title) *
+            (sortQuery.ascending ? 1 : -1)
+          : a.data.meta.version.localeCompare(b.data.meta.version) *
+            (sortQuery.ascending ? 1 : -1)
+        : 0
+    )
+    .map((i) => i.node);
 
   {
     const [itemsCount, setItemsCount] = useState(0);
@@ -100,44 +154,10 @@ const Browser = () => {
     <div className={`p-5 overflow-auto w-full`}>
       {items != undefined && items?.length > 0 ? (
         <section
-          className="grid gap-4 justify-items-start
-          grid-cols-[repeat(auto-fit,minmax(220px,1fr))]"
+          className="grid gap-4 justify-items-center
+          grid-cols-[repeat(auto-fill,minmax(220px,1fr))]"
         >
           {items}
-
-          {/* ---LOCAL_TEST--- */}
-
-          {/* {items.map((it) => (
-            <article key={"test-" + it.id} className="h-[220px]">
-              <div
-                className="flex flex-col bg-white [.dark_&]:bg-black p-4 h-full w-[220px]
-                rounded-xl shadow-lg shadow-black/20 [.dark_&]:shadow-white/20"
-              >
-                <h3
-                  className="font-semibold text-lg
-                  pb-1 border-b border-black/30 [.dark_&]:border-white/30"
-                >
-                  {it.title}
-                </h3>
-                <div
-                  className="mt-2 flex w-full h-[150px]
-                  border-x-2 border-black/30 [.dark_&]:border-white/30 rounded-lg"
-                >
-                  <img
-                    src={` ${it.src}`}
-                    onError={(e) => {
-                      const img = e.currentTarget;
-                      img.onerror = null;
-                      img.src = QMark;
-                      img.classList.add("[.dark_&]:invert");
-                    }}
-                    className="p-1 w-auto h-auto object-contain"
-                    alt={it.title}
-                  />
-                </div>
-              </div>
-            </article>
-          ))} */}
         </section>
       ) : (
         <div

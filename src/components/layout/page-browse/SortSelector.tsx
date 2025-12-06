@@ -8,11 +8,11 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import ButtonToggle from "../../common/button-toggle";
-import { useSortContext, type SortType } from "./SortContext";
+import { useSortContext } from "./SortContext";
 
 const SortSelector = () => {
   const [collapsed, setCollapsed] = useState(true);
-  const { sortQuery, setSortQuery } = useSortContext();
+  const { setSortQuery } = useSortContext();
 
   function onToggle() {
     setCollapsed(!collapsed);
@@ -34,13 +34,13 @@ const SortSelector = () => {
   };
 
   useEffect(() => {
-    const sort: SortType | null =
-      nameAscending != null && dateAscending != null
-        ? nameAscending != null
-          ? { type: "name", ascending: nameAscending }
-          : { type: "date", ascending: dateAscending }
-        : null;
-    setSortQuery(sort);
+    setSortQuery(
+      nameAscending != null
+        ? { type: "name", ascending: nameAscending }
+        : dateAscending != null
+        ? { type: "date", ascending: dateAscending }
+        : null
+    );
   }, [nameAscending, dateAscending]);
 
   return (
