@@ -1,14 +1,20 @@
+import { useRef, useState } from "react";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import HighlightedText from "../../common/highlighted-text";
 import TagLabels from "../../common/tag-labels";
 import { useSearchContext } from "./SearchContext";
 import QMark from "/assets/fallback/question-mark.svg";
+import BrowseItemModal from "./BrowseItemModal";
+import { CircleAlert } from "lucide-react";
 
 const BrowseItem = ({ item, imgSrc }: { item: ItemData; imgSrc: string }) => {
+  const [hovered, setHovered] = useState<boolean>(false);
+  const browseItemRef = useRef<HTMLDivElement>(null);
   const { searchQuery } = useSearchContext();
 
   return (
     <div
+      ref={browseItemRef}
       className="group flex flex-col p-4 h-full w-[220px]
       transition-colors duration-200 bg-gradient-to-br
       from-white to-white [.dark_&]:from-black [.dark_&]:to-black
@@ -18,7 +24,7 @@ const BrowseItem = ({ item, imgSrc }: { item: ItemData; imgSrc: string }) => {
       cursor-pointer"
     >
       <h3
-        className="font-semibold text-lg
+        className="flex justify-between items-top font-semibold text-lg
         pb-1 border-b border-black/30 [.dark_&]:border-white/30
         group-hover:border-white/30 group-hover:text-white"
       >
@@ -27,6 +33,15 @@ const BrowseItem = ({ item, imgSrc }: { item: ItemData; imgSrc: string }) => {
         ) : (
           "< Untitled >"
         )}
+        <div
+          className="flex justify-center items-center
+          w-[28px] h-[28px] rounded-full opacity-60 hover:opacity-100
+          hover:border-0 hover:bg-white hover:text-black"
+          onPointerEnter={() => setHovered(true)}
+          onPointerLeave={() => setHovered(false)}
+        >
+          <CircleAlert />
+        </div>
       </h3>
       <div>
         <TagLabels tags={[item.category, ...(item.sub_category ?? [])]} />
@@ -56,6 +71,24 @@ const BrowseItem = ({ item, imgSrc }: { item: ItemData; imgSrc: string }) => {
           alt={item.title}
         />
       </div>
+
+      <BrowseItemModal onHover={hovered} parentRef={browseItemRef}>
+        <div className="w-[180px] pb-1 overflow-hidden">
+          <h3
+            className="flex justify-between items-top font-semibold text-lg
+          pb-1 border-b border-black/30 [.dark_&]:border-white/30
+          text-sm"
+          >
+            Description
+          </h3>
+          <span
+            className="mt-1.5 px-1 text-xs opacity-80
+            leading-tight block break-words"
+          >
+            {item.description ?? "< Untitled >"}
+          </span>
+        </div>
+      </BrowseItemModal>
     </div>
   );
 };
