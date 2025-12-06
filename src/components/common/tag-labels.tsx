@@ -10,7 +10,10 @@ const TagLabels = ({ tags }: { tags?: string[] }) => {
     return (
       <div key={t} className="pr-1">
         <div
-          className={`tag-${t} px-1 border-1 rounded-full`}
+          className={`
+            tag-${t} px-1 border-1 rounded-full
+            shadow-sm shadow-white/80 [.dark_&]:shadow-black/80
+          `}
           style={{
             borderColor: `var(--border-color, ${c.col1})`,
             backgroundColor: `var(--bg-color, ${c.col2})`,
