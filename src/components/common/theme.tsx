@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { useDebugValue } from "../../hooks/useDebugValue";
+import ButtonToggle from "./button-toggle";
 
 export interface ThemeState {
   theme: "dark" | "light" | null;
@@ -113,17 +114,11 @@ export function ThemeSwitcher({
   const icon = theme === "light" ? "🌞" : theme === "dark" ? "🌙" : "🎲";
 
   return (
-    <button
-      className="relative w-[40px] h-[40px] rounded-[8px]
-      p-[8px] bg-[var(--d2-c)] [.dark_&]:bg-[var(--d2-c-dark)]
-      border-1 border-black/20 [.dark_&]:border-white/20
-      cursor-pointer font-bold"
-      onClick={cycle}
-      style={{
-        cursor: "pointer",
-      }}
+    <div
+      className="w-[40px] h-[40px] flex justify-center items-center
+    rounded-md border border-black/20 [.dark_&]:border-white/20"
     >
-      {icon}
-    </button>
+      <ButtonToggle onToggle={cycle}>{icon}</ButtonToggle>
+    </div>
   );
 }

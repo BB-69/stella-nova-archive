@@ -2,6 +2,8 @@
 import { ThemeSwitcher } from "../../common/theme";
 import SearchBar from "../../common/search-bar";
 import { SlidersHorizontal } from "lucide-react";
+import SortSelector from "./SortSelector";
+import ButtonToggle from "../../common/button-toggle";
 
 const Header = ({
   onToggleFilterbar,
@@ -15,12 +17,12 @@ const Header = ({
       className="flex flex-col h-[64px]
       border-b border-black/30 [.dark_&]:border-white/30
       shadow-md shadow-black/20 [.dark_&]:shadow-white/20
-      bg-white [.dark_&]:bg-black overflow-hidden
+      bg-white [.dark_&]:bg-black
       gap-[6px] p-[10px_18px] sticky z-20"
     >
       <div
         className="flex items-center justify-between
-        max-[540px]:justify-end gap-4 h-full"
+        max-[625px]:justify-end gap-4 h-full"
       >
         {/* <div className="max-[720px]:hidden">
           <img
@@ -33,35 +35,17 @@ const Header = ({
 
         <span
           className="overflow-hidden novamodern pt-2
-          font-semibold text-xl whitespace-nowrap max-[540px]:hidden"
+          font-semibold text-xl whitespace-nowrap max-[625px]:hidden"
         >
           Stella Nova Archive
         </span>
 
-        <div className="flex flex-row flex-1 min-w-0 max-w-[280px] gap-3">
-          <button
-            className={`flex justify-center items-center
-            relative w-[40px] h-[40px] rounded-md pt-0.5
-            ${
-              collapsed
-                ? `
-              hover:bg-black/10 [.dark_&]:hover:bg-white/10
-            `
-                : `
-              border-1
-              bg-blue-500/10 [.dark_&]:bg-blue-300/10
-              hover:bg-blue-500/20 [.dark_&]:hover:bg-blue-300/20
-              text-blue-600 [.dark_&]:text-blue-400
-            `
-            }
-            cursor-pointer font-bold`}
-            onClick={onToggleFilterbar}
-            style={{
-              cursor: "pointer",
-            }}
-          >
+        <div className="flex flex-row flex-1 min-w-0 max-w-[320px] gap-1">
+          <SortSelector />
+
+          <ButtonToggle toggle={collapsed} onToggle={onToggleFilterbar}>
             <SlidersHorizontal />
-          </button>
+          </ButtonToggle>
 
           <SearchBar />
 

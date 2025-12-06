@@ -11,7 +11,7 @@ const SearchBar = () => {
 
   return (
     <input
-      className="flex-1 min-w-[120px] px-3 py-2 rounded-xl
+      className="flex-1 min-w-[80px] px-3 py-2 mx-2 rounded-xl
 			border border-black/20 [.dark_&]:border-white/20"
       type="text"
       maxLength={69}
