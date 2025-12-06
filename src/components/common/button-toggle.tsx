@@ -4,19 +4,26 @@ const ButtonToggle = ({
   toggle,
   onToggle,
   children,
+  /*--- customization ---*/
+  pxSize,
+  alwaysBorder,
 }: {
   toggle?: boolean;
   onToggle: () => void;
   children: ReactNode;
+  /*--- customization ---*/
+  pxSize?: { w?: number; h?: number };
+  alwaysBorder?: boolean;
 }) => {
   return (
     <button
       className={`flex justify-center items-center
-			relative w-[40px] h-[40px] rounded-md pt-0.5
+			relative rounded-md pt-0.5
 			${
         toggle == undefined || toggle
           ? `
 				hover:bg-black/10 [.dark_&]:hover:bg-white/10
+        ${alwaysBorder && "border-1 border-black/20 [.dark_&]:border-white/20"}
 			`
           : `
 				border-1
@@ -29,6 +36,8 @@ const ButtonToggle = ({
       onClick={onToggle}
       style={{
         cursor: "pointer",
+        width: `${pxSize?.w ? pxSize.w : 40}px`,
+        height: `${pxSize?.h ? pxSize.h : 40}px`,
       }}
     >
       {children}

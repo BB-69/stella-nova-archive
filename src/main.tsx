@@ -10,6 +10,7 @@ import "./css/main.css";
 import "./css/floating-box.css";
 import { SearchProvider } from "./components/layout/page-browse/SearchContext.tsx";
 import { FilterProvider } from "./components/layout/page-browse/FilterContext.tsx";
+import { SortProvider } from "./components/layout/page-browse/SortContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -18,7 +19,9 @@ createRoot(document.getElementById("root")!).render(
         <ThemeProvider>
           <SearchProvider>
             <FilterProvider>
-              <App />
+              <SortProvider>
+                <App />
+              </SortProvider>
             </FilterProvider>
           </SearchProvider>
         </ThemeProvider>
