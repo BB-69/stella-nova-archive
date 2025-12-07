@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
-import { FetchFilesFromFolder } from "../../../scripts/database-loader";
+import { useEffect, useRef, useState } from "react";
+import {
+  FetchFilesFromFolder,
+  type FetchedFile,
+} from "../../../scripts/database-loader";
 import { isItemData } from "../../../scripts/structs/item-data";
 import BrowseItem from "./BrowseItem";
 import { useSearchContext } from "./SearchContext";
@@ -14,8 +17,8 @@ import { useSortContext } from "./SortContext";
 //     item: {
 //       id: "test-item1",
 //       type: "image",
-//       category: "other",
-//       sub_category: null,
+//       category: "illustration",
+//       sub_category: ["background", "character", "disc"],
 //       title: "Test Item 1",
 //       description: "Alienating",
 //       source: ["a/b"],
@@ -74,15 +77,90 @@ import { useSortContext } from "./SortContext";
 //   },
 // ];
 
-let data = await FetchFilesFromFolder("data/", "json");
-// if (data != null) data = [...data, ...test_items];
-
 const Browser = () => {
-  const [images, setImages] = useState<{ [key: string]: string }>({});
+  const [data, setData] = useState<FetchedFile[]>([]);
+  const [batchIndex, setBatchIndex] = useState(0);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [noMoreData, setNoMoreData] = useState(false);
+
+  const BATCH_SIZE = 5;
+
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const { searchQuery } = useSearchContext();
   const { filterQuery } = useFilterContext();
   const { sortQuery } = useSortContext();
 
+  const [images, setImages] = useState<{ [key: string]: string }>({});
+
+  /* --- FETCH BATCH --- */
+  async function loadBatch() {
+    if (isLoadingMore || noMoreData) return;
+
+    setIsLoadingMore(true);
+
+    const res = await FetchFilesFromFolder(
+      "data/",
+      "json",
+      batchIndex,
+      BATCH_SIZE
+    );
+
+    if (!res || res.length === 0) {
+      setNoMoreData(true);
+      setIsLoadingMore(false);
+      return;
+    }
+
+    setData((prev) => [...prev, ...res]);
+    setBatchIndex((prev) => prev + BATCH_SIZE);
+
+    if (res.length < BATCH_SIZE) {
+      setNoMoreData(true);
+    }
+
+    setIsLoadingMore(false);
+  }
+
+  /* --- AUTO FILL IF NOT SCROLLABLE --- */
+  useEffect(() => {
+    const div = containerRef.current;
+    if (!div) return;
+
+    const id = setTimeout(() => {
+      const canScroll = div.scrollHeight > div.clientHeight;
+
+      if (!canScroll) {
+        loadBatch();
+      }
+    }, 50);
+
+    return () => clearTimeout(id);
+  }, [data]);
+
+  useEffect(() => {
+    // if (data != null) setData((prev) => [...prev, ...test_items]);
+    loadBatch();
+  }, []);
+
+  /* --- INTERSECTION OBSERVER --- */
+  useEffect(() => {
+    const target = loadMoreRef.current;
+    if (!target) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !isLoadingMore) {
+        loadBatch();
+      }
+    });
+
+    observer.observe(target);
+
+    return () => observer.disconnect();
+  }, [isLoadingMore]);
+
+  /* --- FETCH IMAGES --- */
   useEffect(() => {
     if (!data) return;
 
@@ -98,6 +176,7 @@ const Browser = () => {
     });
   }, [data]);
 
+  /* --- FILTER / SORT / MAP --- */
   const items = data
     ?.map((d, idx) => {
       const item = d.item;
@@ -153,12 +232,33 @@ const Browser = () => {
   return (
     <div className={`p-5 overflow-auto w-full`}>
       {items != undefined && items?.length > 0 ? (
-        <section
-          className="grid gap-4 justify-items-center
+        <>
+          <section
+            className="grid gap-4 justify-items-center
           grid-cols-[repeat(auto-fill,minmax(220px,1fr))]"
-        >
-          {items}
-        </section>
+          >
+            {items}
+
+            {!noMoreData && (
+              <div
+                ref={loadMoreRef}
+                className="h-[220px] w-[220px] flex justify-center items-center"
+              >
+                {isLoadingMore && (
+                  <div className="animate-spin h-10 w-10 border-5 border-gray-400 border-t-transparent rounded-full"></div>
+                )}
+              </div>
+            )}
+          </section>
+          {noMoreData && (
+            <div
+              className="mt-6 h-[48px] flex justify-center items-center
+            border-b-1 text-sm overflow-hidden whitespace-nowrap opacity-30"
+            >
+              This is the end...
+            </div>
+          )}
+        </>
       ) : (
         <div
           className="flex w-full h-full justify-center items-center

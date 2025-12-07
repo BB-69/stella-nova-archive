@@ -2,7 +2,7 @@ import type { ItemData } from "./structs/item-data";
 
 type FileType = "json" | "webp" | "jpg" | "png";
 
-interface FetchedFile {
+export interface FetchedFile {
   url: string;
   item: ItemData | string;
 }
@@ -50,7 +50,9 @@ async function FetchContent(url: string, type: FileType) {
 
 async function FetchFilesFromFolder(
   folderPath: string,
-  fileType: FileType
+  fileType: FileType,
+  offset?: number,
+  limit?: number
 ): Promise<FetchedFile[] | null> {
   try {
     const indexRes = await fetch(
@@ -64,8 +66,15 @@ async function FetchFilesFromFolder(
         file.toLowerCase().endsWith(`.${fileType}`)
     );
 
+    if (offset == null) offset = 0;
+    if (offset > filteredFiles.length - 1) return null;
+    const batch = filteredFiles.slice(
+      offset,
+      offset + (limit ?? filteredFiles.length)
+    );
+
     return Promise.all(
-      filteredFiles.map(async (file) => {
+      batch.map(async (file) => {
         const url = `${baseUrl}/${owner}/${repo}/${branch}/${file}`;
         const item = await FetchContent(url, fileType);
         return { url, item };
