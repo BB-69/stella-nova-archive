@@ -10,8 +10,8 @@ const Header = ({
   collapsed,
   isBrowsing,
 }: {
-  onToggleFilterbar: () => void;
-  collapsed: boolean;
+  onToggleFilterbar?: () => void;
+  collapsed?: boolean;
   isBrowsing: boolean;
 }) => {
   return (
@@ -47,7 +47,10 @@ const Header = ({
             <>
               <SortSelector />
 
-              <ButtonToggle toggle={collapsed} onToggle={onToggleFilterbar}>
+              <ButtonToggle
+                toggle={collapsed}
+                onToggle={onToggleFilterbar ?? (() => {})}
+              >
                 <SlidersHorizontal />
               </ButtonToggle>
             </>

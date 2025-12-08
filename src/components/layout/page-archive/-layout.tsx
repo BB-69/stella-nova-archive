@@ -1,11 +1,10 @@
 import { useState } from "react";
 import Header from "../Header";
-import Sidebar from "../page-browse/Sidebar";
+import Sidebar from "./Sidebar";
 import Content from "./Content";
 
 const BrowseLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
-  const [filterbarCollapsed, setFilterbarCollapsed] = useState(true);
 
   return (
     <div
@@ -14,11 +13,7 @@ const BrowseLayout = () => {
       [.dark_&]:from-[var(--bg-a2-dark)] [.dark_&]:to-black"
       data-collapsed={sidebarCollapsed ? "true" : "false"}
     >
-      <Header
-        onToggleFilterbar={() => setFilterbarCollapsed((s) => !s)}
-        collapsed={filterbarCollapsed}
-        isBrowsing={false}
-      />
+      <Header isBrowsing={false} />
 
       <div
         className={
@@ -33,7 +28,7 @@ const BrowseLayout = () => {
 
         <Sidebar
           onToggleSidebar={() => setSidebarCollapsed((s) => !s)}
-          collapsed={sidebarCollapsed}
+          sidebarCollapsed={sidebarCollapsed}
         />
       </div>
     </div>
