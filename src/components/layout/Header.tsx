@@ -1,9 +1,10 @@
 // import StellaSoraLogo from "/assets/stellasora-logo-white.webp";
 import { ThemeSwitcher } from "../common/theme";
 import SearchBar from "../common/search-bar";
-import { SlidersHorizontal } from "lucide-react";
+import { ArrowLeftToLine, SlidersHorizontal } from "lucide-react";
 import SortSelector from "./page-browse/SortSelector";
 import ButtonToggle from "../common/button-toggle";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({
   onToggleFilterbar,
@@ -14,6 +15,8 @@ const Header = ({
   collapsed?: boolean;
   isBrowsing: boolean;
 }) => {
+  const navigate = useNavigate();
+
   return (
     <header
       className="flex flex-col h-[64px]
@@ -43,7 +46,7 @@ const Header = ({
         </span>
 
         <div className="flex flex-row flex-1 min-w-0 max-w-[320px] gap-1">
-          {isBrowsing == true && (
+          {isBrowsing == true ? (
             <>
               <SortSelector />
 
@@ -54,6 +57,10 @@ const Header = ({
                 <SlidersHorizontal />
               </ButtonToggle>
             </>
+          ) : (
+            <ButtonToggle onToggle={() => navigate("/browse")}>
+              <ArrowLeftToLine />
+            </ButtonToggle>
           )}
 
           <SearchBar />

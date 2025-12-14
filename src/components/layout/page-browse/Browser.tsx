@@ -200,7 +200,7 @@ const Browser = () => {
       return {
         node: (
           <article key={`${idx}-${item.id}`} className="h-[220px]">
-            <BrowseItem item={item} imgSrc={images[item.id]} />
+            <BrowseItem item={item} url={d.url} imgSrc={images[item.id]} />
           </article>
         ),
         data: item,

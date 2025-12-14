@@ -8,7 +8,7 @@ import { FetchFilesFromFolder } from "../../../scripts/database-loader";
 import { useDebugValue } from "../../../hooks/useDebugValue";
 
 const ArchiveLayout = () => {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [item, setItem] = useState<ItemData | null>(null);
   const [imgSrc, setImgSrc] = useState<string>("");
 
@@ -40,17 +40,7 @@ const ArchiveLayout = () => {
 
   useEffect(() => {
     loadData();
-
-    const timeOutId = setTimeout(() => {
-      if (item == null) setSidebarCollapsed(false);
-    }, 1000);
-
-    return () => clearTimeout(timeOutId);
   }, []);
-
-  useEffect(() => {
-    setSidebarCollapsed(item == null);
-  }, [item]);
 
   return (
     <div
