@@ -20,7 +20,7 @@ const Ruler = ({
         select-none text-[10px] overflow-hidden
         ${isHorizontal ? "border-b" : "border-r"}
       `}
-      style={isHorizontal ? { width: displaySize } : { height: displaySize }}
+      style={isHorizontal ? { width: "auto" } : { height: "auto" }}
     >
       {/* --- Cursor marker --- */}
       <div
