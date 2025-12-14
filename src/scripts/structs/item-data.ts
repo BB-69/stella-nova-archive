@@ -8,7 +8,6 @@ export interface ItemOverlay {
   text: string;
   notes: string | null;
 }
-[];
 
 export interface ItemData {
   id: string;
@@ -26,7 +25,7 @@ export interface ItemData {
     version: string;
   };
 
-  overlays: ItemOverlay;
+  overlays: ItemOverlay[];
 }
 
 export function isItemData(x: any): x is ItemData {

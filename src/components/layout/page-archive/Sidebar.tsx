@@ -1,44 +1,47 @@
 import { ChevronDown, ChevronUp, Menu, Type } from "lucide-react";
 import { useEffect, useState } from "react";
-import type { ItemOverlay } from "../../../scripts/structs/item-data";
+import type { ItemData } from "../../../scripts/structs/item-data";
 import TextBox from "../../common/text-box";
 
 /* ---LOCAL_TEST--- */
-const overlayItems: ItemOverlay[] = [
-  {
-    id: "title",
-    frame: null,
-    bounds: { x: 600, y: 60, w: 720, h: 240 },
-    bounds_end: null,
-    rotation: 0,
-    shear: 0,
-    text: "SAMPLE",
-    notes: null,
-  },
-  {
-    id: "title-sub",
-    frame: null,
-    bounds: { x: 180, y: 540, w: 1560, h: 420 },
-    bounds_end: null,
-    rotation: 0,
-    shear: 0,
-    text: "The trees are whispering...",
-    notes: "Low confidence",
-  },
-];
+// const overlayItems: ItemOverlay[] = [
+//   {
+//     id: "title",
+//     frame: null,
+//     bounds: { x: 600, y: 60, w: 720, h: 240 },
+//     bounds_end: null,
+//     rotation: 0,
+//     shear: 0,
+//     text: "SAMPLE",
+//     notes: null,
+//   },
+//   {
+//     id: "title-sub",
+//     frame: null,
+//     bounds: { x: 180, y: 540, w: 1560, h: 420 },
+//     bounds_end: null,
+//     rotation: 0,
+//     shear: 0,
+//     text: "The trees are whispering...",
+//     notes: "Low confidence",
+//   },
+// ];
 
 const Sidebar = ({
   onToggleSidebar,
   sidebarCollapsed,
+  item,
 }: {
   onToggleSidebar: () => void;
   sidebarCollapsed: boolean;
+  item: ItemData | null;
 }) => {
   const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
+    if (!item) return;
     // Initialize all tags as unchecked
-    overlayItems.forEach((i) => {
+    item.overlays.forEach((i) => {
       setFoldedTl((prev) => ({ ...prev, [i.id]: true }));
       // sub.forEach((s) => {
       //   setCollapsedTl((prev) => ({ ...prev, [`${i.id}-${s}`]: false }));
@@ -92,7 +95,7 @@ const Sidebar = ({
 
       <div className="flex flex-col justify-between h-full">
         <nav className="flex flex-col gap-2 mt-3" aria-label="Sidebar">
-          {overlayItems.map((it) => {
+          {item?.overlays.map((it) => {
             let index = 1;
             return (
               <div key={it.id} className="flex flex-col w-full h-full">
@@ -152,7 +155,22 @@ const Sidebar = ({
                 </div>
               </div>
             );
-          })}
+          }) ?? (
+            <div
+              className={`
+                flex flex-col w-full pt-2 gap-4 duration-200
+                text-center whitespace-nowrap
+                ${
+                  sidebarCollapsed
+                    ? "opacity-0 scale-x-0"
+                    : "opacity-80 scale-x-100"
+                }
+              `}
+            >
+              <span>! unknown session !</span>
+              <span>Please select an archive to view</span>
+            </div>
+          )}
         </nav>
       </div>
     </aside>
