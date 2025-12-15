@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Header from "./Header";
+import Header from "../Header";
 import Sidebar from "./Sidebar";
 import Browser from "./Browser";
 import FilterSelector from "./FilterSelector";
@@ -18,6 +18,7 @@ const BrowseLayout = () => {
       <Header
         onToggleFilterbar={() => setFilterbarCollapsed((s) => !s)}
         collapsed={filterbarCollapsed}
+        isBrowsing={true}
       />
 
       <div

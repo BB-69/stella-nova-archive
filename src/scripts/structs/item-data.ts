@@ -1,3 +1,14 @@
+export interface ItemOverlay {
+  id: string;
+  frame: { s: number; e: number } | null;
+  bounds: { x: number; y: number; w: number; h: number };
+  bounds_end: { x: number; y: number; w: number; h: number } | null;
+  rotation: number;
+  shear: number;
+  text: string;
+  notes: string | null;
+}
+
 export interface ItemData {
   id: string;
   type: string;
@@ -14,16 +25,7 @@ export interface ItemData {
     version: string;
   };
 
-  overlays: {
-    id: string;
-    frame: { s: number; e: number } | null;
-    bounds: { x: number; y: number; w: number; h: number };
-    bounds_end: { x: number; y: number; w: number; h: number } | null;
-    rotation: number;
-    shear: number;
-    text: string;
-    notes: string | null;
-  }[];
+  overlays: ItemOverlay[];
 }
 
 export function isItemData(x: any): x is ItemData {

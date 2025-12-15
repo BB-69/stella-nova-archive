@@ -6,11 +6,27 @@ import { useSearchContext } from "./SearchContext";
 import QMark from "/assets/fallback/question-mark.svg";
 import BrowseItemModal from "./BrowseItemModal";
 import { CircleAlert } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const BrowseItem = ({ item, imgSrc }: { item: ItemData; imgSrc: string }) => {
+const BrowseItem = ({
+  item,
+  url,
+  imgSrc,
+}: {
+  item: ItemData;
+  url: string;
+  imgSrc: string;
+}) => {
   const [hovered, setHovered] = useState<boolean>(false);
   const browseItemRef = useRef<HTMLDivElement>(null);
   const { searchQuery } = useSearchContext();
+
+  const navigate = useNavigate();
+
+  const startIdx = url.search("/data/");
+  const endIdx = url.search(".json");
+  const id =
+    startIdx != -1 && endIdx != -1 ? url.substring(startIdx + 6, endIdx) : null;
 
   return (
     <div
@@ -22,6 +38,7 @@ const BrowseItem = ({ item, imgSrc }: { item: ItemData; imgSrc: string }) => {
       [.dark_&]:hover:from-blue-700 [.dark_&]:hover:to-purple-700
       rounded-xl shadow-lg shadow-black/20 [.dark_&]:shadow-white/20
       cursor-pointer"
+      onClick={() => navigate(`/archive?id=${id}`)}
     >
       <h3
         className="flex justify-between items-top font-semibold text-lg
