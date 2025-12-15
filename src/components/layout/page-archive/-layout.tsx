@@ -6,6 +6,7 @@ import { isItemData, type ItemData } from "../../../scripts/structs/item-data";
 import { useLocation } from "react-router-dom";
 import { FetchFilesFromFolder } from "../../../scripts/database-loader";
 import { useDebugValue } from "../../../hooks/useDebugValue";
+import InfoHeader from "./InfoHeader";
 
 const ArchiveLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -60,7 +61,10 @@ const ArchiveLayout = () => {
         }
         style={{ height: "calc(100vh - 64px)" }}
       >
-        <Content item={item} imgSrc={imgSrc} />
+        <div className="grid grid-rows-[80px_1fr] min-w-full min-h-full">
+          <InfoHeader item={item} />
+          <Content item={item} imgSrc={imgSrc} />
+        </div>
 
         <Sidebar
           onToggleSidebar={() => item != null && setSidebarCollapsed((s) => !s)}
