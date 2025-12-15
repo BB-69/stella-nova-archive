@@ -3,6 +3,7 @@ import QMark from "/assets/fallback/question-mark.svg";
 import Ruler from "./Ruler";
 import { useDebugValue } from "../../../hooks/useDebugValue";
 import type { ItemData } from "../../../scripts/structs/item-data";
+import InfoHeader from "./InfoHeader";
 
 const Content = ({
   item,
@@ -79,34 +80,7 @@ const Content = ({
 
   return (
     <div className="flex flex-col min-w-full min-h-full items-center">
-      <div
-        className="flex flex-row justify-around items-center
-        w-full h-[80px] p-4 gap-6 overflow-x-auto overflow-y-hidden
-        bg-[#BBE5FF] [.dark_&]:bg-[#003366]
-        shadow-md shadow-black/10
-        text-md text-shadow-sm"
-      >
-        <div className="text-nowrap">
-          <span className="font-bold">{"Title: "}</span>
-          <span>{item?.title ?? "< null >"}</span>
-        </div>
-        <div className="text-nowrap">
-          <span className="font-bold">{"Category: "}</span>
-          <span>{item?.category ?? "< null >"}</span>
-        </div>
-        <div className="text-nowrap">
-          <span className="font-bold">{"Sub Category: "}</span>
-          <span>
-            {item != null && item.sub_category != null
-              ? item.sub_category
-              : "< null >"}
-          </span>
-        </div>
-        <div className="text-nowrap">
-          <span className="font-bold">{"Description: "}</span>
-          <span>{item?.description ?? "< null >"}</span>
-        </div>
-      </div>
+      <InfoHeader item={item} />
       <div className="flex-1 flex justify-center items-center">
         <div
           className="max-w-full max-h-full
