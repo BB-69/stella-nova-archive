@@ -1,10 +1,4 @@
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { createElement, useMemo, type JSX } from "react";
 import DebugBox from "./components/_DebugTools/DebugBox";
 import RouteNavigator from "./components/_DebugTools/RouteNavigator";
@@ -17,7 +11,6 @@ import { ThemeSwitcher } from "./components/common/theme";
 import { appRoutes } from ".";
 
 function App() {
-  const location = useLocation();
   const navigate = useNavigate();
   const { setCurrentRoute } = useDebugVars();
 
@@ -44,11 +37,6 @@ function App() {
   const defaultRoute = "/browse";
   const title = "DEBUG";
 
-  const fixedLocation = {
-    ...location,
-    pathname: location.pathname.split("?")[0],
-  };
-
   return (
     <div className="app">
       {import.meta.env.DEV && (
@@ -73,7 +61,7 @@ function App() {
           </Collapsible>
         </DebugBox>
       )}
-      <Routes location={fixedLocation}>
+      <Routes>
         <Route path="/" element={<Navigate to={defaultRoute} replace />} />
         {routeList.map(({ path, element }) => (
           <Route key={path} path={path} element={element} />
