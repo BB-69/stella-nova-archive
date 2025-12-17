@@ -63,7 +63,7 @@ const Header = ({
             </ButtonToggle>
           )}
 
-          <SearchBar />
+          <SearchBar isBrowsing={isBrowsing} />
 
           <div className="flex gap-2">
             <ThemeSwitcher />
