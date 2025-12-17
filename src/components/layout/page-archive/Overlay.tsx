@@ -1,6 +1,7 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useEffect } from "react";
 import randomHexColor from "../../../scripts/random-hexcolor";
 import type { ItemData } from "../../../scripts/structs/item-data";
+import { useOverlayContext } from "./OverlayContext";
 
 const Overlay = ({
   item,
@@ -36,26 +37,20 @@ const Overlay = ({
     });
   }, [item, resolution, display]);
 
-  const [overlayMetas, setOverlayMetas] = useState<{
-    [key: string]: { color: string; hover: boolean };
-  }>({});
+  const { overlayMetas, setOverlayMeta } = useOverlayContext();
 
   useEffect(() => {
     if (!item?.overlays) return;
 
     item.overlays.forEach((o) =>
-      setOverlayMetas((prev) => ({
-        ...prev,
-        [o.id]: { color: randomHexColor(), hover: false },
-      }))
+      setOverlayMeta({ [o.id]: { color: randomHexColor(), hover: false } })
     );
   }, [item]);
 
   function toggleOverlayHover(id: string, to: boolean) {
-    setOverlayMetas((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], hover: to },
-    }));
+    setOverlayMeta({
+      [id]: { hover: to },
+    });
   }
 
   return (

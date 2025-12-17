@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp, Menu, Type } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import TextBox from "../../common/text-box";
+import { useOverlayContext } from "./OverlayContext";
 
 /* ---LOCAL_TEST--- */
 // const overlayItems: ItemOverlay[] = [
@@ -37,6 +38,7 @@ const Sidebar = ({
   item: ItemData | null;
 }) => {
   const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
+  const { overlayMetas, setOverlayMeta } = useOverlayContext();
 
   useEffect(() => {
     if (!item) return;
@@ -97,20 +99,29 @@ const Sidebar = ({
         <nav className="flex flex-col gap-2 mt-3" aria-label="Sidebar">
           {item?.overlays.map((it) => {
             let index = 1;
+            const om = overlayMetas[it.id];
             return (
               <div key={it.id} className="flex flex-col w-full h-full">
                 <button
                   className={`flex items-center p-[10px_8.5px] rounded-md
                   font-semibold text-[var(--t-c)] [.dark_&]:text-[var(--t-c-dark)]
-                  hover:bg-blue-500/10 [.dark_&]:hover:bg-blue-300/10
-                  hover:text-blue-600 [.dark_&]:hover:text-blue-400
-                  border-1 whitespace-nowrap
-                ${
-                  !sidebarCollapsed && !foldedTl[it.id]
-                    ? `border-black-500/50 hover:border-blue-500`
-                    : "border-black/0"
-                }
-                `}
+                  border-1 whitespace-nowrap`}
+                  style={{
+                    backgroundColor: om.hover ? `${om.color}19` : undefined,
+                    borderColor:
+                      !sidebarCollapsed && !foldedTl[it.id]
+                        ? om.hover
+                          ? om.color
+                          : "black-500/50"
+                        : "#00000000",
+                    color: om.hover ? om.color : undefined,
+                  }}
+                  onPointerEnter={() =>
+                    setOverlayMeta({ [it.id]: { hover: true } })
+                  }
+                  onPointerLeave={() =>
+                    setOverlayMeta({ [it.id]: { hover: false } })
+                  }
                   onClick={() => !sidebarCollapsed && toggleFoldedTl(it.id)}
                 >
                   <span className="absolute w-6 text-center text-xl">
