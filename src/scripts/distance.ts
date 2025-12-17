@@ -19,14 +19,12 @@ export function positionMetaDefault(): positionMeta {
   };
 }
 export function getAllDirPosition(meta: positionMeta): position[] {
-  const p = [
+  return [
     { x: meta.p.x, y: meta.t },
     { x: meta.p.x, y: meta.b },
     { x: meta.l, y: meta.p.y },
     { x: meta.r, y: meta.p.y },
   ];
-  console.log(p);
-  return p;
 }
 
 export function getDistance(

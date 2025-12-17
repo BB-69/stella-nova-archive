@@ -56,17 +56,22 @@ const Sidebar = ({
     setFoldedTl((prev) => ({ ...prev, [key]: !foldedTl[key] }));
   }
 
-  const overlayInfoRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const overlayInfoRefs = useRef<
+    Record<
+      string,
+      { head: HTMLDivElement | null; child: HTMLDivElement | null }
+    >
+  >({});
 
   useEffect(() => {
-    const overlay = overlayInfoRefs.current;
-    if (!overlay) return;
+    const overlayHeader = overlayInfoRefs.current;
+    if (!overlayHeader) return;
 
     const updateOverlayTransform = () => {
       Object.entries(item?.overlays ?? []).forEach(([_, { id }]) => {
-        if (!overlay[id]) return;
+        if (!overlayHeader[id] || !overlayHeader[id].head) return;
 
-        const rect = overlay[id].getBoundingClientRect();
+        const rect = overlayHeader[id].head.getBoundingClientRect();
 
         setOverlayTransform(false, id, {
           p: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
@@ -82,14 +87,17 @@ const Sidebar = ({
       updateOverlayTransform();
     });
 
-    Object.values(overlay).forEach((el) => {
-      if (el) observer.observe(el);
+    Object.values(overlayHeader).forEach(({ head, child }) => {
+      if (head) observer.observe(head);
+      if (child) observer.observe(child);
     });
 
     updateOverlayTransform();
 
+    window.addEventListener("resize", updateOverlayTransform);
     return () => {
       observer.disconnect();
+      window.removeEventListener("resize", updateOverlayTransform);
     };
   }, [item]);
 
@@ -142,7 +150,12 @@ const Sidebar = ({
               <div key={it.id} className="flex flex-col w-full h-full">
                 <div
                   ref={(el) => {
-                    overlayInfoRefs.current[it.id] = el;
+                    if (!overlayInfoRefs.current[it.id])
+                      overlayInfoRefs.current[it.id] = {
+                        head: null,
+                        child: null,
+                      };
+                    overlayInfoRefs.current[it.id].head = el;
                   }}
                   className={`flex items-center p-[10px_8.5px] rounded-md
                   font-semibold text-[var(--t-c)] [.dark_&]:text-[var(--t-c-dark)]
@@ -190,6 +203,14 @@ const Sidebar = ({
                 </div>
 
                 <div
+                  ref={(el) => {
+                    if (!overlayInfoRefs.current[it.id])
+                      overlayInfoRefs.current[it.id] = {
+                        head: null,
+                        child: null,
+                      };
+                    overlayInfoRefs.current[it.id].child = el;
+                  }}
                   className={`bg-[#ababab77] [.dark_&]:bg-[#2a2a2a77]
                     rounded-[8px] origin-top duration-200 overflow-hidden
                     ${

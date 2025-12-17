@@ -58,7 +58,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
       setOverlayMetas((prev) => ({
         ...prev,
         [key]: {
-          color: value.color ?? prev[key].color ?? "#676767",
+          color: value.color ?? prev[key]?.color ?? "#676767",
           hover: value.hover,
         },
       }));
@@ -76,7 +76,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
         overlay: isOverlay
           ? transform
           : prev[id]?.overlay ?? positionMetaDefault(),
-        side: !isOverlay ? transform : prev[id].side ?? positionMetaDefault(),
+        side: !isOverlay ? transform : prev[id]?.side ?? positionMetaDefault(),
       },
     }));
   };
@@ -106,9 +106,12 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
 
         return (
           <Fragment key={id}>
-            {/* {overlayMetas[id].hover && ( */}
-            <OverlayConnector id={id} from={pair.from} to={pair.to} />
-            {/* )} */}
+            <OverlayConnector
+              id={id}
+              from={pair.from}
+              to={pair.to}
+              hovering={overlayMetas[id].hover}
+            />
           </Fragment>
         );
       })}
