@@ -118,20 +118,10 @@ const Content = ({
       <div />
 
       {/* tr */}
-      <Ruler
-        orientation="horizontal"
-        cursorPos={cursor.x}
-        imageResolution={resolution.w}
-        displaySize={display.w}
-      />
+      <Ruler orientation="horizontal" cursorPos={cursor.x} />
 
       {/* bl */}
-      <Ruler
-        orientation="vertical"
-        cursorPos={cursor.y}
-        imageResolution={resolution.w}
-        displaySize={display.w}
-      />
+      <Ruler orientation="vertical" cursorPos={cursor.y} />
 
       {/* br */}
       <div

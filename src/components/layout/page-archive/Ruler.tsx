@@ -5,15 +5,9 @@ import type { positionMeta } from "../../../scripts/distance";
 const Ruler = ({
   orientation,
   cursorPos,
-
-  imageResolution, // full image size (px)
-  displaySize, // rendered size (px)
 }: {
   orientation: "horizontal" | "vertical";
   cursorPos: number;
-
-  imageResolution: number;
-  displaySize: number;
 }) => {
   const isHorizontal = orientation === "horizontal";
   const { overlayMetas, overlayTransforms } = useOverlayContext();
