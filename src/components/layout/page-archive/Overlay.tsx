@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useRef } from "react";
 import randomHexColor from "../../../scripts/random-hexcolor";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import { useOverlayContext } from "./OverlayContext";
@@ -37,7 +37,8 @@ const Overlay = ({
     });
   }, [item, resolution, display]);
 
-  const { overlayMetas, setOverlayMeta } = useOverlayContext();
+  const { overlayMetas, setOverlayMeta, setOverlayTransform } =
+    useOverlayContext();
 
   useEffect(() => {
     if (!item?.overlays) return;
@@ -53,13 +54,34 @@ const Overlay = ({
     });
   }
 
+  const overlayRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  useEffect(() => {
+    overlays.forEach(({ id }) => {
+      const overlay = overlayRefs.current[id];
+      if (!overlay) return;
+
+      const rect = overlay.getBoundingClientRect();
+
+      setOverlayTransform(true, id, {
+        p: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
+        t: rect.top,
+        b: rect.bottom,
+        l: rect.left,
+        r: rect.right,
+      });
+    });
+  }, [overlays]);
+
   return (
     <>
       {overlays.map((o) => {
         const color = overlayMetas ? overlayMetas[o.id].color : "#888888";
-
         return (
           <div
+            ref={(el) => {
+              overlayRefs.current[o.id] = el;
+            }}
             key={o.id}
             className="absolute border-2"
             style={{

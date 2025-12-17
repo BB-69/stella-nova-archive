@@ -3,6 +3,7 @@ import {
   useOverlayContext,
   type OverlayMetaType,
 } from "../components/layout/page-archive/OverlayContext";
+import type { position } from "../scripts/distance";
 
 export function useOverlayMeta(meta: OverlayMetaType) {
   const { setOverlayMeta } = useOverlayContext();
@@ -10,4 +11,16 @@ export function useOverlayMeta(meta: OverlayMetaType) {
   useEffect(() => {
     setOverlayMeta(meta);
   }, [meta, setOverlayMeta]);
+}
+
+export function useOverlayTransform(
+  isOverlay: boolean,
+  id: string,
+  transform: { p: position; t: number; b: number; l: number; r: number }
+) {
+  const { setOverlayTransform } = useOverlayContext();
+
+  useEffect(() => {
+    setOverlayTransform(isOverlay, id, transform);
+  }, [isOverlay, id, transform, setOverlayTransform]);
 }

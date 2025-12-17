@@ -1,12 +1,38 @@
-import { createContext, type ReactNode, useState, useContext } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useState,
+  useContext,
+  Fragment,
+} from "react";
+import OverlayConnector from "./OverlayConnector";
+import {
+  getAllDirPosition,
+  getDistance,
+  positionMetaDefault,
+  type positionMeta,
+} from "../../../scripts/distance";
+import { useDebugValue } from "../../../hooks/useDebugValue";
 
 export type OverlayMetaType = {
   [key: string]: { color?: string; hover: boolean };
+};
+export type OverlayTransformType = {
+  [key: string]: {
+    overlay?: positionMeta;
+    side?: positionMeta;
+  };
 };
 
 interface OverlayContextType {
   overlayMetas: OverlayMetaType;
   setOverlayMeta: (meta: OverlayMetaType) => void;
+  overlayTransforms: OverlayTransformType;
+  setOverlayTransform: (
+    isOverlay: boolean,
+    id: string,
+    transform: positionMeta
+  ) => void;
 }
 
 export const OverlayContext = createContext<OverlayContextType | null>(null);
@@ -15,6 +41,17 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
   const [overlayMetas, setOverlayMetas] = useState<{
     [key: string]: { color: string; hover: boolean };
   }>({});
+  const [overlayTransforms, setOverlayTransforms] = useState<{
+    [key: string]: {
+      overlay: positionMeta;
+      side: positionMeta;
+    };
+  }>({});
+
+  {
+    useDebugValue("overlayMetas", overlayMetas, "/archive");
+    // useDebugValue("overlayTransforms", overlayTransforms, "/archive");
+  }
 
   const setOverlayMeta = (meta: OverlayMetaType) => {
     Object.entries(meta).forEach(([key, value]) => {
@@ -28,9 +65,53 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const setOverlayTransform = (
+    isOverlay: boolean,
+    id: string,
+    transform: positionMeta
+  ) => {
+    setOverlayTransforms((prev) => ({
+      ...prev,
+      [id]: {
+        overlay: isOverlay
+          ? transform
+          : prev[id]?.overlay ?? positionMetaDefault(),
+        side: !isOverlay ? transform : prev[id].side ?? positionMetaDefault(),
+      },
+    }));
+  };
+
   return (
-    <OverlayContext.Provider value={{ overlayMetas, setOverlayMeta }}>
+    <OverlayContext.Provider
+      value={{
+        overlayMetas,
+        setOverlayMeta,
+        overlayTransforms,
+        setOverlayTransform,
+      }}
+    >
       {children}
+      {Object.entries(overlayTransforms).map(([id, t]) => {
+        function getNearestPair(pos: positionMeta, ref: positionMeta) {
+          const from = getAllDirPosition(pos).sort(
+            (a, b) => getDistance(a, ref.p) - getDistance(b, ref.p)
+          )[0];
+          const to = getAllDirPosition(ref).sort(
+            (a, b) => getDistance(a, pos.p) - getDistance(b, pos.p)
+          )[0];
+          return { from: from, to: to };
+        }
+
+        const pair = getNearestPair(t.overlay, t.side);
+
+        return (
+          <Fragment key={id}>
+            {/* {overlayMetas[id].hover && ( */}
+            <OverlayConnector id={id} from={pair.from} to={pair.to} />
+            {/* )} */}
+          </Fragment>
+        );
+      })}
     </OverlayContext.Provider>
   );
 }

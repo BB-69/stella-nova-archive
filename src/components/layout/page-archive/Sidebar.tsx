@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronUp, Menu, Type } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import TextBox from "../../common/text-box";
 import { useOverlayContext } from "./OverlayContext";
@@ -38,7 +38,8 @@ const Sidebar = ({
   item: ItemData | null;
 }) => {
   const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
-  const { overlayMetas, setOverlayMeta } = useOverlayContext();
+  const { overlayMetas, setOverlayMeta, setOverlayTransform } =
+    useOverlayContext();
 
   useEffect(() => {
     if (!item) return;
@@ -54,6 +55,43 @@ const Sidebar = ({
   function toggleFoldedTl(key: string) {
     setFoldedTl((prev) => ({ ...prev, [key]: !foldedTl[key] }));
   }
+
+  const overlayInfoRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  useEffect(() => {
+    const overlay = overlayInfoRefs.current;
+    if (!overlay) return;
+
+    const updateOverlayTransform = () => {
+      Object.entries(item?.overlays ?? []).forEach(([_, { id }]) => {
+        if (!overlay[id]) return;
+
+        const rect = overlay[id].getBoundingClientRect();
+
+        setOverlayTransform(false, id, {
+          p: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
+          t: rect.top,
+          b: rect.bottom,
+          l: rect.left,
+          r: rect.right,
+        });
+      });
+    };
+
+    const observer = new ResizeObserver(() => {
+      updateOverlayTransform();
+    });
+
+    Object.values(overlay).forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    updateOverlayTransform();
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [item]);
 
   return (
     <aside
@@ -102,19 +140,26 @@ const Sidebar = ({
             const om = overlayMetas[it.id];
             return (
               <div key={it.id} className="flex flex-col w-full h-full">
-                <button
+                <div
+                  ref={(el) => {
+                    overlayInfoRefs.current[it.id] = el;
+                  }}
                   className={`flex items-center p-[10px_8.5px] rounded-md
                   font-semibold text-[var(--t-c)] [.dark_&]:text-[var(--t-c-dark)]
                   border-1 whitespace-nowrap`}
                   style={{
-                    backgroundColor: om.hover ? `${om.color}19` : undefined,
+                    backgroundColor:
+                      om && om.color && om.hover
+                        ? `${om.color}19`
+                        : "#00000000",
                     borderColor:
-                      !sidebarCollapsed && !foldedTl[it.id]
-                        ? om.hover
+                      (!sidebarCollapsed && !foldedTl[it.id]) ||
+                      (om && om.hover)
+                        ? om && om.color
                           ? om.color
                           : "black-500/50"
                         : "#00000000",
-                    color: om.hover ? om.color : undefined,
+                    color: om && om.color && om.hover ? om.color : "inherit",
                   }}
                   onPointerEnter={() =>
                     setOverlayMeta({ [it.id]: { hover: true } })
@@ -142,7 +187,7 @@ const Sidebar = ({
                     </span>
                     {it.id}
                   </span>
-                </button>
+                </div>
 
                 <div
                   className={`bg-[#ababab77] [.dark_&]:bg-[#2a2a2a77]
