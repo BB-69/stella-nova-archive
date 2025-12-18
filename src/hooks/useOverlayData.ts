@@ -5,6 +5,14 @@ import {
 } from "../components/layout/page-archive/OverlayContext";
 import type { position } from "../scripts/distance";
 
+export function useOverlayReset() {
+  const { resetOverlayData } = useOverlayContext();
+
+  useEffect(() => {
+    resetOverlayData();
+  }, [resetOverlayData]);
+}
+
 export function useOverlayMeta(meta: OverlayMetaType) {
   const { setOverlayMeta } = useOverlayContext();
 

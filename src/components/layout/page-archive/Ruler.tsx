@@ -10,7 +10,8 @@ const Ruler = ({
   cursorPos: number;
 }) => {
   const isHorizontal = orientation === "horizontal";
-  const { overlayMetas, overlayTransforms } = useOverlayContext();
+  const { overlayActive, overlayMetas, overlayTransforms } =
+    useOverlayContext();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
@@ -53,7 +54,7 @@ const Ruler = ({
           return (
             <div
               key={id}
-              className="absolute opacity-100"
+              className="absolute transition-opacity duration-100"
               style={
                 isHorizontal
                   ? {
@@ -62,6 +63,8 @@ const Ruler = ({
                       top: 0,
                       bottom: 0,
                       backgroundColor: overlayMetas[id]?.color ?? "#676767",
+                      opacity:
+                        overlayActive || overlayMetas[id]?.hover ? 100 : 0,
                     }
                   : {
                       top: start,
@@ -69,6 +72,8 @@ const Ruler = ({
                       left: 0,
                       right: 0,
                       backgroundColor: overlayMetas[id]?.color ?? "#676767",
+                      opacity:
+                        overlayActive || overlayMetas[id]?.hover ? 100 : 0,
                     }
               }
             />

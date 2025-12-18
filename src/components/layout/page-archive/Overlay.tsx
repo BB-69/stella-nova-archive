@@ -37,7 +37,7 @@ const Overlay = ({
     });
   }, [item, resolution, display]);
 
-  const { overlayMetas, setOverlayMeta, setOverlayTransform } =
+  const { overlayActive, overlayMetas, setOverlayMeta, setOverlayTransform } =
     useOverlayContext();
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const Overlay = ({
   return (
     <>
       {overlays.map((o) => {
-        const color = overlayMetas ? overlayMetas[o.id].color : "#888888";
+        const color = overlayMetas ? overlayMetas[o.id]?.color : "#888888";
         return (
           <div
             ref={(el) => {
@@ -90,11 +90,15 @@ const Overlay = ({
               width: o.width,
               height: o.height,
               backgroundColor: `${color}${
-                overlayMetas[o.id].hover ? "4A" : "1F"
+                overlayMetas[o.id]?.hover ? "4A" : overlayActive ? "1F" : "00"
               }`,
-              borderColor: `${color}${overlayMetas[o.id].hover ? "FF" : "66"}`,
+              borderColor: `${color}${
+                overlayMetas[o.id]?.hover ? "FF" : overlayActive ? "66" : "00"
+              }`,
             }}
-            onPointerEnter={() => toggleOverlayHover(o.id, true)}
+            onPointerEnter={() =>
+              overlayActive ? toggleOverlayHover(o.id, true) : {}
+            }
             onPointerLeave={() => toggleOverlayHover(o.id, false)}
           />
         );

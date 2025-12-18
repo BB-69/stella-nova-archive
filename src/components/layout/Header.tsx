@@ -1,10 +1,11 @@
 // import StellaSoraLogo from "/assets/stellasora-logo-white.webp";
 import { ThemeSwitcher } from "../common/theme";
 import SearchBar from "../common/search-bar";
-import { ArrowLeftToLine, SlidersHorizontal } from "lucide-react";
+import { ArrowLeftToLine, Layers2, SlidersHorizontal } from "lucide-react";
 import SortSelector from "./page-browse/SortSelector";
 import ButtonToggle from "../common/button-toggle";
 import { useNavigate } from "react-router-dom";
+import { useOverlayContext } from "./page-archive/OverlayContext";
 
 const Header = ({
   onToggleFilterbar,
@@ -16,6 +17,10 @@ const Header = ({
   isBrowsing: boolean;
 }) => {
   const navigate = useNavigate();
+
+  const { overlayActive, toggleOverlayActive } = !isBrowsing
+    ? useOverlayContext()
+    : {};
 
   return (
     <header
@@ -58,12 +63,21 @@ const Header = ({
               </ButtonToggle>
             </>
           ) : (
-            <ButtonToggle onToggle={() => navigate("/browse")}>
-              <ArrowLeftToLine />
-            </ButtonToggle>
+            <>
+              <ButtonToggle onToggle={() => navigate("/browse")}>
+                <ArrowLeftToLine />
+              </ButtonToggle>
+
+              <ButtonToggle
+                toggle={!overlayActive}
+                onToggle={toggleOverlayActive ?? (() => {})}
+              >
+                <Layers2 />
+              </ButtonToggle>
+            </>
           )}
 
-          <SearchBar />
+          <SearchBar isBrowsing={isBrowsing} />
 
           <div className="flex gap-2">
             <ThemeSwitcher />
