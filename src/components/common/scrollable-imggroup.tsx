@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useDebugValue } from "../../hooks/useDebugValue";
 import { getImageDimensions } from "../../scripts/image";
 
@@ -16,11 +16,11 @@ const ScrollableImgGroup = ({
     useDebugValue("isCol", isCol, "/browse");
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    async function setMaxRes() {
+    async function initialize() {
       let max = 0;
       await Promise.all(
         Object.values(srcs).map(async ({ src }) => {
@@ -29,9 +29,9 @@ const ScrollableImgGroup = ({
         })
       );
       maxRes.current = max;
-    }
 
-    setMaxRes();
+      checkAndUpdateLayout();
+    }
 
     function checkAndUpdateLayout() {
       const containerRect = container?.getBoundingClientRect();
@@ -49,7 +49,7 @@ const ScrollableImgGroup = ({
 
     observer.observe(container);
 
-    checkAndUpdateLayout();
+    initialize();
 
     return () => {
       observer.disconnect();
