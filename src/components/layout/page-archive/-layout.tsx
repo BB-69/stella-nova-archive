@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { FetchFilesFromFolder } from "../../../scripts/database-loader";
 import { useDebugValue } from "../../../hooks/useDebugValue";
 import InfoHeader from "./InfoHeader";
+import { useOverlayContext } from "./OverlayContext";
 
 const ArchiveLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -15,7 +16,7 @@ const ArchiveLayout = () => {
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const id = params.get("id");
+  const urlId = params.get("id");
 
   {
     useDebugValue("itemId", item?.id ?? null, "/archive");
@@ -23,7 +24,7 @@ const ArchiveLayout = () => {
   }
 
   async function loadData() {
-    const res = await FetchFilesFromFolder(`data/${id}.json`, "json");
+    const res = await FetchFilesFromFolder(`data/${urlId}.json`, "json");
 
     if (!res || res.length === 0) return;
 
@@ -39,9 +40,12 @@ const ArchiveLayout = () => {
     }
   }
 
+  const { resetOverlayData } = useOverlayContext();
+
   useEffect(() => {
+    resetOverlayData();
     loadData();
-  }, []);
+  }, [urlId]);
 
   return (
     <div

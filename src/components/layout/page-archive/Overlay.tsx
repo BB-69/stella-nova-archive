@@ -76,7 +76,7 @@ const Overlay = ({
   return (
     <>
       {overlays.map((o) => {
-        const color = overlayMetas ? overlayMetas[o.id].color : "#888888";
+        const color = overlayMetas ? overlayMetas[o.id]?.color : "#888888";
         return (
           <div
             ref={(el) => {
@@ -90,9 +90,9 @@ const Overlay = ({
               width: o.width,
               height: o.height,
               backgroundColor: `${color}${
-                overlayMetas[o.id].hover ? "4A" : "1F"
+                overlayMetas[o.id]?.hover ? "4A" : "1F"
               }`,
-              borderColor: `${color}${overlayMetas[o.id].hover ? "FF" : "66"}`,
+              borderColor: `${color}${overlayMetas[o.id]?.hover ? "FF" : "66"}`,
             }}
             onPointerEnter={() => toggleOverlayHover(o.id, true)}
             onPointerLeave={() => toggleOverlayHover(o.id, false)}

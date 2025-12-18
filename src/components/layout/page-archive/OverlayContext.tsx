@@ -33,6 +33,7 @@ interface OverlayContextType {
     id: string,
     transform: positionMeta
   ) => void;
+  resetOverlayData: () => void;
 }
 
 export const OverlayContext = createContext<OverlayContextType | null>(null);
@@ -52,6 +53,12 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     useDebugValue("overlayMetas", overlayMetas, "/archive");
     // useDebugValue("overlayTransforms", overlayTransforms, "/archive");
   }
+
+  const resetOverlayData = () => {
+    console.log("reset");
+    setOverlayMetas({});
+    setOverlayTransforms({});
+  };
 
   const setOverlayMeta = (meta: OverlayMetaType) => {
     Object.entries(meta).forEach(([key, value]) => {
@@ -88,6 +95,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
         setOverlayMeta,
         overlayTransforms,
         setOverlayTransform,
+        resetOverlayData,
       }}
     >
       {children}

@@ -34,7 +34,7 @@ const OverlayConnector = ({
   return (
     <div
       key={id}
-      className="absolute z-[100] rounded-full duration-100"
+      className="absolute z-10 rounded-full duration-100"
       style={{
         left: midPos.x,
         top: midPos.y,
