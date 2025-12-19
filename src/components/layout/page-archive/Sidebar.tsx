@@ -142,7 +142,10 @@ const Sidebar = ({
       </div>
 
       <div className="flex flex-col justify-between h-full">
-        <nav className="flex flex-col gap-2 mt-3" aria-label="Sidebar">
+        <nav
+          className="flex flex-col gap-2 mt-3 mb-12 px-1 overflow-y-auto"
+          aria-label="Sidebar"
+        >
           {item?.overlays.map((it) => {
             let index = 1;
             const om = overlayMetas[it.id];
@@ -157,9 +160,9 @@ const Sidebar = ({
                       };
                     overlayInfoRefs.current[it.id].head = el;
                   }}
-                  className={`flex items-center p-[10px_8.5px] rounded-md
+                  className={`relative flex items-center p-[10px_8.5px] rounded-md
                   font-semibold text-[var(--t-c)] [.dark_&]:text-[var(--t-c-dark)]
-                  border-1 whitespace-nowrap`}
+                  border-1 whitespace-nowrap overflow-hidden`}
                   style={{
                     backgroundColor:
                       om && om.color && om.hover
@@ -195,10 +198,16 @@ const Sidebar = ({
                     }
                   `}
                   >
-                    <span className="absolute ml-37">
-                      {foldedTl[it.id] ? <ChevronDown /> : <ChevronUp />}
-                    </span>
                     {it.id}
+                  </span>
+                  <span
+                    className={`absolute right-2 duration-200 ${
+                      sidebarCollapsed
+                        ? "scale-0 opacity-0"
+                        : "scale-100 opacity-100"
+                    }`}
+                  >
+                    {foldedTl[it.id] ? <ChevronDown /> : <ChevronUp />}
                   </span>
                 </div>
 

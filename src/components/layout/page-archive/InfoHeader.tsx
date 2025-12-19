@@ -20,7 +20,7 @@ const InfoHeader = ({ item }: { item: ItemData | null }) => {
       shadow-md shadow-black/10
       text-md text-shadow-sm"
     >
-      <div className="flex flex-row overflow-auto items-center w-full h-full gap-4">
+      <div className="flex flex-row overflow-hidden items-center w-full h-full gap-4">
         <button
           className="flex justify-center items-center
             min-w-[40px] min-h-[40px] rounded-full

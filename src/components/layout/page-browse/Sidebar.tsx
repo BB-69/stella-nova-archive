@@ -67,7 +67,7 @@ const items = [
     label: "About",
     icon: <CircleQuestionMark />,
     content: (
-      <div className="w-[600px] max-w-[80vw] flex flex-col gap-2">
+      <div className="flex flex-col gap-2 w-[600px] max-w-[80vw] max-h-[50vh] overflow-y-auto">
         <span>
           <span className="font-bold">Stella Nova Archive</span> is a website
           that acts like an archive that contains inscription and translation of{" "}
