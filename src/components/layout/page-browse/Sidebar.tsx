@@ -14,7 +14,7 @@ const items = [
     label: "Resources",
     icon: <FileSpreadsheet />,
     content: (
-      <div className="flex w-[80vw] h-[50vh]">
+      <div className="group-selectable flex w-[80vw] h-[50vh]">
         <ScrollableImgGroup
           srcs={[
             { src: NovaTable, alt: "Nova Alphabet Table" },
@@ -29,7 +29,10 @@ const items = [
     label: "Links",
     icon: <Link />,
     content: (
-      <div className="flex flex-col gap-5 max-w-[80vw] max-h-[50vh] overflow-y-auto">
+      <div
+        className="group-selectable flex flex-col gap-5
+        max-w-[80vw] max-h-[50vh] overflow-y-auto"
+      >
         <div className="flex flex-row gap-4 underline-offset-1">
           <img
             src={GitHubLogo}
@@ -67,7 +70,10 @@ const items = [
     label: "About",
     icon: <CircleQuestionMark />,
     content: (
-      <div className="flex flex-col gap-2 w-[600px] max-w-[80vw] max-h-[50vh] overflow-y-auto">
+      <div
+        className="group-selectable flex flex-col gap-2
+        w-[600px] max-w-[80vw] max-h-[50vh] overflow-y-auto"
+      >
         <span>
           <span className="font-bold">Stella Nova Archive</span> is a website
           that acts like an archive that contains inscription and translation of{" "}

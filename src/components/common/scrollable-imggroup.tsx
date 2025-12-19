@@ -71,7 +71,7 @@ const ScrollableImgGroup = ({
             key={src}
             src={src}
             alt={alt}
-            className="max-w-full max-h-full
+            className="selectable max-w-full max-h-full
             rounded-md outline-4 outline-black/30 [.dark_]:outline-white/30"
           />
         );

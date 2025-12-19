@@ -14,7 +14,7 @@ const InfoHeader = ({ item }: { item: ItemData | null }) => {
 
   return (
     <div
-      className="flex flex-row items-center
+      className="group-selectable flex flex-row items-center
       w-full h-[80px] p-4 overflow-hidden
       bg-[#BBE5FF] [.dark_&]:bg-[#003366]
       shadow-md shadow-black/10
@@ -22,7 +22,7 @@ const InfoHeader = ({ item }: { item: ItemData | null }) => {
     >
       <div className="flex flex-row overflow-hidden items-center w-full h-full gap-4">
         <button
-          className="flex justify-center items-center
+          className="group-unselectable flex justify-center items-center
             min-w-[40px] min-h-[40px] rounded-full
             bg-white [.dark_&]:bg-black
             hover:bg-[#225588] [.dark_&]:hover:bg-white
@@ -58,7 +58,7 @@ const InfoHeader = ({ item }: { item: ItemData | null }) => {
           </div>
         </div>
         <button
-          className="flex justify-center items-center
+          className="group-unselectable flex justify-center items-center
             min-w-[40px] min-h-[40px] rounded-full
             bg-white [.dark_&]:bg-black
             hover:bg-[#225588] [.dark_&]:hover:bg-white

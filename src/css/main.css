@@ -63,7 +63,20 @@ img {
 }
 
 .selectable {
+  user-select: text;
+}
+.img-selectable {
   pointer-events: all;
+  user-select: text;
+}
+.group-selectable * {
+  user-select: text;
+}
+.unselectable {
+  user-select: none;
+}
+.group-unselectable * {
+  user-select: none;
 }
 
 @font-face {

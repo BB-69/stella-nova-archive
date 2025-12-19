@@ -112,7 +112,7 @@ const TranslationBar = ({
   return (
     <aside
       aria-expanded={!tlBarCollapsed}
-      className={`overflow-hidden flex flex-col p-3.5 w-full h-full
+      className={`group-selectable overflow-hidden flex flex-col p-3.5 w-full h-full
       border-r border-black/20 [.dark_&]:border-white/20
       shadow-md shadow-black/20 [.dark_&]:shadow-white/20
       bg-gradient-to-b from-[#f3fdff] to-white
@@ -121,7 +121,7 @@ const TranslationBar = ({
       ${tlBarCollapsed ? "md:w-[72px]" : "md:w-[260px]"}`}
     >
       <div
-        className="flex items-center min-h-16 pb-3 min-w-full
+        className="group-unselectable flex items-center min-h-16 pb-3 min-w-full
         border-b border-black/30 [.dark_&]:border-white/30"
       >
         <button
@@ -154,7 +154,8 @@ const TranslationBar = ({
       </div>
 
       <div
-        className={`flex flex-col justify-between origin-top md:h-full pb-14 md:pb-0
+        className={`flex flex-col justify-between
+        origin-top md:h-full pb-14 md:pb-0
         md:scale-y-100 md:opacity-100 md:max-h-full
         transition-[height] md:transition-none duration-200 md:duration-0
         ${tlBarCollapsed ? "scale-y-0 h-0" : "scale-y-100 h-full"}`}
@@ -179,7 +180,7 @@ const TranslationBar = ({
                       };
                     overlayInfoRefs.current[it.id].head = el;
                   }}
-                  className={`relative flex items-center p-[10px_8.8px] rounded-md
+                  className={`group-unselectable relative flex items-center p-[10px_8.8px] rounded-md
                   font-semibold text-[var(--t-c)] [.dark_&]:text-[var(--t-c-dark)]
                   border-1 whitespace-nowrap overflow-hidden`}
                   style={{
@@ -246,7 +247,7 @@ const TranslationBar = ({
                         : "opacity-0 scale-y-0 max-h-0 p-0 mb-0"
                     }`}
                 >
-                  <div className="grid grid-cols-[60px_auto] auto-rows-[minmax(30px,auto)] gap-1">
+                  <div className="group-selectable grid grid-cols-[60px_auto] auto-rows-[minmax(30px,auto)] gap-1">
                     <TextBox text={"Text"} />
                     <TextBox text={it.text} />
                     {it.notes != null && (

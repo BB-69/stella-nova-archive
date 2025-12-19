@@ -109,7 +109,7 @@ const Content = ({
 
   return (
     <div
-      className="max-w-full max-h-full
+      className="group-selectable max-w-full max-h-full
         p-8 gap-6 overflow-hidden grid
         grid-cols-[16px_minmax(0,1fr)]
         grid-rows-[16px_minmax(0,1fr)]"
@@ -157,7 +157,7 @@ const Content = ({
               });
             });
           }}
-          className="max-w-full max-h-full
+          className="img-selectable max-w-full max-h-full
           rounded-md outline-4 outline-black/30 [.dark_]:outline-white/30"
           alt={item != null && imgSrc ? item.title : "< null >"}
         />
