@@ -28,13 +28,13 @@ import { useOverlayContext } from "./OverlayContext";
 //   },
 // ];
 
-const Sidebar = ({
-  onToggleSidebar,
-  sidebarCollapsed,
+const TranslationBar = ({
+  onToggleTlBar,
+  tlBarCollapsed,
   item,
 }: {
-  onToggleSidebar: () => void;
-  sidebarCollapsed: boolean;
+  onToggleTlBar: () => void;
+  tlBarCollapsed: boolean;
   item: ItemData | null;
 }) => {
   const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
@@ -67,18 +67,26 @@ const Sidebar = ({
     const overlayHeader = overlayInfoRefs.current;
     if (!overlayHeader) return;
 
+    let rafId: number | null = null;
+
     const updateOverlayTransform = () => {
-      Object.entries(item?.overlays ?? []).forEach(([_, { id }]) => {
-        if (!overlayHeader[id] || !overlayHeader[id].head) return;
+      if (rafId) return;
 
-        const rect = overlayHeader[id].head.getBoundingClientRect();
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
 
-        setOverlayTransform(false, id, {
-          p: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
-          t: rect.top,
-          b: rect.bottom,
-          l: rect.left,
-          r: rect.right,
+        Object.entries(item?.overlays ?? []).forEach(([_, { id }]) => {
+          if (!overlayHeader[id] || !overlayHeader[id].head) return;
+
+          const rect = overlayHeader[id].head.getBoundingClientRect();
+
+          setOverlayTransform(false, id, {
+            p: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
+            t: rect.top,
+            b: rect.bottom,
+            l: rect.left,
+            r: rect.right,
+          });
         });
       });
     };
@@ -103,22 +111,26 @@ const Sidebar = ({
 
   return (
     <aside
-      aria-expanded={!sidebarCollapsed}
-      className={`overflow-hidden flex flex-col p-3.5
+      aria-expanded={!tlBarCollapsed}
+      className={`overflow-hidden flex flex-col p-3.5 w-full h-full
       border-r border-black/20 [.dark_&]:border-white/20
       shadow-md shadow-black/20 [.dark_&]:shadow-white/20
       bg-gradient-to-b from-[#f3fdff] to-white
       [.dark_&]:from-[#0b1220] [.dark_&]:to-black
-      transition-[width] duration-200 z-10
-      ${sidebarCollapsed ? "w-[72px]" : "w-[260px]"}`}
+      md:transition-[width] md:duration-200 z-10
+      ${tlBarCollapsed ? "md:w-[72px]" : "md:w-[260px]"}`}
     >
       <div
-        className="flex items-center h-16 pb-3 min-w-full
+        className="flex items-center min-h-16 pb-3 min-w-full
         border-b border-black/30 [.dark_&]:border-white/30"
       >
         <button
-          onClick={onToggleSidebar}
-          aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          onClick={onToggleTlBar}
+          aria-label={
+            tlBarCollapsed
+              ? "Expand translation bar"
+              : "Collapse translation bar"
+          }
           className="flex flex-row justify-top items-center
           h-full w-full p-[6px_10px]
           rounded-md hover:bg-black/5 [.dark_&]:hover:bg-white/5"
@@ -128,11 +140,11 @@ const Sidebar = ({
           </div>
           <span
             className={`
-              font-bold ml-9 origin-left duration-200
+              font-bold ml-9 origin-left md:duration-200
               ${
-                sidebarCollapsed
-                  ? "opacity-0 scale-x-0"
-                  : "opacity-100 scale-x-100"
+                tlBarCollapsed
+                  ? "md:opacity-0 md:scale-x-0"
+                  : "md:opacity-100 md:scale-x-100"
               }
             `}
           >
@@ -141,10 +153,17 @@ const Sidebar = ({
         </button>
       </div>
 
-      <div className="flex flex-col justify-between h-full">
+      <div
+        className={`flex flex-col justify-between origin-top md:h-full pb-14 md:pb-0
+        md:scale-y-100 md:opacity-100 md:max-h-full
+        transition-[height] md:transition-none duration-200 md:duration-0
+        ${tlBarCollapsed ? "scale-y-0 h-0" : "scale-y-100 h-full"}`}
+      >
         <nav
-          className="flex flex-col gap-2 mt-3 mb-12 px-1 overflow-y-auto"
-          aria-label="Sidebar"
+          className="md:flex md:flex-col grid md:grid-cols-none
+          grid-cols-[repeat(auto-fit,minmax(240px,1fr))] max-[240px]:grid-cols-none
+          gap-2 mt-3 px-2 md:px-0 pb-12 overflow-x-hidden overflow-y-auto"
+          aria-label="Translation bar"
         >
           {item?.overlays.map((it) => {
             let index = 1;
@@ -160,7 +179,7 @@ const Sidebar = ({
                       };
                     overlayInfoRefs.current[it.id].head = el;
                   }}
-                  className={`relative flex items-center p-[10px_8.5px] rounded-md
+                  className={`relative flex items-center p-[10px_8.8px] rounded-md
                   font-semibold text-[var(--t-c)] [.dark_&]:text-[var(--t-c-dark)]
                   border-1 whitespace-nowrap overflow-hidden`}
                   style={{
@@ -169,8 +188,7 @@ const Sidebar = ({
                         ? `${om.color}19`
                         : "#00000000",
                     borderColor:
-                      (!sidebarCollapsed && !foldedTl[it.id]) ||
-                      (om && om.hover)
+                      (!tlBarCollapsed && !foldedTl[it.id]) || (om && om.hover)
                         ? om && om.color
                           ? om.color
                           : "black-500/50"
@@ -183,7 +201,7 @@ const Sidebar = ({
                   onPointerLeave={() =>
                     setOverlayMeta({ [it.id]: { hover: false } })
                   }
-                  onClick={() => !sidebarCollapsed && toggleFoldedTl(it.id)}
+                  onClick={() => !tlBarCollapsed && toggleFoldedTl(it.id)}
                 >
                   <span className="absolute w-6 text-center text-xl">
                     {it.id == "title" ? <Type /> : index++}
@@ -192,9 +210,9 @@ const Sidebar = ({
                     className={`
                     ml-9 origin-left duration-200
                     ${
-                      sidebarCollapsed
-                        ? "opacity-0 scale-x-0"
-                        : "opacity-100 scale-x-100"
+                      tlBarCollapsed
+                        ? "md:opacity-0 md:scale-x-0"
+                        : "md:opacity-100 md:scale-x-100"
                     }
                   `}
                   >
@@ -202,9 +220,9 @@ const Sidebar = ({
                   </span>
                   <span
                     className={`absolute right-2 duration-200 ${
-                      sidebarCollapsed
-                        ? "scale-0 opacity-0"
-                        : "scale-100 opacity-100"
+                      tlBarCollapsed
+                        ? "md:scale-0 md:opacity-0"
+                        : "md:scale-100 md:opacity-100"
                     }`}
                   >
                     {foldedTl[it.id] ? <ChevronDown /> : <ChevronUp />}
@@ -223,7 +241,7 @@ const Sidebar = ({
                   className={`bg-[#ababab77] [.dark_&]:bg-[#2a2a2a77]
                     rounded-[8px] origin-top duration-200 overflow-hidden
                     ${
-                      !sidebarCollapsed && !foldedTl[it.id]
+                      !tlBarCollapsed && !foldedTl[it.id]
                         ? "opacity-100 scale-y-100 max-h-60 p-[8px_12px] mb-3"
                         : "opacity-0 scale-y-0 max-h-0 p-0 mb-0"
                     }`}
@@ -247,9 +265,9 @@ const Sidebar = ({
                 flex flex-col w-full pt-2 gap-4 duration-200
                 text-center whitespace-nowrap
                 ${
-                  sidebarCollapsed
-                    ? "opacity-0 scale-x-0"
-                    : "opacity-80 scale-x-100"
+                  tlBarCollapsed
+                    ? "md:opacity-0 md:scale-x-0"
+                    : "md:opacity-80 md:scale-x-100"
                 }
               `}
             >
@@ -263,4 +281,4 @@ const Sidebar = ({
   );
 };
 
-export default Sidebar;
+export default TranslationBar;

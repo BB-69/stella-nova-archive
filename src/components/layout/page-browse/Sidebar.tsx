@@ -100,7 +100,7 @@ const Sidebar = ({
   return (
     <aside
       aria-expanded={!collapsed}
-      className={`overflow-hidden flex flex-col p-3.5
+      className={`overflow-hidden flex flex-col p-3.5 fixed md:static h-full
       border-r border-black/20 [.dark_&]:border-white/20
       shadow-md shadow-black/20 [.dark_&]:shadow-white/20
       bg-gradient-to-b from-[#f3fdff] to-white

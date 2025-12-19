@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "../Header";
-import Sidebar from "./Sidebar";
+import TranslationBar from "./TranslationBar";
 import Content from "./Content";
 import { isItemData, type ItemData } from "../../../scripts/structs/item-data";
 import { useLocation } from "react-router-dom";
@@ -57,12 +57,13 @@ const ArchiveLayout = () => {
       <Header isBrowsing={false} />
 
       <div
-        className={
-          `grid transition-[grid-template-columns] duration-200` +
-          ` ${
-            sidebarCollapsed ? "grid-cols-[1fr_72px]" : "grid-cols-[1fr_260px]"
-          }`
-        }
+        className={`grid transition-[grid-template-rows] md:grid-rows-none
+          md:transition-[grid-template-columns] duration-200
+          ${
+            sidebarCollapsed
+              ? "grid-rows-[1fr_84px] md:grid-cols-[1fr_72px]"
+              : "grid-rows-[1fr_calc(48vh-16vw)] md:grid-cols-[1fr_260px]"
+          }`}
         style={{ height: "calc(100vh - 64px)" }}
       >
         <div className="grid grid-rows-[80px_1fr] min-w-full min-h-full">
@@ -70,9 +71,9 @@ const ArchiveLayout = () => {
           <Content item={item} imgSrc={imgSrc} />
         </div>
 
-        <Sidebar
-          onToggleSidebar={() => item != null && setSidebarCollapsed((s) => !s)}
-          sidebarCollapsed={sidebarCollapsed}
+        <TranslationBar
+          onToggleTlBar={() => item != null && setSidebarCollapsed((s) => !s)}
+          tlBarCollapsed={sidebarCollapsed}
           item={item}
         />
       </div>

@@ -22,12 +22,10 @@ const BrowseLayout = () => {
       />
 
       <div
-        className={
-          `grid transition-[grid-template-columns] duration-200` +
-          ` ${
+        className={`md:grid md:transition-[grid-template-columns] duration-200
+          ${
             sidebarCollapsed ? "grid-cols-[72px_1fr]" : "grid-cols-[260px_1fr]"
-          }`
-        }
+          }`}
         style={{ height: "calc(100vh - 64px)" }}
       >
         <Sidebar
@@ -35,7 +33,17 @@ const BrowseLayout = () => {
           collapsed={sidebarCollapsed}
         />
 
-        <div className="flex flex-col h-full overflow-hidden">
+        <div
+          className={`fixed inset-0 md:hidden duration-200
+              ${
+                sidebarCollapsed
+                  ? `pointer-events-none bg-black/0`
+                  : `pointer-events-auto bg-black/40`
+              }`}
+          onClick={() => setSidebarCollapsed(true)}
+        />
+
+        <div className="ml-[72px] md:ml-0 flex flex-col h-full overflow-hidden">
           <FilterSelector collapsed={filterbarCollapsed} />
           <div className="flex-1 overflow-auto">
             <Browser />

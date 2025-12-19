@@ -1,4 +1,5 @@
 import { useDebugValue } from "../../../hooks/useDebugValue";
+import { useIsMd } from "../../../hooks/useIsMd";
 import { getDistance } from "../../../scripts/distance";
 import { useOverlayContext } from "./OverlayContext";
 
@@ -31,6 +32,8 @@ const OverlayConnector = ({
     );
   }
 
+  const isMd = useIsMd();
+
   return (
     <div
       key={id}
@@ -43,7 +46,7 @@ const OverlayConnector = ({
         transform: `translate(-50%, -50%) rotate(${angle}deg)`,
         transformOrigin: "center",
         backgroundColor: overlayMetas[id].color ?? "#676767",
-        opacity: hovering ? 100 : 0,
+        opacity: hovering && !isMd ? 1 : 0,
       }}
     >
       <div
