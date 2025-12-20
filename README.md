@@ -57,5 +57,5 @@ _full version coming soon..._
 This fan-made, non-commercial project is not affiliated with Yostar and is only for informational and educational purposes.
 
 <!-- VERSION_START -->
-0.3.3
+0.3.4
 <!-- VERSION_END -->
