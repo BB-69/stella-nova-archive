@@ -43,7 +43,7 @@ let readmeContent = fs.readFileSync(readmePath, "utf8");
 const startMarker = "<!-- VERSION_START -->";
 const endMarker = "<!-- VERSION_END -->";
 const regex = new RegExp(`${startMarker}[\\s\\S]*${endMarker}`, "m");
-const newSection = `${startMarker}\n${newVersion}\n${endMarker}`;
+const newSection = `${startMarker}\n${"> v" + newVersion}\n${endMarker}`;
 
 if (regex.test(readmeContent)) {
   readmeContent = readmeContent.replace(regex, newSection);

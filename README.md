@@ -1,5 +1,9 @@
 # STELLA NOVA ARCHIVE
 
+<!-- VERSION_START -->
+> v0.3.5
+<!-- VERSION_END -->
+
 A website that acts like an archive containing inscriptions and translations of 'Nova' language from the game 'Stella Sora'
 
 ## DEVELOPMENT
@@ -18,30 +22,32 @@ Static database: https://github.com/BB-69/stella-nova-archive-db.git
 ## DEPENDENCIES
 
 <!-- DEPENDENCIES_START -->
-| Package | Version |
-|---|---|
-| @tailwindcss/vite | ^4.1.18 |
-| framer-motion | ^12.23.26 |
-| lucide-react | ^0.561.0 |
-| react | ^19.2.3 |
-| react-dom | ^19.2.3 |
-| react-router-dom | ^7.10.1 |
-| tailwindcss | ^4.1.17 |
-| @eslint/js | ^9.39.2 |
-| @types/node | ^24.10.0 |
-| @types/react | ^19.2.7 |
-| @types/react-dom | ^19.2.2 |
-| @vitejs/plugin-react-swc | ^4.2.1 |
-| autoprefixer | ^10.4.23 |
-| eslint | ^9.39.2 |
-| eslint-plugin-react-hooks | ^7.0.1 |
-| eslint-plugin-react-refresh | ^0.4.25 |
-| gh-pages | ^6.3.0 |
-| globals | ^16.5.0 |
-| postcss | ^8.5.6 |
-| typescript | ~5.9.3 |
-| typescript-eslint | ^8.50.0 |
-| vite | ^7.3.0 |
+
+| Package                     | Version   |
+| --------------------------- | --------- |
+| @tailwindcss/vite           | ^4.1.18   |
+| framer-motion               | ^12.23.26 |
+| lucide-react                | ^0.561.0  |
+| react                       | ^19.2.3   |
+| react-dom                   | ^19.2.3   |
+| react-router-dom            | ^7.10.1   |
+| tailwindcss                 | ^4.1.17   |
+| @eslint/js                  | ^9.39.2   |
+| @types/node                 | ^24.10.0  |
+| @types/react                | ^19.2.7   |
+| @types/react-dom            | ^19.2.2   |
+| @vitejs/plugin-react-swc    | ^4.2.1    |
+| autoprefixer                | ^10.4.23  |
+| eslint                      | ^9.39.2   |
+| eslint-plugin-react-hooks   | ^7.0.1    |
+| eslint-plugin-react-refresh | ^0.4.25   |
+| gh-pages                    | ^6.3.0    |
+| globals                     | ^16.5.0   |
+| postcss                     | ^8.5.6    |
+| typescript                  | ~5.9.3    |
+| typescript-eslint           | ^8.50.0   |
+| vite                        | ^7.3.0    |
+
 <!-- DEPENDENCIES_END -->
 
 ## CONTRIBUTION
@@ -55,7 +61,3 @@ _full version coming soon..._
 [MIT](./LICENSE)
 
 This fan-made, non-commercial project is not affiliated with Yostar and is only for informational and educational purposes.
-
-<!-- VERSION_START -->
-0.3.4
-<!-- VERSION_END -->
