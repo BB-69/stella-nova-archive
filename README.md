@@ -55,3 +55,7 @@ _full version coming soon..._
 [MIT](./LICENSE)
 
 This fan-made, non-commercial project is not affiliated with Yostar and is only for informational and educational purposes.
+
+<!-- VERSION_START -->
+0.3.3
+<!-- VERSION_END -->
