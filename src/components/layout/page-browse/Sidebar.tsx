@@ -7,6 +7,7 @@ import { useState } from "react";
 import OverlayModal from "../../common/overlay-modal";
 import HyperLink from "../../common/hyperlink";
 import ScrollableImgGroup from "../../common/scrollable-imggroup";
+import pkg from "../../../../package.json";
 
 const items = [
   {
@@ -79,6 +80,11 @@ const items = [
           that acts like an archive that contains inscription and translation of{" "}
           <span className="font-bold">'Nova'</span> language from hit game{" "}
           <span className="font-bold">'Stella Sora'</span>.
+        </span>
+        <div className="border-b-5 border-dotted my-4 opacity-40"></div>
+        <span>
+          <span className="opacity-70">Version: </span>
+          {pkg.version}
         </span>
         <div className="border-b-5 border-dotted my-4 opacity-40"></div>
         <span>

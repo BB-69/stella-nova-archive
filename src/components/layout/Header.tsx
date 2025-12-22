@@ -7,6 +7,7 @@ import SortSelector from "./page-browse/SortSelector";
 import ButtonToggle from "../common/button-toggle";
 import { useNavigate } from "react-router-dom";
 import { useOverlayContext } from "./page-archive/OverlayContext";
+import pkg from "../../../package.json";
 
 const Header = ({
   onToggleFilterbar,
@@ -33,7 +34,7 @@ const Header = ({
     >
       <div
         className="flex items-center justify-between
-        max-[300px]:justify-end gap-4 h-full"
+        max-[370px]:justify-end gap-4 h-full"
       >
         {/* <div className="max-[720px]:hidden">
           <img
@@ -44,8 +45,9 @@ const Header = ({
         </div> */}
         {/* Still thinking if i shouldn't put the game logo on fan site */}
 
-        <div className="max-[300px]:hidden">
+        <div className="max-[370px]:hidden flex flex-row items-end">
           <img src={StudyNovian} alt="Study Novian" className="h-8 w-auto" />
+          <span className="ml-2 text-sm opacity-50">v{pkg.version}</span>
         </div>
 
         <span
