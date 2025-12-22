@@ -1,4 +1,3 @@
-import { useDebugValue } from "../../../hooks/useDebugValue";
 import { useIsMd } from "../../../hooks/useIsMd";
 import { getDistance } from "../../../scripts/distance";
 import { useOverlayContext } from "./OverlayContext";
@@ -19,18 +18,6 @@ const OverlayConnector = ({
   const angle = Math.atan2(to.y - from.y, to.x - from.x) * (180 / Math.PI);
 
   const { overlayMetas } = useOverlayContext();
-
-  {
-    useDebugValue(
-      `overlayConnect-${id}`,
-      `from: [${from.x.toFixed(2)}, ${from.y.toFixed(2)}] — to: [${to.x.toFixed(
-        2
-      )}, ${to.y.toFixed(2)}] — midPos: [${midPos.x.toFixed(
-        2
-      )}, ${midPos.y.toFixed(2)}] — length: ${length.toFixed(2)}`,
-      "/archive"
-    );
-  }
 
   const isMd = useIsMd();
 
