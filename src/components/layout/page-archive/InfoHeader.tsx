@@ -23,9 +23,6 @@ const InfoHeader = ({ item }: { item: ItemData | null }) => {
     const handleScroll = () => {
       const atLeft = el.scrollLeft === 0;
       const atRight = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
-      console.log(
-        `${el.scrollLeft} + ${el.clientWidth} >= ${el.scrollWidth} - 1`
-      );
 
       setEdges({ atLeft: atLeft, atRight: atRight });
     };
