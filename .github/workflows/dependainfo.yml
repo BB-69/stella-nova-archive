@@ -62,7 +62,7 @@ jobs:
 
       - name: Push changes back to PR branch
         run: |
-          git pull origin ${{ github.head_ref }}
+          git pull --rebase origin ${{ github.head_ref }}
           git add README.md
           git commit -m "Update dependency info in README.md" || echo "No changes to commit"
           git push origin HEAD:${{ github.head_ref }}
