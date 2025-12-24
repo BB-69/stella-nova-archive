@@ -12,6 +12,7 @@ import {
 } from "../../../scripts/structs/item-data";
 import TextBox from "../../common/text-box";
 import { useOverlayContext } from "./OverlayContext";
+import OverlayProperty from "./OverlayProperty";
 
 /* ---LOCAL_TEST--- */
 // const overlayItems: ItemOverlay[] = [
@@ -292,16 +293,11 @@ const TranslationBar = ({
                         : "opacity-0 scale-y-0 max-h-0 p-0 mb-0"
                     }`}
                 >
-                  <div className="group-selectable grid grid-cols-[60px_auto] auto-rows-[minmax(30px,auto)] gap-1">
-                    <TextBox text={"Text"} />
-                    <TextBox text={it.text} />
-                    {it.notes != null && (
-                      <>
-                        <TextBox text={"Notes"} />
-                        <TextBox text={it.notes} />
-                      </>
-                    )}
-                  </div>
+                  <OverlayProperty
+                    meta={item.meta}
+                    itemOverlay={it}
+                    editing={editing}
+                  />
                 </div>
               </div>
             );

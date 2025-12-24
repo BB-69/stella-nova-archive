@@ -1,3 +1,10 @@
+export interface ItemMeta {
+  width: number;
+  height: number;
+  frames: number | null;
+  version: string;
+}
+
 export interface ItemOverlay {
   id: string;
   frame: { s: number; e: number } | null;
@@ -18,12 +25,7 @@ export interface ItemData {
   description: string;
   source: string[];
 
-  meta: {
-    width: number;
-    height: number;
-    frames: number | null;
-    version: string;
-  };
+  meta: ItemMeta;
 
   overlays: ItemOverlay[];
 }
