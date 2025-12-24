@@ -16,6 +16,7 @@ import { useOverlayContext } from "./OverlayContext";
 import OverlayProperty from "./OverlayProperty";
 import Dropdown from "../../common/dropdown";
 import { filterTags, tags } from "../../../scripts/structs/tag-data";
+import Collapsible from "../../common/collapsible";
 
 /* ---LOCAL_TEST--- */
 // const overlayItems: ItemOverlay[] = [
@@ -191,60 +192,73 @@ const TranslationBar = ({
         <nav
           className="md:flex md:flex-col grid md:grid-cols-none
           grid-cols-[repeat(auto-fit,minmax(240px,1fr))] max-[240px]:grid-cols-none
-          gap-2 mt-3 px-2 md:px-0 pb-12 overflow-x-hidden overflow-y-auto"
+          gap-2 mt-3 md:mb-14 px-2 md:px-0 pb-12 overflow-x-hidden overflow-y-auto"
           aria-label="Translation bar"
         >
+          {/* ---=== EDIT ===--- */}
+
           {editing && (
-            <div className="group-selectable grid grid-cols-[1fr_1fr] auto-rows-[minmax(30px,auto)] gap-1 px-3 py-2">
-              <span className="text-sm flex items-center">Id</span>
-              <TextBox
-                text={item?.id ?? "< null >"}
-                edit={{ placeholder: "newItem" }}
-                setText={(s) => applyItem({ id: s.toString() })}
-              />
-              <span className="text-sm flex items-center">Type</span>
-              <Dropdown
-                options={["image"]}
-                setSelect={(s) => applyItem({ type: s.toString() })}
-              />
-              <span className="text-sm flex items-center">Category</span>
-              <Dropdown
-                options={(() => {
-                  let options: string[] = [];
-                  tags.forEach((t) => {
-                    if (t.level === "primary") options = t.tag;
-                  });
-                  return options;
-                })()}
-                select="other"
-                setSelect={(s) => applyItem({ category: s.toString() })}
-              />
-              <span className="text-sm flex items-center">Sub-Category</span>
-              <Dropdown
-                options={(() => {
-                  let options = ["none"];
-                  filterTags.forEach((t) => {
-                    if (t.main === item?.category && t.sub.length > 0)
-                      options = t.sub;
-                  });
-                  return options;
-                })()}
-                setSelect={(s) => applyItem({ sub_category: [s.toString()] })}
-              />
-              <span className="text-sm flex items-center">Title</span>
-              <TextBox
-                text={item?.title ?? "< null >"}
-                edit={{ placeholder: "< null >" }}
-                setText={(s) => applyItem({ title: s.toString() })}
-              />
-              <span className="text-sm flex items-center">Description</span>
-              <TextBox
-                text={item?.description ?? "< null >"}
-                edit={{ placeholder: "< null >" }}
-                setText={(s) => applyItem({ description: s.toString() })}
-              />
-            </div>
+            <Collapsible
+              title={"Image Data"}
+              icon={{
+                open: <ChevronDown height={16} />,
+                close: <ChevronUp height={16} />,
+              }}
+              fontSize={14}
+            >
+              <div className="group-selectable grid grid-cols-[1fr_1fr] auto-rows-[minmax(30px,auto)] gap-1 px-1">
+                <span className="text-sm flex items-center">Id</span>
+                <TextBox
+                  text={item?.id ?? "< null >"}
+                  edit={{ placeholder: "newItem" }}
+                  setText={(s) => applyItem({ id: s.toString() })}
+                />
+                <span className="text-sm flex items-center">Type</span>
+                <Dropdown
+                  options={["image"]}
+                  setSelect={(s) => applyItem({ type: s.toString() })}
+                />
+                <span className="text-sm flex items-center">Category</span>
+                <Dropdown
+                  options={(() => {
+                    let options: string[] = [];
+                    tags.forEach((t) => {
+                      if (t.level === "primary") options = t.tag;
+                    });
+                    return options;
+                  })()}
+                  select="other"
+                  setSelect={(s) => applyItem({ category: s.toString() })}
+                />
+                <span className="text-sm flex items-center">Sub-Category</span>
+                <Dropdown
+                  options={(() => {
+                    let options = ["none"];
+                    filterTags.forEach((t) => {
+                      if (t.main === item?.category && t.sub.length > 0)
+                        options = t.sub;
+                    });
+                    return options;
+                  })()}
+                  setSelect={(s) => applyItem({ sub_category: [s.toString()] })}
+                />
+                <span className="text-sm flex items-center">Title</span>
+                <TextBox
+                  text={item?.title ?? "< null >"}
+                  edit={{ placeholder: "< null >" }}
+                  setText={(s) => applyItem({ title: s.toString() })}
+                />
+                <span className="text-sm flex items-center">Description</span>
+                <TextBox
+                  text={item?.description ?? "< null >"}
+                  edit={{ placeholder: "< null >" }}
+                  setText={(s) => applyItem({ description: s.toString() })}
+                />
+              </div>
+            </Collapsible>
           )}
+
+          {/* ---=== VIEW ===--- */}
 
           {item?.overlays.map((it) => {
             let index = 1;
@@ -385,16 +399,16 @@ const TranslationBar = ({
               </div>
             ))}
 
-          {/* --- EDIT ONLY --- */}
+          {/* ---=== EDIT ===--- */}
 
           <div
-            className="group-unselectable p-[4px] w-full h-auto
-            flex justify-center items-center"
+            className="group-unselectable p-[4px] mt-1 w-full max-h-full
+            flex justify-center items-start"
           >
             <span
               className={`
                 group flex justify-center items-center
-                max-w-full h-full rounded-full border-1
+                max-w-full max-h-full rounded-full border-1
                 border-black/50 [.dark_&]:border-white/50
                 hover:border-white [.dark_&]:hover:border-black
                 hover:bg-[var(--bg-a1)] [.dark_&]:hover:bg-white
@@ -433,7 +447,7 @@ const TranslationBar = ({
             >
               <span
                 className="flex flex-row items-center
-                max-h-full gap-2 opacity-70 group-hover:opacity-100"
+                h-full gap-2 opacity-70 group-hover:opacity-100"
               >
                 <Plus />
                 <span className="pb-[1.7px]">new overlay</span>
