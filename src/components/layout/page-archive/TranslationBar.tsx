@@ -180,6 +180,33 @@ const TranslationBar = ({
           gap-2 mt-3 px-2 md:px-0 pb-12 overflow-x-hidden overflow-y-auto"
           aria-label="Translation bar"
         >
+          {editing && (
+            <div className="group-selectable grid grid-cols-[80px_auto] auto-rows-[minmax(30px,auto)] gap-1 px-3 py-2">
+              <span className="text-sm flex items-center">Id</span>
+              <TextBox
+                text={item?.id ?? "< null >"}
+                edit={{ placeholder: "newItem" }}
+              />
+              <span className="text-sm flex items-center">Type</span>
+              <TextBox text={item?.type ?? "image"} />
+              <span className="text-sm flex items-center">Category</span>
+              <TextBox
+                text={item?.category ?? "< null >"}
+                edit={{ placeholder: "< null >" }}
+              />
+              <span className="text-sm flex items-center">Title</span>
+              <TextBox
+                text={item?.title ?? "< null >"}
+                edit={{ placeholder: "< null >" }}
+              />
+              <span className="text-sm flex items-center">Description</span>
+              <TextBox
+                text={item?.description ?? "< null >"}
+                edit={{ placeholder: "< null >" }}
+              />
+            </div>
+          )}
+
           {item?.overlays.map((it) => {
             let index = 1;
             const om = overlayMetas[it.id];
@@ -367,7 +394,7 @@ const TranslationBar = ({
             >
               <span
                 className="flex flex-row items-center
-                h-full gap-2 opacity-70 group-hover:opacity-100"
+                max-h-full gap-2 opacity-70 group-hover:opacity-100"
               >
                 <Plus />
                 <span className="pb-[1.7px]">new overlay</span>

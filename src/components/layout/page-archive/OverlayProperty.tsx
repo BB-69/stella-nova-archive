@@ -13,20 +13,30 @@ const OverlayProperty = ({
   return (
     <div className="group-selectable grid grid-cols-[60px_auto] auto-rows-[minmax(30px,auto)] gap-1">
       {!editing ? (
-        <TextBox text={"Text"} />
+        <>
+          <TextBox text={"Text"} />
+          <TextBox text={itemOverlay.text} />
+        </>
       ) : (
-        <span className="text-sm flex items-center">Text</span>
+        <>
+          <span className="text-sm flex items-center">Text</span>
+          <TextBox text={itemOverlay.text} edit={{ placeholder: "null" }} />
+        </>
       )}
-      <TextBox text={itemOverlay.text} edit={{ placeholder: "null" }} />
       {itemOverlay.notes != null ||
         (editing && (
           <>
             {!editing ? (
-              <TextBox text={"Notes"} />
+              <>
+                <TextBox text={"Notes"} />
+                <TextBox text={itemOverlay.notes} />
+              </>
             ) : (
-              <span className="text-sm flex items-center">Notes</span>
+              <>
+                <span className="text-sm flex items-center">Notes</span>
+                <TextBox text={itemOverlay.notes} edit={{ placeholder: "" }} />
+              </>
             )}
-            <TextBox text={itemOverlay.notes} edit={{ placeholder: "" }} />
           </>
         ))}
       {editing && (

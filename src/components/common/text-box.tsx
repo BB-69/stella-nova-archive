@@ -73,8 +73,8 @@ const TextBox = ({
         <input
           className={`text-sm p-[4px_8px] w-full
           flex justify-center items-center
-          bg-white [.dark_&]:bg-black border rounded-md
-          border-black/50 [.dark_&]:border-white/50
+          bg-white/60 [.dark_&]:bg-black/60 border rounded-md
+          border-black/20 [.dark_&]:border-white/20
           ${text == null && "italic"}`}
           type="text"
           maxLength={69}
@@ -88,7 +88,7 @@ const TextBox = ({
           className={`text-sm p-[4px_8px]
           flex justify-center items-center
           bg-white [.dark_&]:bg-black border rounded-md
-          border-black/50 [.dark_&]:border-white/50
+          border-black/70 [.dark_&]:border-white/70
           ${text == null && "italic"}`}
         >
           <div>{text ?? "< null >"}</div>
