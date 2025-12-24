@@ -16,6 +16,17 @@ export interface ItemOverlay {
   notes: string | null;
 }
 
+export interface ItemOverlayFraction {
+  id?: string;
+  frame?: { s: number; e: number } | null;
+  bounds?: { x: number; y: number; w: number; h: number };
+  bounds_end?: { x: number; y: number; w: number; h: number } | null;
+  rotation?: number;
+  shear?: number;
+  text?: string;
+  notes?: string | null;
+}
+
 export interface ItemData {
   id: string;
   type: string;

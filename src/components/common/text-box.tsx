@@ -14,6 +14,8 @@ const TextBox = ({
   text: string | null;
   edit?: {
     placeholder: string;
+    check?: (s: string) => boolean;
+    checkFinal?: (s: string) => string;
     num?: { isInt: boolean; range?: { s: number; e: number } };
   };
   setText?: Dispatch<SetStateAction<string>>;
@@ -34,14 +36,6 @@ const TextBox = ({
       (isInt ? intRegex.test(s) : s.split(".").length < 3 && numRegex.test(s))
     );
   }
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-
-    if (value === "" || (edit?.num ? checkNum(value, edit.num.isInt) : true)) {
-      updateQuery(value);
-    }
-  };
 
   function finalNumber(s: string): string {
     const r = edit?.num?.range;
@@ -67,9 +61,29 @@ const TextBox = ({
     return String(`${clamp(Number(arr[0]))}${!edit?.num?.isInt ? ".0" : ""}`);
   }
 
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
+    if (
+      value === "" ||
+      (edit?.check
+        ? edit.check(value)
+        : edit?.num
+        ? checkNum(value, edit.num.isInt)
+        : true)
+    ) {
+      updateQuery(value);
+    }
+  };
+
   const handleInputBlur = () => {
     if (query === "") {
       updateQuery(edit?.placeholder ?? "");
+      return;
+    }
+
+    if (edit?.checkFinal) {
+      updateQuery(edit.checkFinal(query));
       return;
     }
 

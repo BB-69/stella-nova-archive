@@ -1,15 +1,30 @@
-import type { ItemMeta, ItemOverlay } from "../../../scripts/structs/item-data";
+import type {
+  ItemMeta,
+  ItemOverlay,
+  ItemOverlayFraction,
+} from "../../../scripts/structs/item-data";
 import TextBox from "../../common/text-box";
 
 const OverlayProperty = ({
   meta,
   itemOverlay,
   editing,
+  setOverlay,
 }: {
   meta: ItemMeta;
   itemOverlay: ItemOverlay;
   editing: boolean;
+  setOverlay?: (o: ItemOverlay) => void;
 }) => {
+  const applyOverlay = (newO: ItemOverlayFraction) => {
+    if (!setOverlay) return;
+
+    setOverlay({
+      ...itemOverlay,
+      ...newO,
+    });
+  };
+
   return (
     <div className="group-selectable grid grid-cols-[60px_auto] auto-rows-[minmax(30px,auto)] gap-1">
       {!editing ? (
@@ -20,23 +35,27 @@ const OverlayProperty = ({
       ) : (
         <>
           <span className="text-sm flex items-center">Text</span>
-          <TextBox text={itemOverlay.text} edit={{ placeholder: "null" }} />
+          <TextBox
+            text={itemOverlay.text}
+            edit={{ placeholder: "null" }}
+            setText={(s) => applyOverlay({ text: s.toString() })}
+          />
         </>
       )}
-      {itemOverlay.notes != null ||
-        (editing && (
+      {(itemOverlay.notes != null || editing) &&
+        (!editing ? (
           <>
-            {!editing ? (
-              <>
-                <TextBox text={"Notes"} />
-                <TextBox text={itemOverlay.notes} />
-              </>
-            ) : (
-              <>
-                <span className="text-sm flex items-center">Notes</span>
-                <TextBox text={itemOverlay.notes} edit={{ placeholder: "" }} />
-              </>
-            )}
+            <TextBox text={"Notes"} />
+            <TextBox text={itemOverlay.notes} />
+          </>
+        ) : (
+          <>
+            <span className="text-sm flex items-center">Notes</span>
+            <TextBox
+              text={itemOverlay.notes}
+              edit={{ placeholder: "" }}
+              setText={(s) => applyOverlay({ notes: s.toString() })}
+            />
           </>
         ))}
       {editing && (
@@ -52,6 +71,11 @@ const OverlayProperty = ({
                   range: { s: 0, e: meta.width },
                 },
               }}
+              setText={(s) =>
+                applyOverlay({
+                  bounds: { ...itemOverlay.bounds, x: Number(s.toString()) },
+                })
+              }
             />
             <TextBox
               text={`${itemOverlay.bounds.y}`}
@@ -62,6 +86,11 @@ const OverlayProperty = ({
                   range: { s: 0, e: meta.height },
                 },
               }}
+              setText={(s) =>
+                applyOverlay({
+                  bounds: { ...itemOverlay.bounds, y: Number(s.toString()) },
+                })
+              }
             />
           </div>
           <span className="text-sm flex items-center">Size</span>
@@ -72,9 +101,17 @@ const OverlayProperty = ({
                 placeholder: "0",
                 num: {
                   isInt: true,
-                  range: { s: itemOverlay.bounds.x, e: meta.width },
+                  range: {
+                    s: itemOverlay.bounds.x,
+                    e: meta.width - itemOverlay.bounds.x,
+                  },
                 },
               }}
+              setText={(s) =>
+                applyOverlay({
+                  bounds: { ...itemOverlay.bounds, w: Number(s.toString()) },
+                })
+              }
             />
             <TextBox
               text={`${itemOverlay.bounds.h}`}
@@ -82,9 +119,17 @@ const OverlayProperty = ({
                 placeholder: "0",
                 num: {
                   isInt: true,
-                  range: { s: itemOverlay.bounds.y, e: meta.height },
+                  range: {
+                    s: itemOverlay.bounds.y,
+                    e: meta.height - itemOverlay.bounds.y,
+                  },
                 },
               }}
+              setText={(s) =>
+                applyOverlay({
+                  bounds: { ...itemOverlay.bounds, h: Number(s.toString()) },
+                })
+              }
             />
           </div>
           <span className="text-sm flex items-center">Rotate</span>
@@ -94,6 +139,11 @@ const OverlayProperty = ({
               placeholder: "0.0",
               num: { isInt: false, range: { s: -180, e: 180 } },
             }}
+            setText={(s) =>
+              applyOverlay({
+                rotation: Number(s.toString()),
+              })
+            }
           />
           <span className="text-sm flex items-center">Shear</span>
           <TextBox
@@ -102,6 +152,11 @@ const OverlayProperty = ({
               placeholder: "0.0",
               num: { isInt: false, range: { s: -90, e: 90 } },
             }}
+            setText={(s) =>
+              applyOverlay({
+                shear: Number(s.toString()),
+              })
+            }
           />
         </>
       )}
