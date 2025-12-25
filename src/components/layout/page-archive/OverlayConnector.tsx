@@ -1,3 +1,4 @@
+import { useIsChanging } from "../../../hooks/useIsChanging";
 import { useIsMd } from "../../../hooks/useIsMd";
 import { getDistance } from "../../../scripts/distance";
 import { useOverlayContext } from "./OverlayContext";
@@ -14,6 +15,8 @@ const OverlayConnector = ({
   to: { x: number; y: number };
   hovering: boolean;
 }) => {
+  const isScrolling = useIsChanging(to.y);
+
   const midPos = { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 };
   const length = getDistance(from, to);
   const angle = Math.atan2(to.y - from.y, to.x - from.x) * (180 / Math.PI);
@@ -42,7 +45,7 @@ const OverlayConnector = ({
         transform: `translate(-50%, -50%) rotate(${angle}deg)`,
         transformOrigin: "center",
         backgroundColor: overlayMetas[id].color ?? "#676767",
-        opacity: hovering && !isMd && !isEdge() ? 1 : 0,
+        opacity: hovering && !isMd && !isEdge() && !isScrolling ? 1 : 0,
       }}
     >
       <div
