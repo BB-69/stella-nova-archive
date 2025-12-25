@@ -82,7 +82,7 @@ export function defaultItemData(id?: string): ItemData {
   return {
     id: id ?? "newItem",
     type: "image",
-    category: "< null >",
+    category: "other",
     sub_category: null,
     title: "< null >",
     description: "< null >",

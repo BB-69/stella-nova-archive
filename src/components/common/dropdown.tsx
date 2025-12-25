@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 const Dropdown = ({
   options,
@@ -13,9 +13,17 @@ const Dropdown = ({
     select ?? options[0] ?? "< select >"
   );
 
+  const updateSelect = (s: string) => {
+    setSelected(s);
+    setSelect?.(s);
+  };
+
+  useEffect(() => {
+    if (select) updateSelect(select);
+  }, [select]);
+
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelected(e.target.value);
-    setSelect?.(e.target.value);
+    updateSelect(e.target.value);
   };
 
   return (

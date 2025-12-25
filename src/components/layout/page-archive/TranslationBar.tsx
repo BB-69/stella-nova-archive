@@ -81,6 +81,7 @@ const ImageData = ({
           <span className="text-sm flex items-center">Type</span>
           <Dropdown
             options={["image"]}
+            select={item?.type}
             setSelect={(s) => applyItem({ type: s.toString() })}
           />
           <span className="text-sm flex items-center">Category</span>
@@ -92,7 +93,7 @@ const ImageData = ({
               });
               return options;
             })()}
-            select="other"
+            select={item?.category}
             setSelect={(s) => applyItem({ category: s.toString() })}
           />
           <span className="text-sm flex items-center">Sub-Category</span>
@@ -105,6 +106,7 @@ const ImageData = ({
               });
               return options;
             })()}
+            select={item?.sub_category?.[0]}
             setSelect={(s) => applyItem({ sub_category: [s.toString()] })}
           />
           <span className="text-sm flex items-center">Title</span>
@@ -186,7 +188,7 @@ const ImageData = ({
           />
           <span className="text-sm flex items-center">Version</span>
           <TextBox
-            text={item?.meta.width.toString() ?? "< null >"}
+            text={item?.meta.version ?? "< null >"}
             edit={{
               placeholder: "0.0.0",
               check: (s) => {

@@ -27,6 +27,10 @@ const TextBox = ({
     setText?.(s);
   };
 
+  useEffect(() => {
+    if (text) updateQuery(text);
+  }, [text]);
+
   function checkNum(s: string, isInt: boolean): boolean {
     const intRegex = /^[0-9\b\-]+$/;
     const numRegex = /^[0-9\b\.\-]+$/;
