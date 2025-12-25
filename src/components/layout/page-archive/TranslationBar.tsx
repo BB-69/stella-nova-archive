@@ -609,78 +609,82 @@ const TranslationBar = ({
 
             {/* ---=== EDIT ===--- */}
 
-            <div
-              className="group-unselectable p-[4px] mt-1 w-full max-h-full
-              flex justify-center items-start"
-            >
-              <span
-                className={`
-                  group flex justify-center items-center
-                  max-w-full max-h-full rounded-full border-1
-                  border-black/50 [.dark_&]:border-white/50
-                  hover:border-white [.dark_&]:hover:border-black
-                  hover:bg-[var(--bg-a1)] [.dark_&]:hover:bg-white
-                  hover:text-white [.dark_&]:hover:text-[var(--bg-a1-dark)]
-                  pl-2 pr-3 text-sm font-bold whitespace-nowrap
-                  transition duration-100
-                  ${
-                    tlBarCollapsed
-                      ? "scale-0 opacity-0"
-                      : "scale-100 opacity-100"
-                  }
-                `}
-                onClick={() =>
-                  setItem((prev) => {
-                    if (!prev) return prev;
-
-                    const getNewId = (baseId: string) => {
-                      let id = baseId;
-                      let n = 0;
-
-                      while (prev.overlays.some((o) => o.id === id)) {
-                        n++;
-                        id = `${baseId} (${n})`;
-                      }
-
-                      return id;
-                    };
-
-                    return {
-                      ...prev,
-                      overlays: [
-                        ...prev.overlays,
-                        defaultItemOverlay(getNewId("newOverlay")),
-                      ],
-                    };
-                  })
-                }
+            {editing && (
+              <div
+                className="group-unselectable p-[4px] mt-1 w-full max-h-full
+                flex justify-center items-start"
               >
                 <span
-                  className="flex flex-row items-center
-                  h-full gap-2 opacity-70 group-hover:opacity-100"
+                  className={`
+                    group flex justify-center items-center
+                    max-w-full max-h-full rounded-full border-1
+                    border-black/50 [.dark_&]:border-white/50
+                    hover:border-white [.dark_&]:hover:border-black
+                    hover:bg-[var(--bg-a1)] [.dark_&]:hover:bg-white
+                    hover:text-white [.dark_&]:hover:text-[var(--bg-a1-dark)]
+                    pl-2 pr-3 text-sm font-bold whitespace-nowrap
+                    transition duration-100
+                    ${
+                      tlBarCollapsed
+                        ? "scale-0 opacity-0"
+                        : "scale-100 opacity-100"
+                    }
+                  `}
+                  onClick={() =>
+                    setItem((prev) => {
+                      if (!prev) return prev;
+
+                      const getNewId = (baseId: string) => {
+                        let id = baseId;
+                        let n = 0;
+
+                        while (prev.overlays.some((o) => o.id === id)) {
+                          n++;
+                          id = `${baseId} (${n})`;
+                        }
+
+                        return id;
+                      };
+
+                      return {
+                        ...prev,
+                        overlays: [
+                          ...prev.overlays,
+                          defaultItemOverlay(getNewId("newOverlay")),
+                        ],
+                      };
+                    })
+                  }
                 >
-                  <Plus />
-                  <span className="pb-[1.7px]">new overlay</span>
+                  <span
+                    className="flex flex-row items-center
+                    h-full gap-2 opacity-70 group-hover:opacity-100"
+                  >
+                    <Plus />
+                    <span className="pb-[1.7px]">new overlay</span>
+                  </span>
                 </span>
-              </span>
-            </div>
+              </div>
+            )}
           </nav>
         </div>
       </aside>
 
       {/* ---=== EDIT CONFIG ===--- */}
 
-      <div className="z-15">
-        <OverlayModal
-          onClose={() => {
-            setFoldedImgData(true);
-          }}
-          active={!foldedImgData}
-          title="Config"
-        >
-          <ImageData item={item} applyItem={applyItem} />
-        </OverlayModal>
-      </div>
+      {editing && (
+        <div className="z-15">
+          <OverlayModal
+            onClose={() => {
+              setFoldedImgData(true);
+            }}
+            active={!foldedImgData}
+            title="Config"
+          >
+            <ImageData item={item} applyItem={applyItem} />
+          </OverlayModal>
+        </div>
+      )}
     </>
   );
 };
