@@ -5,6 +5,11 @@ import { useDebugValue } from "../../../hooks/useDebugValue";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import Overlay from "./Overlay";
 
+let imgBounds = { x: 0, y: 0, w: 0, h: 0 };
+export const getImageBounds = () => {
+  return imgBounds;
+};
+
 const Content = ({
   item,
   imgSrc,
@@ -39,6 +44,10 @@ const Content = ({
   const imgRef = useRef<HTMLImageElement>(null);
   const [resolution, setResolution] = useState({ w: 0, h: 0 }); // fixed
   const [display, setDisplay] = useState({ x: 0, y: 0, w: 0, h: 0 }); // display
+
+  useEffect(() => {
+    imgBounds = display;
+  }, [display]);
 
   {
     const res = useMemo(

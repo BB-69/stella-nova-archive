@@ -53,6 +53,11 @@ import OverlayModal from "../../common/overlay-modal";
 //   },
 // ];
 
+let scrollBounds = { x: 0, y: 0, w: 0, h: 0 };
+export const getScrollBounds = () => {
+  return scrollBounds;
+};
+
 const ImageData = ({
   item,
   applyItem,
@@ -261,6 +266,14 @@ const TranslationBar = ({
       { head: HTMLDivElement | null; child: HTMLDivElement | null }
     >
   >({});
+  const overlayContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (overlayContainerRef.current == null) return;
+    const rect = overlayContainerRef.current.getBoundingClientRect();
+
+    scrollBounds = { x: rect.x, y: rect.y, w: rect.width, h: rect.height };
+  }, [overlayContainerRef.current]);
 
   useEffect(() => {
     const overlayHeader = overlayInfoRefs.current;
@@ -302,9 +315,17 @@ const TranslationBar = ({
     updateOverlayTransform();
 
     window.addEventListener("resize", updateOverlayTransform);
+    overlayContainerRef.current?.addEventListener(
+      "scroll",
+      updateOverlayTransform
+    );
     return () => {
       observer.disconnect();
       window.removeEventListener("resize", updateOverlayTransform);
+      overlayContainerRef.current?.removeEventListener(
+        "scroll",
+        updateOverlayTransform
+      );
     };
   }, [item]);
 
@@ -387,9 +408,11 @@ const TranslationBar = ({
           ${tlBarCollapsed ? "scale-y-0 h-0" : "scale-y-100 h-full"}`}
         >
           <nav
+            ref={overlayContainerRef}
             className="md:flex md:flex-col grid md:grid-cols-none
             grid-cols-[repeat(auto-fit,minmax(240px,1fr))] max-[240px]:grid-cols-none
-            gap-2 mt-3 md:mb-14 px-2 md:px-0 pb-12 overflow-x-hidden overflow-y-auto"
+            gap-2 mt-3 md:mb-14 px-2 md:px-0 pb-12
+            overflow-x-hidden overflow-y-auto"
             aria-label="Translation bar"
           >
             {/* ---=== EDIT ===--- */}

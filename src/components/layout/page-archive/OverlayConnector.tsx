@@ -1,6 +1,7 @@
 import { useIsMd } from "../../../hooks/useIsMd";
 import { getDistance } from "../../../scripts/distance";
 import { useOverlayContext } from "./OverlayContext";
+import { getScrollBounds } from "./TranslationBar";
 
 const OverlayConnector = ({
   id,
@@ -21,10 +22,18 @@ const OverlayConnector = ({
 
   const isMd = useIsMd();
 
+  const isEdge = () => {
+    const scrollBounds = getScrollBounds();
+
+    return (
+      to.y < scrollBounds.y + 1 || to.y > scrollBounds.y + scrollBounds.h - 1
+    );
+  };
+
   return (
     <div
       key={id}
-      className="absolute z-10 rounded-full duration-100"
+      className="absolute z-10 rounded-full"
       style={{
         left: midPos.x,
         top: midPos.y,
@@ -33,7 +42,7 @@ const OverlayConnector = ({
         transform: `translate(-50%, -50%) rotate(${angle}deg)`,
         transformOrigin: "center",
         backgroundColor: overlayMetas[id].color ?? "#676767",
-        opacity: hovering && !isMd ? 1 : 0,
+        opacity: hovering && !isMd && !isEdge() ? 1 : 0,
       }}
     >
       <div

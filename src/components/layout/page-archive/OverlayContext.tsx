@@ -8,11 +8,14 @@ import {
 import OverlayConnector from "./OverlayConnector";
 import {
   getAllDirPosition,
+  getBounded,
   getDistance,
   positionMetaDefault,
   type positionMeta,
 } from "../../../scripts/distance";
 import { useDebugValue } from "../../../hooks/useDebugValue";
+import { getImageBounds } from "./Content";
+import { getScrollBounds } from "./TranslationBar";
 
 export type OverlayMetaType = {
   [key: string]: { color?: string; hover: boolean };
@@ -108,6 +111,9 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     >
       {children}
       {Object.entries(overlayTransforms).map(([id, t]) => {
+        const imgBounds = getImageBounds();
+        const scrollBounds = getScrollBounds();
+
         function getNearestPair(pos: positionMeta, ref: positionMeta) {
           const from = getAllDirPosition(pos).sort(
             (a, b) => getDistance(a, ref.p) - getDistance(b, ref.p)
@@ -115,7 +121,19 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
           const to = getAllDirPosition(ref).sort(
             (a, b) => getDistance(a, pos.p) - getDistance(b, pos.p)
           )[0];
-          return { from: from, to: to };
+          return {
+            from: getBounded(from, {
+              s: { x: imgBounds.x, y: imgBounds.y },
+              e: { x: imgBounds.x + imgBounds.w, y: imgBounds.y + imgBounds.h },
+            }),
+            to: getBounded(to, {
+              s: { x: scrollBounds.x, y: scrollBounds.y },
+              e: {
+                x: scrollBounds.x + scrollBounds.w,
+                y: scrollBounds.y + scrollBounds.h,
+              },
+            }),
+          };
         }
 
         const pair = getNearestPair(t.overlay, t.side);
