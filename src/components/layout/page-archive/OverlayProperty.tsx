@@ -1,3 +1,4 @@
+import { DEFAULT_COLOR } from "../../../scripts/color";
 import type {
   ItemMeta,
   ItemOverlay,
@@ -155,6 +156,51 @@ const OverlayProperty = ({
             setText={(s) =>
               applyOverlay({
                 shear: Number(s.toString()),
+              })
+            }
+          />
+          <span className="text-sm flex items-center">Color</span>
+          <TextBox
+            text={`${itemOverlay.color}`}
+            edit={{
+              placeholder: DEFAULT_COLOR,
+              applyPlaceholder: false,
+              convert: (s) => {
+                if (s.length === 1 && s.indexOf("#") != 0) s = "#" + s;
+
+                return s.toUpperCase();
+              },
+              check: (s) => {
+                const regex = /^[0-9A-F\b\#]+$/;
+                return (
+                  s.substring(1).indexOf("#") == -1 &&
+                  s.length < 8 &&
+                  regex.test(s.toUpperCase())
+                );
+              },
+              checkFinal: (s) => {
+                if (s.length === 0) return "";
+                const hex = s.substring(1);
+
+                switch (hex.length) {
+                  case 3:
+                    return (
+                      "#" +
+                      hex
+                        .split("")
+                        .map((s) => s + s)
+                        .join("")
+                    );
+                  case 6:
+                    return "#" + hex;
+                  default:
+                    return itemOverlay.color ?? "";
+                }
+              },
+            }}
+            setText={(s) =>
+              applyOverlay({
+                color: s.toString(),
               })
             }
           />

@@ -4,6 +4,7 @@ import { useIsMd } from "../../../hooks/useIsMd";
 import { getDistance } from "../../../scripts/distance";
 import { useOverlayContext } from "./OverlayContext";
 import { getScrollBounds } from "./TranslationBar";
+import { DEFAULT_COLOR } from "../../../scripts/color";
 
 const OverlayConnector = ({
   id,
@@ -38,7 +39,7 @@ const OverlayConnector = ({
   const isMd = useIsMd();
 
   const color = useMemo(
-    () => overlayMetas[id]?.color ?? "#676767",
+    () => overlayMetas[id]?.color ?? DEFAULT_COLOR,
     [overlayMetas, id]
   );
 

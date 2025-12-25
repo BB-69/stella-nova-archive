@@ -14,6 +14,8 @@ const TextBox = ({
   text: string | null;
   edit?: {
     placeholder: string;
+    applyPlaceholder?: boolean;
+    convert?: (s: string) => string;
     check?: (s: string) => boolean;
     checkFinal?: (s: string) => string;
     num?: { isInt: boolean; range?: { s: number; e: number } };
@@ -23,8 +25,8 @@ const TextBox = ({
   const [query, setQuery] = useState("");
 
   const updateQuery = (s: string) => {
-    setQuery(s);
-    setText?.(s);
+    setQuery(edit?.convert?.(s) ?? s);
+    setText?.(edit?.convert?.(s) ?? s);
   };
 
   useEffect(() => {
@@ -76,13 +78,15 @@ const TextBox = ({
         ? checkNum(value, edit.num.isInt)
         : true)
     ) {
-      setQuery(value);
+      setQuery(edit?.convert?.(value) ?? value);
     }
   };
 
   const handleInputBlur = () => {
     if (query === "") {
-      updateQuery(edit?.placeholder ?? "");
+      updateQuery(
+        edit && (edit.applyPlaceholder ?? true) ? edit.placeholder : ""
+      );
       return;
     }
 

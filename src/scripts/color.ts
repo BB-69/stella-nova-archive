@@ -1,4 +1,6 @@
-function randomHexColor(): string {
+export const DEFAULT_COLOR = "#696969";
+
+export function randomHexColor(): string {
   const hue = Math.floor(Math.random() * 360); // 0–359
   const saturation = 70 + Math.random() * 30; // 70–100%
   const lightness = 45 + Math.random() * 20; // 45–65%
@@ -26,5 +28,3 @@ function randomHexColor(): string {
 
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
-
-export default randomHexColor;

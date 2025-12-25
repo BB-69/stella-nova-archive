@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { useOverlayContext } from "./OverlayContext";
 import type { positionMeta } from "../../../scripts/distance";
+import { DEFAULT_COLOR } from "../../../scripts/color";
 
 const Ruler = ({
   orientation,
@@ -62,7 +63,7 @@ const Ruler = ({
                       width: end - start,
                       top: 0,
                       bottom: 0,
-                      backgroundColor: overlayMetas[id]?.color ?? "#676767",
+                      backgroundColor: overlayMetas[id]?.color ?? DEFAULT_COLOR,
                       opacity:
                         overlayActive || overlayMetas[id]?.hover ? 100 : 0,
                     }
@@ -71,7 +72,7 @@ const Ruler = ({
                       height: end - start,
                       left: 0,
                       right: 0,
-                      backgroundColor: overlayMetas[id]?.color ?? "#676767",
+                      backgroundColor: overlayMetas[id]?.color ?? DEFAULT_COLOR,
                       opacity:
                         overlayActive || overlayMetas[id]?.hover ? 100 : 0,
                     }

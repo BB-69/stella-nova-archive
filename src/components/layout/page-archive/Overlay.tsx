@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useRef } from "react";
-import randomHexColor from "../../../scripts/random-hexcolor";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import { useOverlayContext } from "./OverlayContext";
+import { DEFAULT_COLOR } from "../../../scripts/color";
 
 const Overlay = ({
   item,
@@ -44,7 +44,12 @@ const Overlay = ({
     if (!item?.overlays) return;
 
     item.overlays.forEach((o) =>
-      setOverlayMeta({ [o.id]: { color: randomHexColor(), hover: false } })
+      setOverlayMeta({
+        [o.id]: {
+          color: o.color && o.color.length > 0 ? o.color : DEFAULT_COLOR,
+          hover: false,
+        },
+      })
     );
   }, [item]);
 

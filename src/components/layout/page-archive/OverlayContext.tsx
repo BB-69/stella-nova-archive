@@ -16,6 +16,7 @@ import {
 import { useDebugValue } from "../../../hooks/useDebugValue";
 import { getImageBounds } from "./Content";
 import { getScrollBounds } from "./TranslationBar";
+import { DEFAULT_COLOR } from "../../../scripts/color";
 
 export type OverlayMetaType = {
   [key: string]: { color?: string; hover: boolean };
@@ -74,7 +75,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
       setOverlayMetas((prev) => ({
         ...prev,
         [key]: {
-          color: value.color ?? prev[key]?.color ?? "#676767",
+          color: value.color ?? prev[key]?.color ?? DEFAULT_COLOR,
           hover: value.hover,
         },
       }));

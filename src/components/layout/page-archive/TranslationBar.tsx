@@ -398,7 +398,7 @@ const TranslationBar = ({
                       rounded-[8px] origin-top duration-200 overflow-hidden
                       ${
                         !tlBarCollapsed && !foldedTl[it.id]
-                          ? "opacity-100 scale-y-100 max-h-60 p-[8px_12px] mb-3"
+                          ? "opacity-100 scale-y-100 max-h-69 p-[8px_12px] mb-3"
                           : "opacity-0 scale-y-0 max-h-0 p-0 mb-0"
                       }`}
                     >

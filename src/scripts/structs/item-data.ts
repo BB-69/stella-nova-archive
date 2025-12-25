@@ -14,6 +14,7 @@ export interface ItemOverlay {
   shear: number;
   text: string;
   notes: string | null;
+  color: string;
 }
 
 export interface ItemOverlayFraction {
@@ -25,6 +26,7 @@ export interface ItemOverlayFraction {
   shear?: number;
   text?: string;
   notes?: string | null;
+  color?: string;
 }
 
 export interface ItemData {
@@ -75,6 +77,7 @@ export function defaultItemOverlay(id?: string): ItemOverlay {
     shear: 0,
     text: "< null >",
     notes: null,
+    color: "",
   };
 }
 
