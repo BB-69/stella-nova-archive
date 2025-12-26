@@ -71,7 +71,7 @@ const TranslationBar = ({
 }) => {
   const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
   const [foldedImgData, setFoldedImgData] = useState(true);
-  const { overlayMetas, setOverlayMeta, setOverlayTransform } =
+  const { overlayMetas, setOverlayMeta, setOverlayTransform, removeOverlay } =
     useOverlayContext();
 
   useEffect(() => {
@@ -346,6 +346,9 @@ const TranslationBar = ({
                           />
                         )}
                       </span>
+
+                      {/* ---=== EDIT ===--- */}
+
                       {editing && (
                         <span
                           className={`absolute right-9 ${
@@ -359,6 +362,7 @@ const TranslationBar = ({
                           `}
                           onClick={(e) => {
                             e.stopPropagation();
+
                             setItem((prev) => {
                               if (!prev) return prev;
 
@@ -373,6 +377,11 @@ const TranslationBar = ({
                                 overlays: overlays,
                               };
                             });
+
+                            removeOverlay(it.id);
+
+                            const { [it.id]: _, ...restFolded } = foldedTl;
+                            setFoldedTl(restFolded);
                           }}
                         >
                           <Minus />

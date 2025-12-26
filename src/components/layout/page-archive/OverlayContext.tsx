@@ -39,6 +39,7 @@ interface OverlayContextType {
     id: string,
     transform: positionMeta
   ) => void;
+  removeOverlay: (id: string) => void;
   resetOverlayData: () => void;
 }
 
@@ -98,6 +99,25 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     }));
   };
 
+  const removeOverlayMeta = (id: string) => {
+    setOverlayMetas((prev) => {
+      const { [id]: _, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const removeOverlayTransform = (id: string) => {
+    setOverlayTransforms((prev) => {
+      const { [id]: _, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const removeOverlay = (id: string) => {
+    removeOverlayMeta(id);
+    removeOverlayTransform(id);
+  };
+
   return (
     <OverlayContext.Provider
       value={{
@@ -107,6 +127,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
         setOverlayMeta,
         overlayTransforms,
         setOverlayTransform,
+        removeOverlay,
         resetOverlayData,
       }}
     >
