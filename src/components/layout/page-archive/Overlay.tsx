@@ -39,13 +39,8 @@ const Overlay = ({
     });
   }, [item, resolution, display]);
 
-  const {
-    overlayActive,
-    overlayMetas,
-    overlayTransforms,
-    setOverlayMeta,
-    setOverlayTransform,
-  } = useOverlayContext();
+  const { overlayActive, overlayMetas, setOverlayMeta, setOverlayTransform } =
+    useOverlayContext();
 
   useEffect(() => {
     if (!item?.overlays) return;
@@ -124,22 +119,6 @@ const Overlay = ({
                 top: o.top,
               }}
             >
-              <div
-                className={`absolute pointer-events-none ${
-                  overlayMetas[o.id]?.hover && "border-2 border-dashed"
-                }`}
-                style={(() => {
-                  const overlay = overlayTransforms[o.id]?.overlay;
-                  if (!overlay) return;
-
-                  return {
-                    left: 0,
-                    top: 0,
-                    width: overlay.r - overlay.l,
-                    height: overlay.b - overlay.t,
-                  };
-                })()}
-              />
               <div
                 className="absolute z-[1] w-[20px] h-[4px]
                 -translate-x-[10px] -translate-y-[2px]"

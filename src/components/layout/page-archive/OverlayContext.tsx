@@ -17,6 +17,7 @@ import { useDebugValue } from "../../../hooks/useDebugValue";
 import { getImageBounds } from "./Content";
 import { getScrollBounds } from "./TranslationBar";
 import { DEFAULT_COLOR } from "../../../scripts/color";
+import OverlayBoxliner from "./OverlayBoxliner";
 
 export type OverlayMetaType = {
   [key: string]: { color?: string; hover: boolean };
@@ -138,6 +139,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
         }
 
         const pair = getNearestPair(t.overlay, t.side);
+        const hovering = overlayMetas[id].hover;
 
         return (
           <Fragment key={id}>
@@ -145,7 +147,11 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
               id={id}
               from={pair.from}
               to={pair.to}
-              hovering={overlayMetas[id].hover}
+              hovering={hovering}
+            />
+            <OverlayBoxliner
+              hovering={hovering}
+              overlay={overlayTransforms[id].overlay}
             />
           </Fragment>
         );
