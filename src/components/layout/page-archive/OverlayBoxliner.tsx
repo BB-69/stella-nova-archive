@@ -10,7 +10,7 @@ const OverlayBoxliner = ({
   return (
     <div
       className={`absolute pointer-events-none ${
-        hovering && "border-2 border-dashed"
+        hovering && "border-1 border-dashed"
       }`}
       style={(() => {
         return {

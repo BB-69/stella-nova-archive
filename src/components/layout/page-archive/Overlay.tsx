@@ -8,6 +8,7 @@ const Overlay = ({
   resolution,
   display,
   offset,
+  editing,
 }: {
   item: ItemData | null;
   resolution: { w: number; h: number };
@@ -16,6 +17,7 @@ const Overlay = ({
     x: number;
     y: number;
   };
+  editing: boolean;
 }) => {
   const overlays = useMemo(() => {
     if (!item || !item?.overlays || resolution.w === 0 || resolution.h === 0)
@@ -112,34 +114,36 @@ const Overlay = ({
               }
               onPointerLeave={() => toggleOverlayHover(o.id, false)}
             />
-            <div
-              className="absolute"
-              style={{
-                left: o.left,
-                top: o.top,
-              }}
-            >
+            {editing && (
               <div
-                className="absolute z-[1] w-[20px] h-[4px]
-                -translate-x-[10px] -translate-y-[2px]"
+                className="absolute"
                 style={{
-                  backgroundColor: `${color}${
-                    overlayMetas[o.id]?.hover ? "FF" : "00"
-                  }`,
-                  transform: "rotate(45deg)",
+                  left: o.left,
+                  top: o.top,
                 }}
-              />
-              <div
-                className={`absolute z-[1] w-[20px] h-[4px]
+              >
+                <div
+                  className="absolute z-[1] w-[20px] h-[4px]
+                -translate-x-[10px] -translate-y-[2px]"
+                  style={{
+                    backgroundColor: `${color}${
+                      overlayMetas[o.id]?.hover ? "FF" : "00"
+                    }`,
+                    transform: "rotate(45deg)",
+                  }}
+                />
+                <div
+                  className={`absolute z-[1] w-[20px] h-[4px]
                   -translate-x-[10px] -translate-y-[2px]
                   bg-black [.dark_&]:bg-white
                   ${!overlayMetas[o.id]?.hover && "opacity-0"}
                 `}
-                style={{
-                  transform: "rotate(135deg)",
-                }}
-              />
-            </div>
+                  style={{
+                    transform: "rotate(135deg)",
+                  }}
+                />
+              </div>
+            )}
           </Fragment>
         );
       })}

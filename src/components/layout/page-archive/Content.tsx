@@ -13,9 +13,11 @@ export const getImageBounds = () => {
 const Content = ({
   item,
   imgSrc,
+  editing,
 }: {
   item: ItemData | null;
   imgSrc: string;
+  editing: boolean;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -176,6 +178,7 @@ const Content = ({
           resolution={resolution}
           display={display}
           offset={imageOffset}
+          editing={editing}
         />
       </div>
     </div>
