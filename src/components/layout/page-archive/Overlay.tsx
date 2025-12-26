@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useRef } from "react";
+import { useMemo, useEffect, useRef, Fragment } from "react";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import { useOverlayContext } from "./OverlayContext";
 import { DEFAULT_COLOR } from "../../../scripts/color";
@@ -39,8 +39,13 @@ const Overlay = ({
     });
   }, [item, resolution, display]);
 
-  const { overlayActive, overlayMetas, setOverlayMeta, setOverlayTransform } =
-    useOverlayContext();
+  const {
+    overlayActive,
+    overlayMetas,
+    overlayTransforms,
+    setOverlayMeta,
+    setOverlayTransform,
+  } = useOverlayContext();
 
   useEffect(() => {
     if (!item?.overlays) return;
@@ -64,13 +69,13 @@ const Overlay = ({
   const overlayRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
-    overlays.forEach(({ id }) => {
-      const overlay = overlayRefs.current[id];
+    overlays.forEach((o) => {
+      const overlay = overlayRefs.current[o.id];
       if (!overlay) return;
 
       const rect = overlay.getBoundingClientRect();
 
-      setOverlayTransform(true, id, {
+      setOverlayTransform(true, o.id, {
         p: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
         t: rect.top,
         b: rect.bottom,
@@ -85,45 +90,78 @@ const Overlay = ({
       {overlays.map((o) => {
         const color = overlayMetas ? overlayMetas[o.id]?.color : "#888888";
         return (
-          <div
-            ref={(el) => {
-              overlayRefs.current[o.id] = el;
-            }}
-            key={o.id}
-            className="absolute border-2 origin-top-left"
-            style={{
-              left: o.left,
-              top: o.top,
-              width: o.width,
-              height: o.height,
-              transform: `rotate(${o.rotation}deg)`,
-              backgroundColor: `${color}${
-                overlayMetas[o.id]?.hover ? "4A" : overlayActive ? "1F" : "00"
-              }`,
-              borderColor: `${color}${
-                overlayMetas[o.id]?.hover ? "FF" : overlayActive ? "66" : "00"
-              }`,
-            }}
-            onPointerEnter={() =>
-              overlayActive ? toggleOverlayHover(o.id, true) : {}
-            }
-            onPointerLeave={() => toggleOverlayHover(o.id, false)}
-          >
+          <Fragment key={o.id}>
             <div
-              className="absolute -translate-x-[9px] -translate-y-[2px] w-[16px] h-[2px]"
-              style={{
-                backgroundColor: `${color}`,
-                transform: "rotate(45deg)",
+              ref={(el) => {
+                overlayRefs.current[o.id] = el;
               }}
+              className="absolute origin-top-left"
+              style={{
+                left: o.left,
+                top: o.top,
+                width: o.width,
+                height: o.height,
+                transform: `
+                  rotate(${o.rotation - o.shear / 2}deg)
+                  skew(${o.shear / 2}deg, ${o.shear / 2}deg)
+                `,
+                backgroundColor: `${color}${
+                  overlayMetas[o.id]?.hover ? "4A" : overlayActive ? "1F" : "00"
+                }`,
+                boxShadow: `inset 0 0 0 2px ${color}${
+                  overlayMetas[o.id]?.hover ? "FF" : overlayActive ? "66" : "00"
+                }`,
+              }}
+              onPointerEnter={() =>
+                overlayActive ? toggleOverlayHover(o.id, true) : {}
+              }
+              onPointerLeave={() => toggleOverlayHover(o.id, false)}
             />
             <div
-              className="absolute -translate-x-[9px] -translate-y-[2px] w-[16px] h-[2px]"
+              className="absolute"
               style={{
-                backgroundColor: `${color}`,
-                transform: "rotate(135deg)",
+                left: o.left,
+                top: o.top,
               }}
-            />
-          </div>
+            >
+              <div
+                className={`absolute pointer-events-none ${
+                  overlayMetas[o.id]?.hover && "border-2 border-dashed"
+                }`}
+                style={(() => {
+                  const overlay = overlayTransforms[o.id]?.overlay;
+                  if (!overlay) return;
+
+                  return {
+                    left: 0,
+                    top: 0,
+                    width: overlay.r - overlay.l,
+                    height: overlay.b - overlay.t,
+                  };
+                })()}
+              />
+              <div
+                className="absolute z-[1] w-[20px] h-[4px]
+                -translate-x-[10px] -translate-y-[2px]"
+                style={{
+                  backgroundColor: `${color}${
+                    overlayMetas[o.id]?.hover ? "FF" : "00"
+                  }`,
+                  transform: "rotate(45deg)",
+                }}
+              />
+              <div
+                className={`absolute z-[1] w-[20px] h-[4px]
+                  -translate-x-[10px] -translate-y-[2px]
+                  bg-black [.dark_&]:bg-white
+                  ${!overlayMetas[o.id]?.hover && "opacity-0"}
+                `}
+                style={{
+                  transform: "rotate(135deg)",
+                }}
+              />
+            </div>
+          </Fragment>
         );
       })}
     </>
