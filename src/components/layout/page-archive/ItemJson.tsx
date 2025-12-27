@@ -1,10 +1,13 @@
 import { Check, Copy } from "lucide-react";
-import type { ItemData } from "../../../scripts/structs/item-data";
+import {
+  processItemData,
+  type ItemData,
+} from "../../../scripts/structs/item-data";
 import ButtonToggle from "../../common/button-toggle";
 import { useState } from "react";
 
-const ItemJson = ({ item }: { item: ItemData | null }) => {
-  const itemJson = JSON.stringify(item, null, 2);
+const ItemJson = ({ item }: { item: ItemData }) => {
+  const itemJson = JSON.stringify(processItemData(item), null, 2);
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -21,7 +24,7 @@ const ItemJson = ({ item }: { item: ItemData | null }) => {
     <div className="flex flex-col gap-3 w-full h-full">
       <div
         className="selectable p-4 bg-white [.dark_&]:bg-black
-        min-w-[50vw] max-w-[70vw] max-h-[60vh] overflow-y-auto
+        min-w-[80vw] md:min-w-[60vw] max-w-[70vw] max-h-[60vh] overflow-y-auto
         border-2 border-black [.dark_&]:border-white"
       >
         {item ? (

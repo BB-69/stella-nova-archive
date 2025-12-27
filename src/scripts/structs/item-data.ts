@@ -69,7 +69,7 @@ export function isItemData(x: any): x is ItemData {
 
 export function defaultItemOverlay(id?: string): ItemOverlay {
   return {
-    id: id ?? "newOverlay",
+    id: id ?? "new_overlay",
     frame: null,
     bounds: { x: 0, y: 0, w: 300, h: 300 },
     bounds_end: null,
@@ -83,7 +83,7 @@ export function defaultItemOverlay(id?: string): ItemOverlay {
 
 export function defaultItemData(id?: string): ItemData {
   return {
-    id: id ?? "newItem",
+    id: id ?? "new_item",
     type: "image",
     category: "other",
     sub_category: [],
@@ -100,4 +100,44 @@ export function defaultItemData(id?: string): ItemData {
 
     overlays: [],
   };
+}
+
+const prefixes: Record<string, string> = {
+  illustration: "illu",
+  live2d: "l2d",
+  battle_stage: "bat",
+  ui: "ui",
+  other: "other",
+
+  // illu - l2d
+  background: "bg",
+  character: "char",
+  disc: "disc",
+
+  // bat
+  ascension: "asc",
+
+  // ui
+  in_game: "game",
+  encyclopedia: "guide",
+};
+
+export function processItemData(i: ItemData): ItemData {
+  i = { ...defaultItemData(), ...i };
+
+  if (i.sub_category.includes("< null >")) i.sub_category = [];
+
+  if (i.source.length === 0) {
+    const subcat_pref = prefixes[i.sub_category[0]];
+    const prefix = `assets/${i.category}/${
+      subcat_pref ? `${subcat_pref}-` : ""
+    }${i.id}`;
+    i.source = [`${prefix}.webp`, `${prefix}.jpg`];
+  }
+
+  i.overlays.map((o) => {
+    return { ...defaultItemOverlay(), ...o };
+  });
+
+  return i;
 }

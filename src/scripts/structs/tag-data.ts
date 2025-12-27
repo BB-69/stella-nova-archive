@@ -10,7 +10,7 @@ export const tags = [
       "character",
       "disc",
       "ascension",
-      "in-game",
+      "in_game",
       "encyclopedia",
     ],
   },
@@ -35,7 +35,7 @@ export const filterTags = [
   },
   {
     main: "ui",
-    sub: ["in-game", "encyclopedia"],
+    sub: ["in_game", "encyclopedia"],
   },
   {
     main: "other",

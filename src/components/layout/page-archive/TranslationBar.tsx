@@ -249,6 +249,18 @@ const TranslationBar = ({
                 onClick={(e) => e.stopPropagation()}
               >
                 <ButtonToggle
+                  toggle={foldedJson}
+                  onToggle={() => setFoldedJson(false)}
+                  fullSize={true}
+                >
+                  <CodeXml />
+                </ButtonToggle>
+              </div>
+              <div
+                className="min-w-[50px] h-full"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ButtonToggle
                   toggle={foldedImgData}
                   onToggle={() => setFoldedImgData(!foldedImgData)}
                   fullSize={true}
@@ -622,7 +634,7 @@ const TranslationBar = ({
             active={!foldedJson}
             title="JSON"
           >
-            <ItemJson item={item} />
+            {item && <ItemJson item={item} />}
           </OverlayModal>
         </div>
       )}
