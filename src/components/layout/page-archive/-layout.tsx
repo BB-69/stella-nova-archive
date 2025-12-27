@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import Header from "../Header";
 import TranslationBar from "./TranslationBar";
 import Content from "./Content";
-import { isItemData, type ItemData } from "../../../scripts/structs/item-data";
-import { useLocation } from "react-router-dom";
+import {
+  defaultItemData,
+  isItemData,
+  type ItemData,
+} from "../../../scripts/structs/item-data";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FetchFilesFromFolder } from "../../../scripts/database-loader";
 import { useDebugValue } from "../../../hooks/useDebugValue";
 import InfoHeader from "./InfoHeader";
@@ -17,6 +21,7 @@ const ArchiveLayout = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const urlId = params.get("id");
+  const urlEdit: boolean = params.get("edit") == "true";
 
   {
     useDebugValue("itemId", item?.id ?? null, "/archive");
@@ -41,10 +46,14 @@ const ArchiveLayout = () => {
   }
 
   const { resetOverlayData } = useOverlayContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     resetOverlayData();
     loadData();
+    if (urlId == null && urlEdit)
+      navigate(`/archive?edit=true&id=${"newItem"}`);
+    if (urlEdit) setItem(defaultItemData());
   }, [urlId]);
 
   return (
@@ -68,13 +77,16 @@ const ArchiveLayout = () => {
       >
         <div className="grid grid-rows-[80px_1fr] min-w-full min-h-full">
           <InfoHeader item={item} />
-          <Content item={item} imgSrc={imgSrc} />
+          <Content item={item} imgSrc={imgSrc} editing={urlEdit} />
         </div>
 
         <TranslationBar
           onToggleTlBar={() => item != null && setSidebarCollapsed((s) => !s)}
           tlBarCollapsed={sidebarCollapsed}
           item={item}
+          setItem={setItem}
+          setImgSrc={setImgSrc}
+          editing={urlEdit}
         />
       </div>
     </div>

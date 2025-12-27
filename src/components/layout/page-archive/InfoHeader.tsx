@@ -71,8 +71,8 @@ const InfoHeader = ({ item }: { item: ItemData | null }) => {
             <div className="text-nowrap">
               <span className="font-bold">{"Sub Category: "}</span>
               <span>
-                {item != null && item.sub_category != null
-                  ? item.sub_category
+                {item && item.sub_category.length > 0
+                  ? item.sub_category.join(", ")
                   : "< null >"}
               </span>
             </div>

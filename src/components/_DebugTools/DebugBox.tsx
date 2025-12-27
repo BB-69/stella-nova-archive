@@ -124,12 +124,13 @@ export default function DebugBox({ title, children }: Props) {
         </div>
         <button
           className="w-[20px] h-[20px] rounded-[3px] cursor-pointer
+          flex justify-center items-center
           text-[var(--t-c)] [.dark_&]:text-[--var(t-c-dark)] text-[14px]/[20px]
           hover:bg-[var(--bg-hover)] [.dark_&]:hover:bg-[var(--bg-hover-dark)]"
           onClick={() => setOpen((v) => !v)}
           aria-label="toggle section"
         >
-          {open ? "−" : "+"}
+          <span className="pb-[1px]">{open ? "−" : "+"}</span>
         </button>
       </div>
       {open && <div>{children}</div>}

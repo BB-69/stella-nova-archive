@@ -61,7 +61,7 @@ const BrowseItem = ({
         </div>
       </h3>
       <div>
-        <TagLabels tags={[item.category, ...(item.sub_category ?? [])]} />
+        <TagLabels tags={[item.category, ...item.sub_category]} />
       </div>
       <div
         className="mt-2 flex w-full h-[135px] rounded-lg

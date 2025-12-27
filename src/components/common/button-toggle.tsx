@@ -6,6 +6,7 @@ const ButtonToggle = ({
   children,
   /*--- customization ---*/
   pxSize,
+  fullSize: fullSize = false,
   alwaysBorder,
 }: {
   toggle?: boolean;
@@ -13,12 +14,14 @@ const ButtonToggle = ({
   children: ReactNode;
   /*--- customization ---*/
   pxSize?: { w?: number; h?: number };
+  fullSize?: boolean;
   alwaysBorder?: boolean;
 }) => {
   return (
     <button
       className={`flex justify-center items-center
 			relative rounded-md pt-0.5
+      ${fullSize && "w-full h-full"}
 			${
         toggle == undefined || toggle
           ? `
@@ -36,8 +39,8 @@ const ButtonToggle = ({
       onClick={onToggle}
       style={{
         cursor: "pointer",
-        width: `${pxSize?.w ? pxSize.w : 40}px`,
-        height: `${pxSize?.h ? pxSize.h : 40}px`,
+        width: !fullSize ? `${pxSize?.w ? pxSize.w : 40}px` : undefined,
+        height: !fullSize ? `${pxSize?.h ? pxSize.h : 40}px` : undefined,
       }}
     >
       {children}

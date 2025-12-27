@@ -1,4 +1,4 @@
-const tags = [
+export const tags = [
   {
     level: "primary",
     tag: ["illustration", "live2d", "battle_stage", "ui", "other"],

@@ -8,11 +8,15 @@ import {
 import OverlayConnector from "./OverlayConnector";
 import {
   getAllDirPosition,
+  getBounded,
   getDistance,
   positionMetaDefault,
   type positionMeta,
 } from "../../../scripts/distance";
 import { useDebugValue } from "../../../hooks/useDebugValue";
+import { getScrollBounds } from "./TranslationBar";
+import { getColorId } from "../../../scripts/color";
+import OverlayBoxliner from "./OverlayBoxliner";
 
 export type OverlayMetaType = {
   [key: string]: { color?: string; hover: boolean };
@@ -35,6 +39,7 @@ interface OverlayContextType {
     id: string,
     transform: positionMeta
   ) => void;
+  removeOverlay: (id: string) => void;
   resetOverlayData: () => void;
 }
 
@@ -58,7 +63,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
   }
 
   const toggleOverlayActive = () => {
-    setOverlayActive(!overlayActive);
+    setOverlayActive((prev) => !prev);
   };
 
   const resetOverlayData = () => {
@@ -71,7 +76,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
       setOverlayMetas((prev) => ({
         ...prev,
         [key]: {
-          color: value.color ?? prev[key]?.color ?? "#676767",
+          color: value.color ?? prev[key]?.color ?? getColorId(key),
           hover: value.hover,
         },
       }));
@@ -94,6 +99,18 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     }));
   };
 
+  const removeOverlay = (id: string) => {
+    setOverlayMetas((prev) => {
+      const { [id]: _, ...rest } = prev;
+      return rest;
+    });
+
+    setOverlayTransforms((prev) => {
+      const { [id]: _, ...rest } = prev;
+      return rest;
+    });
+  };
+
   return (
     <OverlayContext.Provider
       value={{
@@ -103,11 +120,14 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
         setOverlayMeta,
         overlayTransforms,
         setOverlayTransform,
+        removeOverlay,
         resetOverlayData,
       }}
     >
       {children}
       {Object.entries(overlayTransforms).map(([id, t]) => {
+        const scrollBounds = getScrollBounds();
+
         function getNearestPair(pos: positionMeta, ref: positionMeta) {
           const from = getAllDirPosition(pos).sort(
             (a, b) => getDistance(a, ref.p) - getDistance(b, ref.p)
@@ -115,10 +135,20 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
           const to = getAllDirPosition(ref).sort(
             (a, b) => getDistance(a, pos.p) - getDistance(b, pos.p)
           )[0];
-          return { from: from, to: to };
+          return {
+            from: from,
+            to: getBounded(to, {
+              s: { x: to.x, y: scrollBounds.y },
+              e: {
+                x: to.x,
+                y: scrollBounds.y + scrollBounds.h,
+              },
+            }),
+          };
         }
 
         const pair = getNearestPair(t.overlay, t.side);
+        const hovering = overlayMetas[id].hover;
 
         return (
           <Fragment key={id}>
@@ -126,7 +156,11 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
               id={id}
               from={pair.from}
               to={pair.to}
-              hovering={overlayMetas[id].hover}
+              hovering={hovering}
+            />
+            <OverlayBoxliner
+              hovering={hovering}
+              overlay={overlayTransforms[id].overlay}
             />
           </Fragment>
         );

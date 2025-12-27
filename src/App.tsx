@@ -44,7 +44,11 @@ function App() {
           <div className="mb-2">
             <ThemeSwitcher systemTheme={true} />
           </div>
-          <Collapsible title="Route Navigator" subtitle={title}>
+          <Collapsible
+            title="Route Navigator"
+            subtitle={title}
+            saveCollapsed={true}
+          >
             <RouteNavigator
               routes={Array.from(routes, ([path, element]) => ({
                 path,
@@ -56,7 +60,7 @@ function App() {
               }}
             />
           </Collapsible>
-          <Collapsible title="Variables" subtitle={title}>
+          <Collapsible title="Variables" subtitle={title} saveCollapsed={true}>
             <VariableInspector />
           </Collapsible>
         </DebugBox>

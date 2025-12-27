@@ -39,7 +39,7 @@ import { useSortContext } from "./SortContext";
 //       id: "test-item2",
 //       type: "image",
 //       category: "other",
-//       sub_category: null,
+//       sub_category: [],
 //       title: "Test Item 2",
 //       description: "Alienating",
 //       source: ["assets/nova-alphabet-table.jpg"],
@@ -183,7 +183,7 @@ const Browser = () => {
       const itemTag = isItemData(item)
         ? [
             // mapped as from <sub> to <main>-<sub>
-            ...(item.sub_category?.map((t) => `${item.category}-${t}`) ?? []),
+            ...(item.sub_category.map((t) => `${item.category}-${t}`) ?? []),
             item.category,
           ]
         : [];

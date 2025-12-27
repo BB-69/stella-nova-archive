@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { useOverlayContext } from "./OverlayContext";
 import type { positionMeta } from "../../../scripts/distance";
+import { getColorId } from "../../../scripts/color";
+import { useIsChanging } from "../../../hooks/useIsChanging";
 
 const Ruler = ({
   orientation,
@@ -23,6 +25,8 @@ const Ruler = ({
     const rect = container.getBoundingClientRect();
     setOffset(isHorizontal ? rect.left : rect.top);
   }, [isHorizontal]);
+
+  const isMovingCursor = useIsChanging(cursorPos, 1000);
 
   return (
     <div
@@ -62,7 +66,8 @@ const Ruler = ({
                       width: end - start,
                       top: 0,
                       bottom: 0,
-                      backgroundColor: overlayMetas[id]?.color ?? "#676767",
+                      backgroundColor:
+                        overlayMetas[id]?.color ?? getColorId(id),
                       opacity:
                         overlayActive || overlayMetas[id]?.hover ? 100 : 0,
                     }
@@ -71,7 +76,8 @@ const Ruler = ({
                       height: end - start,
                       left: 0,
                       right: 0,
-                      backgroundColor: overlayMetas[id]?.color ?? "#676767",
+                      backgroundColor:
+                        overlayMetas[id]?.color ?? getColorId(id),
                       opacity:
                         overlayActive || overlayMetas[id]?.hover ? 100 : 0,
                     }
@@ -81,8 +87,9 @@ const Ruler = ({
         })}
 
       {/* --- Cursor marker --- */}
-      <div
-        className={`
+      {isMovingCursor && (
+        <div
+          className={`
           absolute bg-red-500 pointer-events-none outline-white
           ${
             isHorizontal
@@ -90,8 +97,9 @@ const Ruler = ({
               : "left-0 right-0 h-[2px] outline-[1.5px]"
           }
         `}
-        style={isHorizontal ? { left: cursorPos } : { top: cursorPos }}
-      />
+          style={isHorizontal ? { left: cursorPos } : { top: cursorPos }}
+        />
+      )}
     </div>
   );
 };

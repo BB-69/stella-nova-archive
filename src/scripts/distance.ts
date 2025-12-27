@@ -33,3 +33,17 @@ export function getDistance(
 ): number {
   return Math.sqrt(Math.pow(from.x - to.x, 2) + Math.pow(from.y - to.y, 2));
 }
+
+export function getBounded(
+  pos: position,
+  bounds: { s: position; e: position }
+) {
+  function axisBound(value: number, start: number, end: number) {
+    return Math.max(start, Math.min(end, value));
+  }
+
+  return {
+    x: axisBound(pos.x, bounds.s.x, bounds.e.x),
+    y: axisBound(pos.y, bounds.s.y, bounds.e.y),
+  };
+}
