@@ -228,7 +228,7 @@ const TranslationBar = ({
             </span>
           </button>
 
-          {useIsMd() && (
+          {editing && useIsMd() && (
             <>
               <div
                 className="min-w-[50px] h-full"
@@ -419,7 +419,7 @@ const TranslationBar = ({
                           }
                         `}
                         onClick={(e) => {
-                          e.stopPropagation();
+                          if (editing) e.stopPropagation();
                         }}
                       >
                         {!editing ? (
