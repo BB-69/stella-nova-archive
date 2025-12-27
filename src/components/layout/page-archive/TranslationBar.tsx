@@ -1,6 +1,7 @@
 import {
   ChevronDown,
   ChevronUp,
+  CodeXml,
   FileCog,
   Menu,
   Minus,
@@ -28,6 +29,7 @@ import { useIsMd } from "../../../hooks/useIsMd";
 import ButtonToggle from "../../common/button-toggle";
 import OverlayModal from "../../common/overlay-modal";
 import ImageMetadata from "./ImageData";
+import ItemJson from "./ItemJson";
 
 /* ---LOCAL_TEST--- */
 // const overlayItems: ItemOverlay[] = [
@@ -75,6 +77,7 @@ const TranslationBar = ({
 }) => {
   const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
   const [foldedImgData, setFoldedImgData] = useState(true);
+  const [foldedJson, setFoldedJson] = useState(true);
   const { overlayMetas, setOverlayMeta, setOverlayTransform, removeOverlay } =
     useOverlayContext();
 
@@ -311,6 +314,31 @@ const TranslationBar = ({
                       <Upload />
                       <span className="pb-[1.7px]">upload image</span>
                     </span>
+                  </div>
+                </div>
+
+                <div
+                  className="group-unselectable p-[4px] my-1 w-full max-h-full
+                  flex justify-center items-start"
+                >
+                  <div
+                    className="group relative flex justify-center items-center
+                    max-w-full max-h-full text-sm font-bold"
+                  >
+                    <ButtonToggle
+                      toggle={foldedJson}
+                      onToggle={() => setFoldedJson(false)}
+                      fullSize={true}
+                      alwaysBorder={true}
+                    >
+                      <span
+                        className="flex flex-row items-center py-2 pl-2 pr-3
+                      h-full gap-2 opacity-70 group-hover:opacity-100"
+                      >
+                        <CodeXml />
+                        <span className="pb-[1.7px]">get JSON</span>
+                      </span>
+                    </ButtonToggle>
                   </div>
                 </div>
 
@@ -586,6 +614,15 @@ const TranslationBar = ({
               applyItem={applyItem}
               canCollapse={false}
             />
+          </OverlayModal>
+          <OverlayModal
+            onClose={() => {
+              setFoldedJson(true);
+            }}
+            active={!foldedJson}
+            title="JSON"
+          >
+            <ItemJson item={item} />
           </OverlayModal>
         </div>
       )}
