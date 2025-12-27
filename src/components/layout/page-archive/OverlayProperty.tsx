@@ -1,4 +1,4 @@
-import { DEFAULT_COLOR } from "../../../scripts/color";
+import { getColorId } from "../../../scripts/color";
 import type {
   ItemMeta,
   ItemOverlay,
@@ -164,7 +164,7 @@ const OverlayProperty = ({
             text={`${itemOverlay.color}`}
             edit={{
               initText: itemOverlay.color,
-              placeholder: DEFAULT_COLOR,
+              placeholder: getColorId(itemOverlay.id),
               applyPlaceholder: false,
               convert: (s) => {
                 if (s.length === 1 && s.indexOf("#") != 0) s = "#" + s;

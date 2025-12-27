@@ -28,3 +28,11 @@ export function randomHexColor(): string {
 
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
+
+const colorId: Record<string, string> = {
+  title: "#00BBFF",
+  "title-sub": "#FF8800",
+};
+export function getColorId(id: string) {
+  return colorId[id.split("_")[0]] ?? DEFAULT_COLOR;
+}

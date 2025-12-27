@@ -15,7 +15,7 @@ import {
 } from "../../../scripts/distance";
 import { useDebugValue } from "../../../hooks/useDebugValue";
 import { getScrollBounds } from "./TranslationBar";
-import { DEFAULT_COLOR } from "../../../scripts/color";
+import { getColorId } from "../../../scripts/color";
 import OverlayBoxliner from "./OverlayBoxliner";
 
 export type OverlayMetaType = {
@@ -76,7 +76,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
       setOverlayMetas((prev) => ({
         ...prev,
         [key]: {
-          color: value.color ?? prev[key]?.color ?? DEFAULT_COLOR,
+          color: value.color ?? prev[key]?.color ?? getColorId(key),
           hover: value.hover,
         },
       }));

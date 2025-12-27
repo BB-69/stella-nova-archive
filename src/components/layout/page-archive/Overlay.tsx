@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useRef, Fragment } from "react";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import { useOverlayContext } from "./OverlayContext";
-import { DEFAULT_COLOR } from "../../../scripts/color";
+import { getColorId } from "../../../scripts/color";
 
 const Overlay = ({
   item,
@@ -50,7 +50,7 @@ const Overlay = ({
     item.overlays.forEach((o) =>
       setOverlayMeta({
         [o.id]: {
-          color: o.color && o.color.length > 0 ? o.color : DEFAULT_COLOR,
+          color: o.color && o.color.length > 0 ? o.color : getColorId(o.id),
           hover: false,
         },
       })
