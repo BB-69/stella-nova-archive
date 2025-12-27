@@ -85,6 +85,7 @@ const ArchiveLayout = () => {
           tlBarCollapsed={sidebarCollapsed}
           item={item}
           setItem={setItem}
+          setImgSrc={setImgSrc}
           editing={urlEdit}
         />
       </div>

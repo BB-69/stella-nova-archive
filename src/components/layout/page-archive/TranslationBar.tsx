@@ -6,11 +6,13 @@ import {
   Minus,
   Plus,
   Type,
+  Upload,
 } from "lucide-react";
 import {
   useEffect,
   useRef,
   useState,
+  type ChangeEvent,
   type Dispatch,
   type SetStateAction,
 } from "react";
@@ -61,12 +63,14 @@ const TranslationBar = ({
   tlBarCollapsed,
   item,
   setItem,
+  setImgSrc,
   editing,
 }: {
   onToggleTlBar: () => void;
   tlBarCollapsed: boolean;
   item: ItemData | null;
   setItem: Dispatch<SetStateAction<ItemData | null>>;
+  setImgSrc: Dispatch<SetStateAction<string>>;
   editing: boolean;
 }) => {
   const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
@@ -169,6 +173,14 @@ const TranslationBar = ({
     });
   };
 
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file: File | undefined = e.target.files?.[0];
+    if (!file) return;
+
+    const imgUrl: string = URL.createObjectURL(file);
+    setImgSrc(imgUrl);
+  };
+
   return (
     <>
       <aside
@@ -214,18 +226,34 @@ const TranslationBar = ({
           </button>
 
           {useIsMd() && (
-            <div
-              className="min-w-[50px] h-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <ButtonToggle
-                toggle={foldedImgData}
-                onToggle={() => setFoldedImgData(!foldedImgData)}
-                fullSize={true}
+            <>
+              <div
+                className="min-w-[50px] h-full"
+                onClick={(e) => e.stopPropagation()}
               >
-                <FileCog />
-              </ButtonToggle>
-            </div>
+                <ButtonToggle onToggle={() => {}} fullSize={true}>
+                  <Upload />
+                  <input
+                    className="absolute inset-0 opacity-0"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </ButtonToggle>
+              </div>
+              <div
+                className="min-w-[50px] h-full"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ButtonToggle
+                  toggle={foldedImgData}
+                  onToggle={() => setFoldedImgData(!foldedImgData)}
+                  fullSize={true}
+                >
+                  <FileCog />
+                </ButtonToggle>
+              </div>
+            </>
           )}
         </div>
 
@@ -256,6 +284,36 @@ const TranslationBar = ({
                 }
               `}
               >
+                <div
+                  className="group-unselectable p-[4px] my-1 w-full max-h-full
+                  flex justify-center items-start"
+                >
+                  <div
+                    className="group relative flex justify-center items-center
+                    max-w-full max-h-full rounded-xl border-1
+                    border-black/50 [.dark_&]:border-white/50
+                    hover:border-white [.dark_&]:hover:border-black
+                    hover:bg-[var(--bg-a1)] [.dark_&]:hover:bg-white
+                    hover:text-white [.dark_&]:hover:text-[var(--bg-a1-dark)]
+                    pl-2 pr-3 text-sm font-bold whitespace-nowrap
+                    transition duration-100"
+                  >
+                    <input
+                      className="absolute inset-0 opacity-0"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                    <span
+                      className="flex flex-row items-center py-2
+                      h-full gap-2 opacity-70 group-hover:opacity-100"
+                    >
+                      <Upload />
+                      <span className="pb-[1.7px]">upload image</span>
+                    </span>
+                  </div>
+                </div>
+
                 <ImageMetadata
                   item={item}
                   applyItem={applyItem}
