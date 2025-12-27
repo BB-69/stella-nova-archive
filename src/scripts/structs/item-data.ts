@@ -136,7 +136,7 @@ export function processItemData(i: ItemData): ItemData {
   if (i.source.length === 0) {
     const subcat = i.sub_category[0];
     const prefix = `assets/${i.category}/${subcat ? `${subcat}/` : ""}${i.id}`;
-    i.source = [`${prefix}.webp`, `${prefix}.jpg`];
+    i.source = [`${prefix}.webp`, `${prefix}.png`];
   }
 
   i.overlays.map((o) => {
