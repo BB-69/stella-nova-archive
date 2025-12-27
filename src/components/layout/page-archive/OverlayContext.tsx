@@ -63,7 +63,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
   }
 
   const toggleOverlayActive = () => {
-    setOverlayActive(!overlayActive);
+    setOverlayActive((prev) => !prev);
   };
 
   const resetOverlayData = () => {
@@ -99,23 +99,16 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     }));
   };
 
-  const removeOverlayMeta = (id: string) => {
+  const removeOverlay = (id: string) => {
     setOverlayMetas((prev) => {
       const { [id]: _, ...rest } = prev;
       return rest;
     });
-  };
 
-  const removeOverlayTransform = (id: string) => {
     setOverlayTransforms((prev) => {
       const { [id]: _, ...rest } = prev;
       return rest;
     });
-  };
-
-  const removeOverlay = (id: string) => {
-    removeOverlayMeta(id);
-    removeOverlayTransform(id);
   };
 
   return (

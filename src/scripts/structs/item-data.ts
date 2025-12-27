@@ -98,6 +98,6 @@ export function defaultItemData(id?: string): ItemData {
       version: "0.0.0",
     },
 
-    overlays: [defaultItemOverlay()],
+    overlays: [],
   };
 }
