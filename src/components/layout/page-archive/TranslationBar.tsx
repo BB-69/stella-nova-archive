@@ -1,6 +1,7 @@
 import {
   ChevronDown,
   ChevronUp,
+  CodeXml,
   FileCog,
   Menu,
   Minus,
@@ -28,6 +29,8 @@ import { useIsMd } from "../../../hooks/useIsMd";
 import ButtonToggle from "../../common/button-toggle";
 import OverlayModal from "../../common/overlay-modal";
 import ImageMetadata from "./ImageData";
+import ItemJson from "./ItemJson";
+import { getImageDimensions } from "../../../scripts/image";
 
 /* ---LOCAL_TEST--- */
 // const overlayItems: ItemOverlay[] = [
@@ -75,6 +78,7 @@ const TranslationBar = ({
 }) => {
   const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
   const [foldedImgData, setFoldedImgData] = useState(true);
+  const [foldedJson, setFoldedJson] = useState(true);
   const { overlayMetas, setOverlayMeta, setOverlayTransform, removeOverlay } =
     useOverlayContext();
 
@@ -173,12 +177,27 @@ const TranslationBar = ({
     });
   };
 
+  const applyImageData = async (name: string, imgSrc: string) => {
+    if (!item) return;
+
+    const imgDim = await getImageDimensions(imgSrc);
+    applyItem({
+      id: name.substring(0, name.lastIndexOf(".")),
+      meta: {
+        ...item.meta,
+        width: imgDim.width,
+        height: imgDim.height,
+      },
+    });
+  };
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file: File | undefined = e.target.files?.[0];
     if (!file) return;
 
     const imgUrl: string = URL.createObjectURL(file);
     setImgSrc(imgUrl);
+    applyImageData(file.name, imgUrl);
   };
 
   return (
@@ -225,7 +244,7 @@ const TranslationBar = ({
             </span>
           </button>
 
-          {useIsMd() && (
+          {editing && useIsMd() && (
             <>
               <div
                 className="min-w-[50px] h-full"
@@ -239,6 +258,18 @@ const TranslationBar = ({
                     accept="image/*"
                     onChange={handleImageChange}
                   />
+                </ButtonToggle>
+              </div>
+              <div
+                className="min-w-[50px] h-full"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ButtonToggle
+                  toggle={foldedJson}
+                  onToggle={() => setFoldedJson(false)}
+                  fullSize={true}
+                >
+                  <CodeXml />
                 </ButtonToggle>
               </div>
               <div
@@ -314,6 +345,31 @@ const TranslationBar = ({
                   </div>
                 </div>
 
+                <div
+                  className="group-unselectable p-[4px] my-1 w-full max-h-full
+                  flex justify-center items-start"
+                >
+                  <div
+                    className="group relative flex justify-center items-center
+                    max-w-full max-h-full text-sm font-bold"
+                  >
+                    <ButtonToggle
+                      toggle={foldedJson}
+                      onToggle={() => setFoldedJson(false)}
+                      fullSize={true}
+                      alwaysBorder={true}
+                    >
+                      <span
+                        className="flex flex-row items-center py-2 pl-2 pr-3
+                      h-full gap-2 opacity-70 group-hover:opacity-100"
+                      >
+                        <CodeXml />
+                        <span className="pb-[1.7px]">get JSON</span>
+                      </span>
+                    </ButtonToggle>
+                  </div>
+                </div>
+
                 <ImageMetadata
                   item={item}
                   applyItem={applyItem}
@@ -379,7 +435,7 @@ const TranslationBar = ({
                           }
                         `}
                         onClick={(e) => {
-                          e.stopPropagation();
+                          if (editing) e.stopPropagation();
                         }}
                       >
                         {!editing ? (
@@ -586,6 +642,15 @@ const TranslationBar = ({
               applyItem={applyItem}
               canCollapse={false}
             />
+          </OverlayModal>
+          <OverlayModal
+            onClose={() => {
+              setFoldedJson(true);
+            }}
+            active={!foldedJson}
+            title="JSON"
+          >
+            {item && <ItemJson item={item} />}
           </OverlayModal>
         </div>
       )}

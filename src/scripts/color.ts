@@ -1,4 +1,4 @@
-export const DEFAULT_COLOR = "#696969";
+export const DEFAULT_COLOR = "#00BBFF";
 
 export function randomHexColor(): string {
   const hue = Math.floor(Math.random() * 360); // 0–359
@@ -30,8 +30,7 @@ export function randomHexColor(): string {
 }
 
 const colorId: Record<string, string> = {
-  title: "#00BBFF",
-  "title-sub": "#FF8800",
+  title: "#FF8800",
 };
 export function getColorId(id: string) {
   return colorId[id.split("_")[0]] ?? DEFAULT_COLOR;
