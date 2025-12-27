@@ -122,6 +122,12 @@ const prefixes: Record<string, string> = {
   encyclopedia: "guide",
 };
 
+export function getFileName(i: ItemData): string {
+  const cat = prefixes[i.category];
+  const subcat = prefixes[i.sub_category[0]];
+  return `${cat ?? "other"}-${subcat ? `${subcat}-` : ""}${i.id}.json`;
+}
+
 export function processItemData(i: ItemData): ItemData {
   i = { ...defaultItemData(), ...i };
 

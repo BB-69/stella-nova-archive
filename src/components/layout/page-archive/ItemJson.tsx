@@ -1,5 +1,6 @@
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, Download } from "lucide-react";
 import {
+  getFileName,
   processItemData,
   type ItemData,
 } from "../../../scripts/structs/item-data";
@@ -9,6 +10,7 @@ import { useState } from "react";
 const ItemJson = ({ item }: { item: ItemData }) => {
   const itemJson = JSON.stringify(processItemData(item), null, 2);
   const [isCopied, setIsCopied] = useState(false);
+  const [isDownloaded, setIsDownloaded] = useState(false);
 
   const handleCopy = async () => {
     try {
@@ -18,6 +20,21 @@ const ItemJson = ({ item }: { item: ItemData }) => {
     } catch (err) {
       console.error("Failed to copy text: ", err);
     }
+  };
+
+  const handleDownload = async () => {
+    const blob = new Blob([itemJson], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = getFileName(item);
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+    setIsDownloaded(true);
+    setTimeout(() => setIsDownloaded(false), 2000);
   };
 
   return (
@@ -52,6 +69,27 @@ const ItemJson = ({ item }: { item: ItemData }) => {
           >
             <ButtonToggle onToggle={handleCopy}>
               <Copy />
+            </ButtonToggle>
+          </div>
+        </div>
+        <div className="relative">
+          <div
+            className={`pointer-events-none
+            absolute z-1 inset-0 bg-[#55CC55] rounded-md
+            flex justify-center items-center p-1
+            transition-opacity duration-100
+            ${isCopied ? "opacity-100" : "opacity-0"}
+          `}
+          >
+            <Check color="white" strokeWidth={3} />
+          </div>
+          <div
+            className={
+              isDownloaded ? "pointer-events-none" : "pointer-events-auto"
+            }
+          >
+            <ButtonToggle onToggle={handleDownload}>
+              <Download />
             </ButtonToggle>
           </div>
         </div>
