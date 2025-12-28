@@ -33,7 +33,10 @@ const ArchiveLayout = () => {
   async function loadData() {
     const res = await FetchFilesFromFolder(`data/${urlId}.json`, "json");
 
-    if (!res || res.length === 0) return;
+    if (!res || res.length === 0) {
+      if (urlEdit) setItem(defaultItemData());
+      return;
+    }
 
     const data = res[0];
     if (isItemData(data.item)) {
