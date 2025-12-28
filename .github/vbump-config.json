@@ -1,5 +1,5 @@
 {
-  "major": true,
+  "major": false,
   "minor": false,
-  "patch": false
+  "patch": true
 }
