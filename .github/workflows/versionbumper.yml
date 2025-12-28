@@ -40,5 +40,6 @@ jobs:
           git add package.json
           git add package-lock.json
           git add README.md
+          git add .github/vbump-config.json
           git commit -m "Version Update [ v${{ steps.bump.outputs.newVersion }} ]" || echo "No changes to commit"
           git push origin HEAD:${{ github.head_ref }}
