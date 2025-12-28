@@ -17,6 +17,7 @@ import { useDebugValue } from "../../../hooks/useDebugValue";
 import { getScrollBounds } from "./TranslationBar";
 import { getColorId } from "../../../scripts/color";
 import OverlayBoxliner from "./OverlayBoxliner";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 export type OverlayMetaType = {
   [key: string]: { color?: string; hover: boolean };
@@ -111,6 +112,8 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const windowSize = useWindowSize();
+
   return (
     <OverlayContext.Provider
       value={{
@@ -135,8 +138,12 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
           const to = getAllDirPosition(ref).sort(
             (a, b) => getDistance(a, pos.p) - getDistance(b, pos.p)
           )[0];
+          const PAD = 6;
           return {
-            from: from,
+            from: getBounded(from, {
+              s: { x: PAD, y: PAD },
+              e: { x: windowSize.width - PAD, y: windowSize.height - PAD },
+            }),
             to: getBounded(to, {
               s: { x: to.x, y: scrollBounds.y },
               e: {
@@ -147,8 +154,23 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
           };
         }
 
-        const pair = getNearestPair(t.overlay, t.side);
+        function getBoundedOverlay(o: positionMeta): positionMeta {
+          const PAD = 0;
+          return {
+            p: getBounded(o.p, {
+              s: { x: PAD, y: PAD },
+              e: { x: windowSize.width - PAD, y: windowSize.height - PAD },
+            }),
+            t: Math.max(PAD, Math.min(windowSize.height - PAD, o.t)),
+            b: Math.max(PAD, Math.min(windowSize.height - PAD, o.b)),
+            l: Math.max(PAD, Math.min(windowSize.width - PAD, o.l)),
+            r: Math.max(PAD, Math.min(windowSize.width - PAD, o.r)),
+          };
+        }
+
         const hovering = overlayMetas[id]?.hover ?? false;
+        const pair = getNearestPair(t.overlay, t.side);
+        const boundedBox = getBoundedOverlay(overlayTransforms[id].overlay);
 
         return (
           <Fragment key={id}>
@@ -158,10 +180,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
               to={pair.to}
               hovering={hovering}
             />
-            <OverlayBoxliner
-              hovering={hovering}
-              overlay={overlayTransforms[id].overlay}
-            />
+            <OverlayBoxliner hovering={hovering} overlay={boundedBox} />
           </Fragment>
         );
       })}
