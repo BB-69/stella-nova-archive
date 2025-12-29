@@ -20,7 +20,8 @@ if (!changes) {
 
 const packageJsonPath = "package.json";
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-const version = packageJson.version;
+const versionSplited = packageJson.version.split(".");
+const version = [versionSplited[0], versionSplited[1]].join(".");
 
 const now = new Date();
 const yyyy = now.getFullYear();
@@ -29,7 +30,7 @@ const dd = String(now.getDate()).padStart(2, "0");
 
 const header = `## v${version} - ${yyyy}/${mm}/${dd} #${prNumber}\n`;
 
-const block = `${header}${changes}\n`;
+const block = `${header}\n${changes}`;
 
 const changelogPath = "CHANGELOG.md";
 
