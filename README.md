@@ -1,7 +1,7 @@
 # STELLA NOVA ARCHIVE
 
 <!-- VERSION_START -->
-> v4.1.1
+> v4.1.2
 <!-- VERSION_END -->
 
 A website that acts like an archive containing inscriptions and translations of 'Nova' language from the game 'Stella Sora'
@@ -11,6 +11,7 @@ A website that acts like an archive containing inscriptions and translations of 
 React + Vite + Tailwind
 
 Static database: https://github.com/BB-69/stella-nova-archive-db.git
+
 Development changelogs: [CHANGELOG.md](/CHANGELOG.md)
 
 - Install Node.js
