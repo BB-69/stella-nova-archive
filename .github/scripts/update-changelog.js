@@ -40,7 +40,8 @@ const dd = String(now.getDate()).padStart(2, "0");
 
 const headerRegex = new RegExp(`## v${version} - .*`, "g");
 
-const block = `## v${version} - ${yyyy}/${mm}/${dd} #${prNumber}
+const PR_PREFIX = "https://github.com/BB-69/stella-nova-archive/pull/";
+const block = `## v${version} - ${yyyy}/${mm}/${dd} ${PR_PREFIX}${prNumber}
 
 ${changes}
 
