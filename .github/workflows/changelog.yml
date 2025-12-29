@@ -1,0 +1,44 @@
+name: Auto Prepend Changelog
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Run changelog updater
+        id: changelog
+        run: node .github/scripts/update-changelog.js
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
+      - name: Set Git Identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Push changes back to PR branch
+        run: |
+          if git diff --quiet; then
+            echo "No changelog changes"
+            exit 0
+          fi
+
+          git pull origin ${{ github.head_ref }}
+          git add CHANGELOG.md
+          git commit -m "Changelog Update [ v${{ steps.changelog.outputs.version }} ]"
+          git push origin HEAD:${{ github.head_ref }}
