@@ -3,12 +3,15 @@ import fs from "fs";
 const prBody = process.env.PR_BODY || "";
 const prNumber = process.env.PR_NUMBER || "unknown";
 
+const versionMarker = "CHANGELOG_VERSION";
 const startMarker = "> CHANGELOG_START";
 const endMarker = "> CHANGELOG_END";
 const overrideMarker = "> CHANGELOG_OVERRIDE";
 
 if (!prBody.includes(startMarker) || !prBody.includes(endMarker)) {
-  console.log("⚠️ No changelog markers found.");
+  console.log(
+    `⚠️ No changelog wrappers found. If you have changelog, consider wrapping it in between '${startMarker}' and '${endMarker}'`
+  );
   process.exit(0);
 }
 
@@ -21,10 +24,14 @@ if (!changes) {
 
 const shouldOverride = prBody.includes(overrideMarker);
 
-const packageJsonPath = "package.json";
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-const versionSplited = packageJson.version.split(".");
-const version = [versionSplited[0], versionSplited[1]].join(".");
+const versionMatch = prBody.match(/CHANGELOG_VERSION:\s*([\d.]+)/);
+if (!versionMatch) {
+  console.log(
+    `⚠️ No '${versionMarker}' found. Consider putting marker '> ${versionMarker}: {major}.{minor}'`
+  );
+  process.exit(0);
+}
+const version = versionMatch[1];
 
 const now = new Date();
 const yyyy = now.getFullYear();
@@ -50,7 +57,9 @@ const content = fs.readFileSync(changelogPath, "utf8");
 const hasVersion = headerRegex.test(content);
 
 if (hasVersion && !shouldOverride) {
-  console.log(`⚠️ Changelog for v${version} already exists. Skipping...`);
+  console.log(
+    `⚠️ Changelog for [ v${version} ] already exists. If you want to override previous changelog, consider putting marker '${overrideMarker}'`
+  );
   process.exit(0);
 }
 

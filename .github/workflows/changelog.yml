@@ -1,4 +1,4 @@
-name: Auto Append Changelog
+name: Auto Prepend Changelog
 
 on:
   pull_request:
