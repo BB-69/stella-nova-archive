@@ -1,20 +1,10 @@
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { createElement, useMemo, type JSX } from "react";
-import DebugBox from "./components/_DebugTools/DebugBox";
-import RouteNavigator from "./components/_DebugTools/RouteNavigator";
-import VariableInspector, {
-  useDebugVars,
-} from "./components/_DebugTools/VariableContext";
-import Collapsible from "./components/common/collapsible";
-import { ThemeSwitcher } from "./components/common/theme";
 
 import { appRoutes } from ".";
-import ButtonToggle from "./components/common/button-toggle";
+import DebugBoxContainer from "./components/_DebugTools/DebugBoxContainer";
 
 function App() {
-  const navigate = useNavigate();
-  const { setCurrentRoute } = useDebugVars();
-
   const routes = useMemo(() => {
     const m = new Map<string, JSX.Element | null>();
 
@@ -36,45 +26,10 @@ function App() {
   );
 
   const defaultRoute = "/browse";
-  const title = "DEBUG";
 
   return (
     <div className="app">
-      {import.meta.env.DEV && (
-        <DebugBox title={title}>
-          <div className="mb-2">
-            <ThemeSwitcher systemTheme={true} />
-          </div>
-          <div className="h-[30px] mb-2">
-            <ButtonToggle
-              onToggle={() => localStorage.clear()}
-              alwaysBorder={true}
-              fullSize={true}
-            >
-              <span className="pb-0.5">Clear Storage</span>
-            </ButtonToggle>
-          </div>
-          <Collapsible
-            title="Route Navigator"
-            subtitle={title}
-            saveCollapsed={true}
-          >
-            <RouteNavigator
-              routes={Array.from(routes, ([path, element]) => ({
-                path,
-                disabled: element === null,
-              }))}
-              onSelect={(route) => {
-                navigate(route);
-                setCurrentRoute(route);
-              }}
-            />
-          </Collapsible>
-          <Collapsible title="Variables" subtitle={title} saveCollapsed={true}>
-            <VariableInspector />
-          </Collapsible>
-        </DebugBox>
-      )}
+      {import.meta.env.DEV && <DebugBoxContainer routes={routes} />}
       <Routes>
         <Route path="/" element={<Navigate to={defaultRoute} replace />} />
         {routeList.map(({ path, element }) => (
