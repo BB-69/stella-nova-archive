@@ -106,7 +106,7 @@ const useTlOptions = ({
       id: "edit_mode",
       label: "Edit Mode",
       icon: <PenLine />,
-      appearOn: { md: true, edit: false },
+      appearOn: { md: false, edit: false },
       alwaysShowContentOnFull: true,
       method: handleNavigate,
     },
@@ -114,7 +114,7 @@ const useTlOptions = ({
       id: "change_image",
       label: "Change Image",
       icon: <Images />,
-      appearOn: { md: true, edit: true },
+      appearOn: { md: false, edit: true },
       alwaysShowContentOnFull: true,
       content: (
         <ButtonInput
@@ -135,7 +135,7 @@ const useTlOptions = ({
       id: "json",
       label: "Get JSON",
       icon: <CodeXml />,
-      appearOn: { md: true, edit: true },
+      appearOn: { md: false, edit: true },
       alwaysShowContentOnFull: false,
       content: item ? <ItemJson item={item} /> : <></>,
     },
@@ -143,7 +143,7 @@ const useTlOptions = ({
       id: "config",
       label: "Config",
       icon: <FileCog />,
-      appearOn: { md: true, edit: true },
+      appearOn: { md: false, edit: true },
       alwaysShowContentOnFull: true,
       content: item ? (
         <ImageMetadata item={item} applyItem={applyItem} canCollapse={false} />

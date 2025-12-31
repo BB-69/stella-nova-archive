@@ -89,7 +89,7 @@ const TranslationBar = ({
           tlBarCollapsed={tlBarCollapsed}
           editing={editing}
           options={tlOptions.filter(({ appearOn }) =>
-            appearOn.md !== undefined ? appearOn.md === isMd : true
+            appearOn.md !== undefined ? appearOn.md === !isMd : true
           )}
           activeModal={activeModal}
           setActiveModal={setActiveModal}
@@ -102,7 +102,7 @@ const TranslationBar = ({
           applyItem={applyItem}
           editing={editing}
           options={tlOptions.filter(({ appearOn }) =>
-            appearOn.md !== undefined ? appearOn.md === !isMd : false
+            appearOn.md !== undefined ? appearOn.md === isMd : false
           )}
           activeModal={activeModal}
           setActiveModal={setActiveModal}
