@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "../Header";
-import TranslationBar from "./TranslationBar";
+import TranslationBar from "./TranslationBar/TranslationBar";
 import Content from "./Content";
 import {
   defaultItemData,

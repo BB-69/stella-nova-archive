@@ -14,7 +14,7 @@ import {
   type positionMeta,
 } from "../../../scripts/distance";
 import { useDebugValue } from "../../../hooks/useDebugValue";
-import { getScrollBounds } from "./TranslationBar";
+import { getScrollBounds } from "./TranslationBar/TlContent";
 import { getColorId } from "../../../scripts/color";
 import OverlayBoxliner from "./OverlayBoxliner";
 import useWindowSize from "../../../hooks/useWindowSize";
