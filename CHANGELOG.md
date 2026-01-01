@@ -1,5 +1,12 @@
 # CHANGELOGS
 
+## v4.3 - 2026/01/01 [#146](https://github.com/BB-69/stella-nova-archive/pull/146)
+
+- Reduce React rerenders
+  - memo some static children components
+  - useRef + rAF for some occasionally constantly animating component
+  - MotionValue applied specially to Overlays related component *(still paired with useState for force update)*
+
 ## v4.2 - 2025/12/31 [#138](https://github.com/BB-69/stella-nova-archive/pull/138)
 
 - [backend] Collapse big component into multiple small components

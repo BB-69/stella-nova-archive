@@ -1,42 +1,81 @@
-import { useEffect, useState, useMemo, useRef } from "react";
-import { useIsChanging } from "../../../../hooks/useIsChanging";
+import { useEffect, useMemo, useRef } from "react";
 import { useIsMd } from "../../../../hooks/useIsMd";
-import { getDistance } from "../../../../scripts/distance";
+import {
+  getAllDirPosition,
+  getBounded,
+  getDistance,
+  type positionMeta,
+} from "../../../../scripts/distance";
 import { useOverlayContext } from "./OverlayContext";
 import { getScrollBounds } from "../TranslationBar/TlContent";
 import { getColorId } from "../../../../scripts/color";
+import { animate, motion, useMotionValue } from "framer-motion";
+import useWindowSize from "../../../../hooks/useWindowSize";
 
 const OverlayConnector = ({
   id,
-  from,
-  to,
   hovering,
 }: {
   id: string;
-  from: { x: number; y: number };
-  to: { x: number; y: number };
   hovering: boolean;
 }) => {
-  const isScrolling = useIsChanging(to.y, 50);
-  const isScrollingDelay = useIsChanging(to.y, 100);
+  const windowSize = useWindowSize();
+  const isMd = useIsMd();
+  const scrollBounds = getScrollBounds();
 
-  const transformRef = useRef({ midPos: { x: 0, y: 0 }, length: 0, angle: 0 });
-  const [, forceUpdate] = useState({});
+  const { overlayMetas, overlayTransformsRef } = useOverlayContext();
+  const t = overlayTransformsRef.current[id];
+
+  if (!t.overlay || !t.side) return;
+
+  function getNearestPair(pos: positionMeta, ref: positionMeta) {
+    const from = getAllDirPosition(pos).sort(
+      (a, b) => getDistance(a, ref.p) - getDistance(b, ref.p)
+    )[0];
+    const to = getAllDirPosition(ref).sort(
+      (a, b) => getDistance(a, pos.p) - getDistance(b, pos.p)
+    )[0];
+    const PAD = 6;
+    return {
+      from: getBounded(from, {
+        s: { x: PAD, y: PAD },
+        e: { x: windowSize.width - PAD, y: windowSize.height - PAD },
+      }),
+      to: getBounded(to, {
+        s: { x: to.x, y: scrollBounds.y },
+        e: {
+          x: to.x,
+          y: scrollBounds.y + scrollBounds.h,
+        },
+      }),
+    };
+  }
+
+  const { from, to } = getNearestPair(t.overlay, t.side);
+
+  const transformRef = useRef({
+    midPos: { x: useMotionValue(0), y: useMotionValue(0) },
+    length: useMotionValue(0),
+    angle: useMotionValue(0),
+  });
 
   useEffect(() => {
-    if (isScrolling) return;
+    const tweenConfig = {
+      type: "tween",
+      duration: 0.03,
+      ease: "linear",
+    } as const;
+    const { midPos, length, angle } = transformRef.current;
 
-    transformRef.current = {
-      midPos: { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 },
-      length: getDistance(from, to),
-      angle: (Math.atan2(to.y - from.y, to.x - from.x) * 180) / Math.PI,
-    };
-
-    forceUpdate({});
-  }, [from.x, from.y, to.x, to.y, isScrolling]);
-
-  const { overlayMetas } = useOverlayContext();
-  const isMd = useIsMd();
+    animate(midPos.x, (from.x + to.x) / 2, tweenConfig);
+    animate(midPos.y, (from.y + to.y) / 2, tweenConfig);
+    animate(length, getDistance(from, to), tweenConfig);
+    animate(
+      angle,
+      (Math.atan2(to.y - from.y, to.x - from.x) * 180) / Math.PI,
+      tweenConfig
+    );
+  }, [from.x, from.y, to.x, to.y]);
 
   const color = useMemo(
     () => overlayMetas[id]?.color ?? getColorId(id),
@@ -51,14 +90,14 @@ const OverlayConnector = ({
   }, [to.y]);
 
   const isVisible = useMemo(
-    () => hovering && !isMd && !isEdge && !isScrollingDelay,
-    [hovering, isMd, isEdge, isScrollingDelay]
+    () => hovering && !isMd && !isEdge,
+    [hovering, isMd, isEdge]
   );
 
   const { midPos, length, angle } = transformRef.current;
 
   return (
-    <div
+    <motion.div
       key={id}
       className="absolute z-10 rounded-full transition-opacity duration-100"
       style={{
@@ -66,11 +105,12 @@ const OverlayConnector = ({
         top: midPos.y,
         width: length,
         height: 2,
-        transform: `translate(-50%, -50%) rotate(${angle}deg)`,
+        rotate: angle,
+        translateX: "-50%",
+        translateY: "-50%",
         transformOrigin: "center",
         backgroundColor: color,
         opacity: isVisible ? 1 : 0,
-        willChange: isScrolling ? "transform" : "auto",
       }}
     >
       <div
@@ -94,7 +134,7 @@ const OverlayConnector = ({
           backgroundColor: color,
         }}
       />
-    </div>
+    </motion.div>
   );
 };
 

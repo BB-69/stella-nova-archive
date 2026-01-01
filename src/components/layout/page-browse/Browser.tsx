@@ -79,11 +79,11 @@ import { useSortContext } from "./SortContext";
 
 const Browser = () => {
   const [data, setData] = useState<FetchedFile[]>([]);
-  const [batchIndex, setBatchIndex] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [noMoreData, setNoMoreData] = useState(false);
 
   const BATCH_SIZE = 5;
+  const batchIndex = useRef(0);
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -103,7 +103,7 @@ const Browser = () => {
     const res = await FetchFilesFromFolder(
       "data/",
       "json",
-      batchIndex,
+      batchIndex.current,
       BATCH_SIZE
     );
 
@@ -114,7 +114,7 @@ const Browser = () => {
     }
 
     setData((prev) => [...prev, ...res]);
-    setBatchIndex((prev) => prev + BATCH_SIZE);
+    batchIndex.current += BATCH_SIZE;
 
     if (res.length < BATCH_SIZE) {
       setNoMoreData(true);
@@ -139,6 +139,7 @@ const Browser = () => {
     return () => clearTimeout(id);
   }, [data]);
 
+  /* kick starter */
   useEffect(() => {
     // if (data != null) setData((prev) => [...prev, ...test_items]);
     loadBatch();
@@ -164,12 +165,12 @@ const Browser = () => {
   useEffect(() => {
     if (!data) return;
 
-    data.forEach(async (d) => {
-      const item = d.item;
+    data.forEach(async ({ item }) => {
       if (!isItemData(item)) return;
 
       if (item.source.length > 0) {
-        const img = await FetchFilesFromFolder(item.source[0], "webp");
+        let img = await FetchFilesFromFolder(item.source[0], "webp");
+        if (!img) img = await FetchFilesFromFolder(item.source[0], "png");
         if (img && img.length > 0)
           setImages((prev) => ({ ...prev, [item.id]: img[0].url }));
       }
@@ -178,8 +179,7 @@ const Browser = () => {
 
   /* --- FILTER / SORT / MAP --- */
   const items = data
-    ?.map((d, idx) => {
-      const item = d.item;
+    ?.map(({ item, url }, idx) => {
       const itemTag = isItemData(item)
         ? [
             // mapped as from <sub> to <main>-<sub>
@@ -200,7 +200,7 @@ const Browser = () => {
       return {
         node: (
           <article key={`${idx}-${item.id}`} className="h-[220px]">
-            <BrowseItem item={item} url={d.url} imgSrc={images[item.id]} />
+            <BrowseItem item={item} url={url} imgSrc={images[item.id]} />
           </article>
         ),
         data: item,
@@ -235,7 +235,7 @@ const Browser = () => {
         <>
           <section
             className="grid gap-4 justify-items-center
-          grid-cols-[repeat(auto-fill,minmax(220px,1fr))]"
+            grid-cols-[repeat(auto-fill,minmax(220px,1fr))]"
           >
             {items}
 
@@ -253,7 +253,7 @@ const Browser = () => {
           {noMoreData && (
             <div
               className="mt-6 h-[48px] flex justify-center items-center
-            border-b-1 text-sm overflow-hidden whitespace-nowrap opacity-30"
+              border-b-1 text-sm overflow-hidden whitespace-nowrap opacity-30"
             >
               This is the end...
             </div>

@@ -25,7 +25,8 @@ export default function Collapsible({
   );
 
   const [open, setOpen] = useState(() => {
-    const saved = saveCollapsed ? localStorage?.getItem(storageKey) : "true";
+    const saved =
+      saveCollapsed && subtitle ? localStorage?.getItem(storageKey) : "true";
     if (saved !== null) {
       return saved === "true";
     }
@@ -33,7 +34,8 @@ export default function Collapsible({
   });
 
   useEffect(() => {
-    if (saveCollapsed) localStorage?.setItem(storageKey, open.toString());
+    if (saveCollapsed && subtitle)
+      localStorage?.setItem(storageKey, open.toString());
   }, [open, storageKey]);
 
   return (

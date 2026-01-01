@@ -4,6 +4,7 @@ import Ruler from "./Ruler";
 import { useDebugValue } from "../../../hooks/useDebugValue";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import Overlay from "./Overlay/Overlay";
+import { useMotionValue } from "framer-motion";
 
 let imgBounds = { x: 0, y: 0, w: 0, h: 0 };
 export const getImageBounds = () => {
@@ -21,24 +22,20 @@ const Content = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [cursor, setCursor] = useState({ x: 0, y: 0 });
+  const cursorRef = useRef({ x: useMotionValue(0), y: useMotionValue(0) });
+
+  const handlePointerMove = (e: MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+
+    cursorRef.current.x.set(Math.floor(x));
+    cursorRef.current.y.set(Math.floor(y));
+  };
 
   useEffect(() => {
-    const handlePointerMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-
-      let x = e.clientX - rect.left;
-      let y = e.clientY - rect.top;
-
-      requestAnimationFrame(() =>
-        setCursor({
-          x: Math.floor(x),
-          y: Math.floor(y),
-        })
-      );
-    };
-
     window.addEventListener("mousemove", handlePointerMove);
     return () => window.removeEventListener("mousemove", handlePointerMove);
   }, []);
@@ -129,10 +126,10 @@ const Content = ({
       <div />
 
       {/* tr */}
-      <Ruler orientation="horizontal" cursorPos={cursor.x} />
+      <Ruler orientation="horizontal" cursorPos={cursorRef.current.x} />
 
       {/* bl */}
-      <Ruler orientation="vertical" cursorPos={cursor.y} />
+      <Ruler orientation="vertical" cursorPos={cursorRef.current.y} />
 
       {/* br */}
       <div

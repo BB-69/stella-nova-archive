@@ -3,16 +3,17 @@ import { useOverlayContext } from "./Overlay/OverlayContext";
 import type { positionMeta } from "../../../scripts/distance";
 import { getColorId } from "../../../scripts/color";
 import { useIsChanging } from "../../../hooks/useIsChanging";
+import { motion, MotionValue } from "framer-motion";
 
 const Ruler = ({
   orientation,
   cursorPos,
 }: {
   orientation: "horizontal" | "vertical";
-  cursorPos: number;
+  cursorPos: MotionValue<number>;
 }) => {
   const isHorizontal = orientation === "horizontal";
-  const { overlayActive, overlayMetas, overlayTransforms } =
+  const { overlayActive, overlayMetas, overlayTransformsRef } =
     useOverlayContext();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,8 +40,8 @@ const Ruler = ({
       style={isHorizontal ? { width: "auto" } : { height: "auto" }}
     >
       {/* --- Overlay marker --- */}
-      {Object.entries(overlayTransforms)
-        .sort(([_a, a], [_b, b]) => {
+      {Object.entries(overlayTransformsRef.current)
+        .sort(([, a], [, b]) => {
           if (!a.overlay || !b.overlay) return 0;
 
           function getLength(meta: positionMeta) {
@@ -88,7 +89,7 @@ const Ruler = ({
 
       {/* --- Cursor marker --- */}
       {isMovingCursor && (
-        <div
+        <motion.div
           className={`
           absolute bg-red-500 pointer-events-none outline-white
           ${

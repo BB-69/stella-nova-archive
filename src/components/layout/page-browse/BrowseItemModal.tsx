@@ -1,30 +1,22 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-  type RefObject,
-} from "react";
+import { memo, useEffect, useRef, useState, type RefObject } from "react";
 
 const BrowseItemModal = ({
   onHover,
   parentRef,
-  children,
+  description,
 }: {
   onHover: boolean;
   parentRef: RefObject<HTMLDivElement | null>;
-  children: ReactNode;
+  description: string;
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<{
     top: number;
     left: number;
-    visibility: React.CSSProperties["visibility"];
-  }>({ top: 0, left: 0, visibility: "hidden" });
+  }>({ top: 0, left: 0 });
 
   useEffect(() => {
     if (!onHover || !parentRef?.current || !modalRef.current) {
-      setPos((p) => ({ ...p, visibility: "hidden" }));
       return;
     }
 
@@ -55,7 +47,7 @@ const BrowseItemModal = ({
     if (top + modalRect.height > viewportHeight)
       top = Math.max(0, viewportHeight - modalRect.height);
 
-    setPos({ top, left, visibility: "visible" });
+    setPos({ top, left });
   }, [onHover, parentRef]);
 
   return (
@@ -70,15 +62,28 @@ const BrowseItemModal = ({
       style={{
         top: pos.top,
         left: pos.left,
-        visibility: pos.visibility,
         position: "fixed",
-        opacity: pos.visibility === "visible" ? 1 : 0,
+        opacity: onHover ? 1 : 0,
         pointerEvents: onHover ? "auto" : "none",
       }}
     >
-      {children}
+      <div className="w-[180px] pb-1 overflow-hidden">
+        <h3
+          className="flex justify-between items-top font-semibold text-lg
+        pb-1 border-b border-black/30 [.dark_&]:border-white/30
+        text-sm"
+        >
+          Description
+        </h3>
+        <span
+          className="mt-1.5 px-1 text-xs opacity-80
+          leading-tight block break-words"
+        >
+          {description ?? "< Untitled >"}
+        </span>
+      </div>
     </div>
   );
 };
 
-export default BrowseItemModal;
+export default memo(BrowseItemModal);

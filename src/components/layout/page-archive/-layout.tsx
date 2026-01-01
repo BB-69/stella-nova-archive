@@ -59,8 +59,9 @@ const ArchiveLayout = () => {
     loadData();
     if (urlEdit) {
       if (urlId == null) {
-        navigate(`/archive?edit=true&id=${"new_item"}`);
-        setItem(defaultItemData());
+        const d = defaultItemData();
+        navigate(`/archive?edit=true&id=${d.id}`);
+        setItem(d);
         setImgSrc("");
       }
       if (!(localStorage?.getItem("bypassEnterEditorPopup") === "true")) {

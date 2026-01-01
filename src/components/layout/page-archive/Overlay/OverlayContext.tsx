@@ -1,4 +1,11 @@
-import { createContext, type ReactNode, useState, useContext } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useState,
+  useContext,
+  useRef,
+  type RefObject,
+} from "react";
 import {
   positionMetaDefault,
   type positionMeta,
@@ -10,19 +17,19 @@ import OverlayApplier from "./OverlayApplier";
 export type OverlayMetaType = {
   [key: string]: { color?: string; hover: boolean };
 };
-export type OverlayTransformType = {
+export type OverlayTransformType = RefObject<{
   [key: string]: {
     overlay?: positionMeta;
     side?: positionMeta;
   };
-};
+}>;
 
 interface OverlayContextType {
   overlayActive: boolean;
   toggleOverlayActive: () => void;
   overlayMetas: OverlayMetaType;
   setOverlayMeta: (meta: OverlayMetaType) => void;
-  overlayTransforms: OverlayTransformType;
+  overlayTransformsRef: OverlayTransformType;
   setOverlayTransform: (
     isOverlay: boolean,
     id: string,
@@ -39,7 +46,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
   const [overlayMetas, setOverlayMetas] = useState<{
     [key: string]: { color: string; hover: boolean };
   }>({});
-  const [overlayTransforms, setOverlayTransforms] = useState<{
+  const overlayTransformsRef = useRef<{
     [key: string]: {
       overlay: positionMeta;
       side: positionMeta;
@@ -48,7 +55,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
 
   {
     useDebugValue("overlayMetas", overlayMetas, "/archive");
-    // useDebugValue("overlayTransforms", overlayTransforms, "/archive");
+    // useDebugValue("overlayTransformsRef", overlayTransformsRef.current, "/archive");
   }
 
   const toggleOverlayActive = () => {
@@ -57,18 +64,19 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
 
   const resetOverlayData = () => {
     setOverlayMetas({});
-    setOverlayTransforms({});
+    overlayTransformsRef.current = {};
   };
 
   const setOverlayMeta = (meta: OverlayMetaType) => {
-    Object.entries(meta).forEach(([key, value]) => {
-      setOverlayMetas((prev) => ({
-        ...prev,
-        [key]: {
+    setOverlayMetas((prev) => {
+      const next = { ...prev };
+      for (const [key, value] of Object.entries(meta)) {
+        next[key] = {
           color: value.color ?? prev[key]?.color ?? getColorId(key),
           hover: value.hover,
-        },
-      }));
+        };
+      }
+      return next;
     });
   };
 
@@ -77,7 +85,8 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     id: string,
     transform: positionMeta
   ) => {
-    setOverlayTransforms((prev) => ({
+    const prev = overlayTransformsRef.current;
+    overlayTransformsRef.current = {
       ...prev,
       [id]: {
         overlay: isOverlay
@@ -85,7 +94,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
           : prev[id]?.overlay ?? positionMetaDefault(),
         side: !isOverlay ? transform : prev[id]?.side ?? positionMetaDefault(),
       },
-    }));
+    };
   };
 
   const removeOverlay = (id: string) => {
@@ -94,10 +103,11 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
       return rest;
     });
 
-    setOverlayTransforms((prev) => {
+    overlayTransformsRef.current = (() => {
+      const prev = overlayTransformsRef.current;
       const { [id]: _, ...rest } = prev;
       return rest;
-    });
+    })();
   };
 
   return (
@@ -107,7 +117,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
         toggleOverlayActive,
         overlayMetas,
         setOverlayMeta,
-        overlayTransforms,
+        overlayTransformsRef,
         setOverlayTransform,
         removeOverlay,
         resetOverlayData,
