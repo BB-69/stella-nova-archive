@@ -1,12 +1,36 @@
-import type { positionMeta } from "../../../../scripts/distance";
+import useWindowSize from "../../../../hooks/useWindowSize";
+import { getBounded, type positionMeta } from "../../../../scripts/distance";
+import { useOverlayContext } from "./OverlayContext";
 
 const OverlayBoxliner = ({
+  id,
   hovering,
-  overlay,
 }: {
+  id: string;
   hovering: boolean;
-  overlay: positionMeta;
 }) => {
+  const windowSize = useWindowSize();
+  const { overlayTransformsRef } = useOverlayContext();
+  const overlay = overlayTransformsRef.current[id].overlay;
+
+  if (!overlay) return;
+
+  function getBoundedOverlay(o: positionMeta): positionMeta {
+    const PAD = 0;
+    return {
+      p: getBounded(o.p, {
+        s: { x: PAD, y: PAD },
+        e: { x: windowSize.width - PAD, y: windowSize.height - PAD },
+      }),
+      t: Math.max(PAD, Math.min(windowSize.height - PAD, o.t)),
+      b: Math.max(PAD, Math.min(windowSize.height - PAD, o.b)),
+      l: Math.max(PAD, Math.min(windowSize.width - PAD, o.l)),
+      r: Math.max(PAD, Math.min(windowSize.width - PAD, o.r)),
+    };
+  }
+
+  const bounded = getBoundedOverlay(overlay);
+
   return (
     <div
       className={`absolute pointer-events-none ${
@@ -14,10 +38,10 @@ const OverlayBoxliner = ({
       }`}
       style={(() => {
         return {
-          left: overlay.l,
-          top: overlay.t,
-          width: overlay.r - overlay.l,
-          height: overlay.b - overlay.t,
+          left: bounded.l,
+          top: bounded.t,
+          width: bounded.r - bounded.l,
+          height: bounded.b - bounded.t,
         };
       })()}
     />
