@@ -4,8 +4,9 @@ import {
   useEffect,
   type MouseEvent,
   type ReactNode,
+  useLayoutEffect,
 } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 
 interface Props {
   title: string;
@@ -29,59 +30,56 @@ export default function DebugBox({ title, children }: Props) {
     return true;
   });
 
-  const headerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    if (headerRef.current) {
-      if (open) {
-        headerRef.current.classList.remove("fold");
-      } else {
-        headerRef.current.classList.add("fold");
-      }
-    }
     localStorage?.setItem(storageKey, open.toString());
   }, [open, storageKey]);
 
-  const [position, setPosition] = useState<Position>({ x: 20, y: 20 });
+  const position = useRef({
+    x: useMotionValue(20),
+    y: useMotionValue(20),
+  });
   const [isDragging, setIsDragging] = useState(false);
+
   const offset = useRef<Position>({ x: 0, y: 0 });
   const boxRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     offset.current = {
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
+      x: e.clientX - position.current.x.get(),
+      y: e.clientY - position.current.y.get(),
     };
   };
 
   const handleMouseMove = (e: MouseEvent | globalThis.MouseEvent) => {
     if (!isDragging || !boxRef.current) return;
 
+    const rect = boxRef.current!.getBoundingClientRect();
+    const maxX = window.innerWidth - rect.width;
+    const maxY = window.innerHeight - rect.height;
+
     const newX = e.clientX - offset.current.x;
     const newY = e.clientY - offset.current.y;
 
-    const box = boxRef.current;
-    const maxX = window.innerWidth - box.offsetWidth;
-    const maxY = window.innerHeight - box.offsetHeight;
-
-    setPosition({
-      x: Math.min(Math.max(0, newX), maxX),
-      y: Math.min(Math.max(0, newY), maxY),
-    });
+    position.current.x.set(Math.min(Math.max(0, newX), maxX));
+    position.current.y.set(Math.min(Math.max(0, newY), maxY));
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!boxRef.current) return;
 
-    const box = boxRef.current;
-    const maxX = window.innerWidth - box.offsetWidth;
-    const maxY = window.innerHeight - box.offsetHeight;
+    const ro = new ResizeObserver(() => {
+      const rect = boxRef.current!.getBoundingClientRect();
+      // document size to not include scrollbar in overall size
+      const maxX = document.documentElement.clientWidth - rect.width;
+      const maxY = document.documentElement.clientHeight - rect.height;
 
-    setPosition((prev) => ({
-      x: Math.min(prev.x, maxX),
-      y: Math.min(prev.y, maxY),
-    }));
+      position.current.x.set(Math.min(position.current.x.get(), maxX));
+      position.current.y.set(Math.min(position.current.y.get(), maxY));
+    });
+
+    ro.observe(boxRef.current);
+    return () => ro.disconnect();
   }, [open]);
 
   const handleMouseUp = () => setIsDragging(false);
@@ -99,8 +97,8 @@ export default function DebugBox({ title, children }: Props) {
     <motion.div
       className="floating-box overflow-auto"
       style={{
-        left: position.x,
-        top: position.y,
+        x: position.current.x,
+        y: position.current.y,
         width: open ? "200px" : "108px",
         maxHeight: "90vh",
       }}
