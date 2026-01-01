@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 const InfoHeader = ({ item }: { item: ItemData | null }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [edges, setEdges] = useState<{ atLeft: boolean; atRight: boolean }>({
+  const [edges, setEdges] = useState({
     atLeft: false,
     atRight: false,
   });

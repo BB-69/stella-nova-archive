@@ -7,15 +7,11 @@ import {
   useLayoutEffect,
 } from "react";
 import { motion, useMotionValue } from "framer-motion";
+import type { position } from "../../scripts/distance";
 
 interface Props {
   title: string;
   children: ReactNode;
-}
-
-interface Position {
-  x: number;
-  y: number;
 }
 
 export default function DebugBox({ title, children }: Props) {
@@ -40,7 +36,7 @@ export default function DebugBox({ title, children }: Props) {
   });
   const [isDragging, setIsDragging] = useState(false);
 
-  const offset = useRef<Position>({ x: 0, y: 0 });
+  const offset = useRef<position>({ x: 0, y: 0 });
   const boxRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
