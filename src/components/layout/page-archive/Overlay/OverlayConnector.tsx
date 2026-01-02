@@ -6,7 +6,7 @@ import {
   getDistance,
   type positionMeta,
 } from "../../../../scripts/distance";
-import { useOverlayContext } from "./OverlayContext";
+import { useOverlayContext } from "./context/OverlayContext";
 import { getScrollBounds } from "../TranslationBar/TlContent";
 import { getColorId } from "../../../../scripts/color";
 import { animate, motion, useMotionValue } from "framer-motion";

@@ -5,10 +5,10 @@ import {
 } from "../../../scripts/database-loader";
 import { isItemData } from "../../../scripts/structs/item-data";
 import BrowseItem from "./BrowseItem";
-import { useSearchContext } from "./SearchContext";
-import { useDebugValue } from "../../../hooks/useDebugValue";
-import { useFilterContext } from "./FilterContext";
-import { useSortContext } from "./SortContext";
+import { useSearchContext } from "../context/SearchContext";
+import { useDebugValue } from "../../_DebugTools/useDebugValue";
+import { useFilterContext } from "./context/FilterContext";
+import { useSortContext } from "./context/SortContext";
 
 /* ---LOCAL_TEST--- */
 // const test_items: FetchedFile[] = [

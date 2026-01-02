@@ -2,10 +2,11 @@ import type { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { DebugProvider } from "./components/_DebugTools/VariableContext";
 import { ThemeProvider } from "./components/common/theme";
-import { FilterProvider } from "./components/layout/page-browse/FilterContext";
-import { SearchProvider } from "./components/layout/page-browse/SearchContext";
-import { SortProvider } from "./components/layout/page-browse/SortContext";
-import { OverlayProvider } from "./components/layout/page-archive/Overlay/OverlayContext";
+import { FilterProvider } from "./components/layout/page-browse/context/FilterContext";
+import { SearchProvider } from "./components/layout/context/SearchContext";
+import { SortProvider } from "./components/layout/page-browse/context/SortContext";
+import { OverlayProvider } from "./components/layout/page-archive/Overlay/context/OverlayContext";
+import { ArchiveProvider } from "./components/layout/page-archive/context/ArchiveContext";
 
 const AppProviders = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
@@ -22,7 +23,9 @@ const AppProviders = ({ children }: { children: ReactNode }) => {
           </SearchProvider>
         ) : path == "/archive" ? (
           <SearchProvider>
-            <OverlayProvider>{children}</OverlayProvider>
+            <OverlayProvider>
+              <ArchiveProvider>{children}</ArchiveProvider>
+            </OverlayProvider>
           </SearchProvider>
         ) : (
           children

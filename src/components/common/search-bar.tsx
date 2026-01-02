@@ -1,5 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from "react";
-import { useSearchQuery } from "../../hooks/useSearchQuery";
+import { useSearchQuery } from "../layout/context/useSearchQuery";
 import { FetchFilesFromFolder } from "../../scripts/database-loader";
 import { isItemData, type ItemData } from "../../scripts/structs/item-data";
 import { useNavigate } from "react-router-dom";

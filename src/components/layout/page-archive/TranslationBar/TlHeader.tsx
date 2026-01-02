@@ -2,22 +2,19 @@ import { Menu } from "lucide-react";
 import ButtonToggle from "../../../common/button-toggle";
 import type { Dispatch, SetStateAction } from "react";
 import type { TlOptionProps } from "./useTlOptions";
+import { useArchiveContext } from "../context/ArchiveContext";
 
 const TlHeader = ({
-  onToggleTlBar,
-  tlBarCollapsed,
-  editing,
   options,
   activeModal,
   setActiveModal,
 }: {
-  onToggleTlBar: () => void;
-  tlBarCollapsed: boolean;
-  editing: boolean;
   options: TlOptionProps[];
   activeModal: string | null;
   setActiveModal: Dispatch<SetStateAction<string | null>>;
 }) => {
+  const { tlBarCollapsed, onToggleTlBar, editing } = useArchiveContext();
+
   return (
     <div
       className="group-unselectable flex items-center min-h-16 pb-3 min-w-full

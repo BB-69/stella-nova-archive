@@ -9,10 +9,10 @@ import {
 import {
   positionMetaDefault,
   type positionMeta,
-} from "../../../../scripts/distance";
-import { useDebugValue } from "../../../../hooks/useDebugValue";
-import { getColorId } from "../../../../scripts/color";
-import OverlayApplier from "./OverlayApplier";
+} from "../../../../../scripts/distance";
+import { useDebugValue } from "../../../../_DebugTools/useDebugValue";
+import { getColorId } from "../../../../../scripts/color";
+import OverlayApplier from "../OverlayApplier";
 
 export type OverlayMetaType = {
   [key: string]: { color?: string; hover: boolean };

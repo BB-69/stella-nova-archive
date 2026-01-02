@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { useOverlayContext } from "./Overlay/OverlayContext";
+import { useOverlayContext } from "./Overlay/context/OverlayContext";
 import type { positionMeta } from "../../../scripts/distance";
 import { getColorId } from "../../../scripts/color";
 import { useIsChanging } from "../../../hooks/useIsChanging";

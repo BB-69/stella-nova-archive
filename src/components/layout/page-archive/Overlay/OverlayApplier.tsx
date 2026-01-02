@@ -1,7 +1,7 @@
 import { Fragment } from "react/jsx-runtime";
 import OverlayBoxliner from "./OverlayBoxliner";
 import OverlayConnector from "./OverlayConnector";
-import { useOverlayContext } from "./OverlayContext";
+import { useOverlayContext } from "./context/OverlayContext";
 import { useEffect, useState } from "react";
 
 const OverlayApplier = () => {

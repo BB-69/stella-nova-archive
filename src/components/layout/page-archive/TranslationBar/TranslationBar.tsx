@@ -1,13 +1,11 @@
-import { Fragment, useState, type Dispatch, type SetStateAction } from "react";
-import {
-  type ItemData,
-  type ItemDataFraction,
-} from "../../../../scripts/structs/item-data";
+import { Fragment, useState } from "react";
+import { type ItemDataFraction } from "../../../../scripts/structs/item-data";
 import TlHeader from "./TlHeader";
 import TlContent from "./TlContent";
 import useTlOptions from "./useTlOptions";
 import { useIsMd } from "../../../../hooks/useIsMd";
 import OverlayModal from "../../../common/overlay-modal";
+import { useArchiveContext } from "../context/ArchiveContext";
 
 /* ---LOCAL_TEST--- */
 // const overlayItems: ItemOverlay[] = [
@@ -33,21 +31,10 @@ import OverlayModal from "../../../common/overlay-modal";
 //   },
 // ];
 
-const TranslationBar = ({
-  onToggleTlBar,
-  tlBarCollapsed,
-  item,
-  setItem,
-  setImgSrc,
-  editing,
-}: {
-  onToggleTlBar: () => void;
-  tlBarCollapsed: boolean;
-  item: ItemData | null;
-  setItem: Dispatch<SetStateAction<ItemData | null>>;
-  setImgSrc: Dispatch<SetStateAction<string>>;
-  editing: boolean;
-}) => {
+const TranslationBar = () => {
+  const { tlBarCollapsed, item, setItem, setImgSrc, editing } =
+    useArchiveContext();
+
   const [activeModal, setActiveModal] = useState<string | null>(null);
 
   const applyItem = (newI: ItemDataFraction) => {
@@ -85,9 +72,6 @@ const TranslationBar = ({
         ${tlBarCollapsed ? "md:w-[72px]" : "md:w-[260px]"}`}
       >
         <TlHeader
-          onToggleTlBar={onToggleTlBar}
-          tlBarCollapsed={tlBarCollapsed}
-          editing={editing}
           options={tlOptions.filter(({ appearOn }) =>
             appearOn.md !== undefined ? appearOn.md === !isMd : true
           )}
@@ -96,11 +80,7 @@ const TranslationBar = ({
         />
 
         <TlContent
-          tlBarCollapsed={tlBarCollapsed}
-          item={item}
-          setItem={setItem}
           applyItem={applyItem}
-          editing={editing}
           options={tlOptions.filter(({ appearOn }) =>
             appearOn.md !== undefined ? appearOn.md === isMd : false
           )}

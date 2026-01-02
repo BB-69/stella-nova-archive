@@ -8,14 +8,14 @@ import {
 } from "react";
 import {
   defaultItemOverlay,
-  type ItemData,
   type ItemDataFraction,
 } from "../../../../scripts/structs/item-data";
 import ButtonToggle from "../../../common/button-toggle";
 import TextBox from "../../../common/text-box";
 import OverlayProperty from "./OverlayProperty";
 import type { TlOptionProps } from "./useTlOptions";
-import { useOverlayContext } from "../Overlay/OverlayContext";
+import { useOverlayContext } from "../Overlay/context/OverlayContext";
+import { useArchiveContext } from "../context/ArchiveContext";
 
 let scrollBounds = { x: 0, y: 0, w: 0, h: 0 };
 export const getScrollBounds = () => {
@@ -23,27 +23,21 @@ export const getScrollBounds = () => {
 };
 
 const TlContent = ({
-  tlBarCollapsed,
-  item,
-  setItem,
   applyItem,
-  editing,
   options,
   activeModal,
   setActiveModal,
 }: {
-  tlBarCollapsed: boolean;
-  item: ItemData | null;
-  setItem: Dispatch<SetStateAction<ItemData | null>>;
   applyItem: (newI: ItemDataFraction) => void;
-  editing: boolean;
   options: TlOptionProps[];
   activeModal: string | null;
   setActiveModal: Dispatch<SetStateAction<string | null>>;
 }) => {
-  const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
   const { overlayMetas, setOverlayMeta, setOverlayTransform, removeOverlay } =
     useOverlayContext();
+  const { tlBarCollapsed, item, setItem, editing } = useArchiveContext();
+
+  const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     if (!item) return;
@@ -348,7 +342,6 @@ const TlContent = ({
                   <OverlayProperty
                     meta={item.meta}
                     itemOverlay={it}
-                    editing={editing}
                     setOverlay={(o) => {
                       applyItem({
                         overlays: item.overlays.map((overlay) =>
