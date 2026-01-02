@@ -1,24 +1,22 @@
 import { useMemo, useEffect, useRef, Fragment } from "react";
-import type { ItemData } from "../../../../scripts/structs/item-data";
 import { useOverlayContext } from "./OverlayContext";
 import { getColorId } from "../../../../scripts/color";
+import { useArchiveContext } from "../context/ArchiveContext";
 
 const Overlay = ({
-  item,
   resolution,
   display,
   offset,
-  editing,
 }: {
-  item: ItemData | null;
   resolution: { w: number; h: number };
   display: { x: number; y: number; w: number; h: number };
   offset: {
     x: number;
     y: number;
   };
-  editing: boolean;
 }) => {
+  const { item, editing } = useArchiveContext();
+
   const overlays = useMemo(() => {
     if (!item || !item?.overlays || resolution.w === 0 || resolution.h === 0)
       return [];

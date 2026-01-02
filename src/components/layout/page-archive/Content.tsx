@@ -2,24 +2,18 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import QMark from "/assets/fallback/question-mark.svg";
 import Ruler from "./Ruler";
 import { useDebugValue } from "../../_DebugTools/useDebugValue";
-import type { ItemData } from "../../../scripts/structs/item-data";
 import Overlay from "./Overlay/Overlay";
 import { useMotionValue } from "framer-motion";
+import { useArchiveContext } from "./context/ArchiveContext";
 
 let imgBounds = { x: 0, y: 0, w: 0, h: 0 };
 export const getImageBounds = () => {
   return imgBounds;
 };
 
-const Content = ({
-  item,
-  imgSrc,
-  editing,
-}: {
-  item: ItemData | null;
-  imgSrc: string;
-  editing: boolean;
-}) => {
+const Content = () => {
+  const { item, imgSrc } = useArchiveContext();
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const cursorRef = useRef({ x: useMotionValue(0), y: useMotionValue(0) });
@@ -171,11 +165,9 @@ const Content = ({
         />
 
         <Overlay
-          item={item}
           resolution={resolution}
           display={display}
           offset={imageOffset}
-          editing={editing}
         />
       </div>
     </div>
