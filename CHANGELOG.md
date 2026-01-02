@@ -1,5 +1,11 @@
 # CHANGELOGS
 
+## v4.4 - 2026/01/02 [#149](https://github.com/BB-69/stella-nova-archive/pull/149)
+
+- Turn props into context
+  - Added ArchiveContext
+  - Moved some existing contexts to respective folders
+
 ## v4.3 - 2026/01/01 [#146](https://github.com/BB-69/stella-nova-archive/pull/146)
 
 - Reduce React rerenders
