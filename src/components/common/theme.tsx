@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useDebugValue } from "../../hooks/useDebugValue";
+import { useDebugValue } from "../_DebugTools/useDebugValue";
 import ButtonToggle from "./button-toggle";
 
 export interface ThemeState {

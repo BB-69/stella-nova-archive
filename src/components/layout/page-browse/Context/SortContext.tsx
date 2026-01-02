@@ -1,5 +1,5 @@
 import { createContext, type ReactNode, useState, useContext } from "react";
-import { useDebugValue } from "../../../hooks/useDebugValue";
+import { useDebugValue } from "../../../_DebugTools/useDebugValue";
 
 export type SortType = {
   type: "name" | "date";

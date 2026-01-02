@@ -10,7 +10,7 @@ import {
   positionMetaDefault,
   type positionMeta,
 } from "../../../../scripts/distance";
-import { useDebugValue } from "../../../../hooks/useDebugValue";
+import { useDebugValue } from "../../../_DebugTools/useDebugValue";
 import { getColorId } from "../../../../scripts/color";
 import OverlayApplier from "./OverlayApplier";
 

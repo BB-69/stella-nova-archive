@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import QMark from "/assets/fallback/question-mark.svg";
 import Ruler from "./Ruler";
-import { useDebugValue } from "../../../hooks/useDebugValue";
+import { useDebugValue } from "../../_DebugTools/useDebugValue";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import Overlay from "./Overlay/Overlay";
 import { useMotionValue } from "framer-motion";

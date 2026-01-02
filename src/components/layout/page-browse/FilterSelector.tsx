@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { filterTags } from "../../../scripts/structs/tag-data";
 import { Check } from "lucide-react";
-import { useFilterContext } from "./FilterContext";
+import { useFilterContext } from "./context/FilterContext";
 
 const FilterSelector = ({ collapsed }: { collapsed: boolean }) => {
   const [checkedTags, setCheckedTags] = useState<{ [key: string]: boolean }>(

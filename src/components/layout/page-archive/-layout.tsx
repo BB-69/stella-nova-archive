@@ -9,7 +9,7 @@ import {
 } from "../../../scripts/structs/item-data";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FetchFilesFromFolder } from "../../../scripts/database-loader";
-import { useDebugValue } from "../../../hooks/useDebugValue";
+import { useDebugValue } from "../../_DebugTools/useDebugValue";
 import InfoHeader from "./InfoHeader";
 import { useOverlayContext } from "./Overlay/OverlayContext";
 import OverlayModal from "../../common/overlay-modal";

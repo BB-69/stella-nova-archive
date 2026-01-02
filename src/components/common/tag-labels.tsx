@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useMemo } from "react";
 import { getTagColor } from "../../scripts/structs/tag-data";
-import { useDebugValue } from "../../hooks/useDebugValue";
+import { useDebugValue } from "../_DebugTools/useDebugValue";
 import { getUniqueId } from "../../scripts/id-generator";
 
 const TagLabels = ({ tags }: { tags?: string[] }) => {

@@ -2,7 +2,7 @@ import { memo, useRef, useState } from "react";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import HighlightedText from "../../common/highlighted-text";
 import TagLabels from "../../common/tag-labels";
-import { useSearchContext } from "./SearchContext";
+import { useSearchContext } from "../context/SearchContext";
 import QMark from "/assets/fallback/question-mark.svg";
 import BrowseItemModal from "./BrowseItemModal";
 import { CircleAlert } from "lucide-react";

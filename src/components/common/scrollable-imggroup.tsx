@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { useDebugValue } from "../../hooks/useDebugValue";
+import { useDebugValue } from "../_DebugTools/useDebugValue";
 import { getImageDimensions } from "../../scripts/image";
 
 const ScrollableImgGroup = ({

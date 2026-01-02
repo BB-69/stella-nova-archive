@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { useDebugValue } from "../../../hooks/useDebugValue";
+import { useDebugValue } from "../../_DebugTools/useDebugValue";
 
 interface SearchContextType {
   searchQuery: string;
