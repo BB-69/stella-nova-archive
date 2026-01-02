@@ -5,7 +5,7 @@ import { ThemeProvider } from "./components/common/theme";
 import { FilterProvider } from "./components/layout/page-browse/context/FilterContext";
 import { SearchProvider } from "./components/layout/context/SearchContext";
 import { SortProvider } from "./components/layout/page-browse/context/SortContext";
-import { OverlayProvider } from "./components/layout/page-archive/Overlay/OverlayContext";
+import { OverlayProvider } from "./components/layout/page-archive/Overlay/context/OverlayContext";
 import { ArchiveProvider } from "./components/layout/page-archive/context/ArchiveContext";
 
 const AppProviders = ({ children }: { children: ReactNode }) => {

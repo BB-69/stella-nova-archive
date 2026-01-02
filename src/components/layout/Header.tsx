@@ -6,7 +6,7 @@ import { ArrowLeftToLine, Layers2, SlidersHorizontal } from "lucide-react";
 import SortSelector from "./page-browse/SortSelector";
 import ButtonToggle from "../common/button-toggle";
 import { useNavigate } from "react-router-dom";
-import { useOverlayContext } from "./page-archive/Overlay/OverlayContext";
+import { useOverlayContext } from "./page-archive/Overlay/context/OverlayContext";
 import pkg from "../../../package.json";
 
 const Header = ({

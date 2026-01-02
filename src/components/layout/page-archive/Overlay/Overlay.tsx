@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useRef, Fragment } from "react";
-import { useOverlayContext } from "./OverlayContext";
+import { useOverlayContext } from "./context/OverlayContext";
 import { getColorId } from "../../../../scripts/color";
 import { useArchiveContext } from "../context/ArchiveContext";
 

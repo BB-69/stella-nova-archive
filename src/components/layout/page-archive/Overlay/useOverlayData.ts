@@ -1,5 +1,8 @@
 import { useEffect } from "react";
-import { useOverlayContext, type OverlayMetaType } from "./OverlayContext";
+import {
+  useOverlayContext,
+  type OverlayMetaType,
+} from "./context/OverlayContext";
 import type { position } from "../../../../scripts/distance";
 
 export function useOverlayReset() {

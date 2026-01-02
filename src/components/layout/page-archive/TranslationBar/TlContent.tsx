@@ -14,7 +14,7 @@ import ButtonToggle from "../../../common/button-toggle";
 import TextBox from "../../../common/text-box";
 import OverlayProperty from "./OverlayProperty";
 import type { TlOptionProps } from "./useTlOptions";
-import { useOverlayContext } from "../Overlay/OverlayContext";
+import { useOverlayContext } from "../Overlay/context/OverlayContext";
 import { useArchiveContext } from "../context/ArchiveContext";
 
 let scrollBounds = { x: 0, y: 0, w: 0, h: 0 };
