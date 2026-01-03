@@ -6,9 +6,9 @@ import {
 import { isItemData } from "../../../scripts/structs/item-data";
 import BrowseItem from "./BrowseItem";
 import { useDebugValue } from "../../_DebugTools/useDebugValue";
-import { useFilterContext } from "./context/FilterContext";
 import { useSortContext } from "./context/SortContext";
 import { useSearchQuery } from "../context/useSearchQuery";
+import { useFilterQuery } from "./context/useFilterQuery";
 
 /* ---LOCAL_TEST--- */
 // const test_items: FetchedFile[] = [
@@ -89,7 +89,7 @@ const Browser = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const search = useSearchQuery();
-  const { filterQuery } = useFilterContext();
+  const filter = useFilterQuery();
   const { sortQuery } = useSortContext();
 
   const [images, setImages] = useState<{ [key: string]: string }>({});
@@ -191,8 +191,8 @@ const Browser = () => {
         !isItemData(item) ||
         !item.title.toLowerCase().includes(search.query.toLowerCase()) ||
         // filter
-        (filterQuery.length != 0
-          ? filterQuery.some((t) => !itemTag.includes(t))
+        (filter.query.length != 0
+          ? filter.query.some((t) => !itemTag.includes(t))
           : false)
       )
         return undefined;
