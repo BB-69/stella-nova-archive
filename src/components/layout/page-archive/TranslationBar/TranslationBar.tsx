@@ -5,7 +5,7 @@ import TlContent from "./TlContent";
 import useTlOptions from "./useTlOptions";
 import { useIsMd } from "../../../../hooks/useIsMd";
 import OverlayModal from "../../../common/overlay-modal";
-import { useArchiveContext } from "../context/ArchiveContext";
+import { useArchive } from "../context/useArchive";
 
 /* ---LOCAL_TEST--- */
 // const overlayItems: ItemOverlay[] = [
@@ -32,8 +32,7 @@ import { useArchiveContext } from "../context/ArchiveContext";
 // ];
 
 const TranslationBar = () => {
-  const { tlBarCollapsed, item, setItem, setImgSrc, editing } =
-    useArchiveContext();
+  const { tlBarCollapsed, item, setItem, setImgSrc, editing } = useArchive();
 
   const [activeModal, setActiveModal] = useState<string | null>(null);
 

@@ -5,7 +5,7 @@ import type {
   ItemOverlayFraction,
 } from "../../../../scripts/structs/item-data";
 import TextBox from "../../../common/text-box";
-import { useArchiveContext } from "../context/ArchiveContext";
+import { useArchive } from "../context/useArchive";
 
 const OverlayProperty = ({
   meta,
@@ -16,7 +16,7 @@ const OverlayProperty = ({
   itemOverlay: ItemOverlay;
   setOverlay?: (o: ItemOverlay) => void;
 }) => {
-  const { editing } = useArchiveContext();
+  const { editing } = useArchive();
 
   const applyOverlay = (newO: ItemOverlayFraction) => {
     if (!setOverlay) return;

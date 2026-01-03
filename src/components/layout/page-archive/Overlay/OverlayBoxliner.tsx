@@ -1,6 +1,6 @@
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { getBounded, type positionMeta } from "../../../../scripts/distance";
-import { useOverlayContext } from "./context/OverlayContext";
+import { useOverlay } from "./context/useOverlay";
 
 const OverlayBoxliner = ({
   id,
@@ -10,7 +10,7 @@ const OverlayBoxliner = ({
   hovering: boolean;
 }) => {
   const windowSize = useWindowSize();
-  const { overlayTransformsRef } = useOverlayContext();
+  const { overlayTransformsRef } = useOverlay();
   const overlay = overlayTransformsRef.current[id].overlay;
 
   if (!overlay) return;

@@ -2,7 +2,7 @@ import { Menu } from "lucide-react";
 import ButtonToggle from "../../../common/button-toggle";
 import type { Dispatch, SetStateAction } from "react";
 import type { TlOptionProps } from "./useTlOptions";
-import { useArchiveContext } from "../context/ArchiveContext";
+import { useArchive } from "../context/useArchive";
 
 const TlHeader = ({
   options,
@@ -13,7 +13,7 @@ const TlHeader = ({
   activeModal: string | null;
   setActiveModal: Dispatch<SetStateAction<string | null>>;
 }) => {
-  const { tlBarCollapsed, onToggleTlBar, editing } = useArchiveContext();
+  const { tlBarCollapsed, toggleTlBar, editing } = useArchive();
 
   return (
     <div
@@ -21,7 +21,7 @@ const TlHeader = ({
       border-b border-black/30 [.dark_&]:border-white/30"
     >
       <button
-        onClick={onToggleTlBar}
+        onClick={toggleTlBar}
         aria-label={
           tlBarCollapsed ? "Expand translation bar" : "Collapse translation bar"
         }

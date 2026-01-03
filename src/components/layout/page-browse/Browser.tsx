@@ -5,10 +5,10 @@ import {
 } from "../../../scripts/database-loader";
 import { isItemData } from "../../../scripts/structs/item-data";
 import BrowseItem from "./BrowseItem";
-import { useSearchContext } from "../context/SearchContext";
 import { useDebugValue } from "../../_DebugTools/useDebugValue";
-import { useFilterContext } from "./context/FilterContext";
-import { useSortContext } from "./context/SortContext";
+import { useSearchQuery } from "../context/useSearchQuery";
+import { useFilterQuery } from "./context/useFilterQuery";
+import { useSortQuery } from "./context/useSortQuery";
 
 /* ---LOCAL_TEST--- */
 // const test_items: FetchedFile[] = [
@@ -88,9 +88,9 @@ const Browser = () => {
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { searchQuery } = useSearchContext();
-  const { filterQuery } = useFilterContext();
-  const { sortQuery } = useSortContext();
+  const search = useSearchQuery();
+  const filter = useFilterQuery();
+  const sort = useSortQuery();
 
   const [images, setImages] = useState<{ [key: string]: string }>({});
 
@@ -189,10 +189,10 @@ const Browser = () => {
         : [];
       if (
         !isItemData(item) ||
-        !item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        !item.title.toLowerCase().includes(search.query.toLowerCase()) ||
         // filter
-        (filterQuery.length != 0
-          ? filterQuery.some((t) => !itemTag.includes(t))
+        (filter.query.length != 0
+          ? filter.query.some((t) => !itemTag.includes(t))
           : false)
       )
         return undefined;
@@ -209,12 +209,12 @@ const Browser = () => {
     .filter((i) => i !== undefined)
     // sort
     .sort((a, b) =>
-      sortQuery != null
-        ? sortQuery.type == "name"
+      sort.query != null
+        ? sort.query.type == "name"
           ? a.data.title.localeCompare(b.data.title) *
-            (sortQuery.ascending ? 1 : -1)
+            (sort.query.ascending ? 1 : -1)
           : a.data.meta.version.localeCompare(b.data.meta.version) *
-            (sortQuery.ascending ? 1 : -1)
+            (sort.query.ascending ? 1 : -1)
         : 0
     )
     .map((i) => i.node);

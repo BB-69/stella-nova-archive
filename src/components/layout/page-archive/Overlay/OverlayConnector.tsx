@@ -6,7 +6,7 @@ import {
   getDistance,
   type positionMeta,
 } from "../../../../scripts/distance";
-import { useOverlayContext } from "./context/OverlayContext";
+import { useOverlay } from "./context/useOverlay";
 import { getScrollBounds } from "../TranslationBar/TlContent";
 import { getColorId } from "../../../../scripts/color";
 import { animate, motion, useMotionValue } from "framer-motion";
@@ -23,7 +23,7 @@ const OverlayConnector = ({
   const isMd = useIsMd();
   const scrollBounds = getScrollBounds();
 
-  const { overlayMetas, overlayTransformsRef } = useOverlayContext();
+  const { overlayMetas, overlayTransformsRef } = useOverlay();
   const t = overlayTransformsRef.current[id];
 
   if (!t.overlay || !t.side) return;

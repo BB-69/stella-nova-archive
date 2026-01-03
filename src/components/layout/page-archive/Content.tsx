@@ -4,7 +4,7 @@ import Ruler from "./Ruler";
 import { useDebugValue } from "../../_DebugTools/useDebugValue";
 import Overlay from "./Overlay/Overlay";
 import { useMotionValue } from "framer-motion";
-import { useArchiveContext } from "./context/ArchiveContext";
+import { useArchive } from "./context/useArchive";
 
 let imgBounds = { x: 0, y: 0, w: 0, h: 0 };
 export const getImageBounds = () => {
@@ -12,7 +12,7 @@ export const getImageBounds = () => {
 };
 
 const Content = () => {
-  const { item, imgSrc } = useArchiveContext();
+  const { item, imgSrc } = useArchive();
 
   const containerRef = useRef<HTMLDivElement>(null);
 

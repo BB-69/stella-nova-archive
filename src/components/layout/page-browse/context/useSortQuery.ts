@@ -1,10 +1,7 @@
-import { useEffect } from "react";
-import { useSortContext, type SortType } from "./SortContext";
+import { useSortContext } from "./SortContext";
 
-export function useSortQuery(query: SortType | null) {
-  const { setSortQuery } = useSortContext();
+export function useSortQuery() {
+  const { sortQuery, setSortQuery } = useSortContext();
 
-  useEffect(() => {
-    setSortQuery(query);
-  }, [query, setSortQuery]);
+  return { query: sortQuery, setQuery: setSortQuery };
 }

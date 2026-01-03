@@ -33,11 +33,10 @@ async function searchItems(
 }
 
 const SearchBar = ({ isBrowsing }: { isBrowsing: boolean }) => {
-  const [query, setQuery] = useState("");
-  useSearchQuery(query);
+  const search = useSearchQuery();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
+    search.setQuery(e.target.value);
   };
 
   const [results, setResults] = useState<
@@ -50,19 +49,19 @@ const SearchBar = ({ isBrowsing }: { isBrowsing: boolean }) => {
     if (isBrowsing) return;
 
     const id = setTimeout(async () => {
-      if (!query.trim()) {
+      if (!search.query.trim()) {
         setResults([]);
         return;
       }
 
       setIsLoading(true);
-      const res = await searchItems(query, 3);
+      const res = await searchItems(search.query, 3);
       if (res) setResults(res);
       setIsLoading(false);
     }, 250);
 
     return () => clearTimeout(id);
-  }, [query, isBrowsing]);
+  }, [search.query, isBrowsing]);
 
   return (
     <div className="relative flex-1 min-w-[80px] mx-2">
@@ -71,11 +70,11 @@ const SearchBar = ({ isBrowsing }: { isBrowsing: boolean }) => {
 			  border border-black/20 [.dark_&]:border-white/20"
         type="text"
         maxLength={69}
-        value={query}
+        value={search.query}
         onChange={handleInputChange}
         placeholder="Search..."
       />
-      {!isBrowsing && query.length > 0 && (
+      {!isBrowsing && search.query.length > 0 && (
         <div
           className="absolute w-full mt-2 bg-white [.dark_&]:bg-black
           rounded-xl border border-black/20 [.dark_&]:border-white/20

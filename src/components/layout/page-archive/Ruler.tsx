@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { useOverlayContext } from "./Overlay/context/OverlayContext";
+import { useOverlay } from "./Overlay/context/useOverlay";
 import type { positionMeta } from "../../../scripts/distance";
 import { getColorId } from "../../../scripts/color";
 import { useIsChanging } from "../../../hooks/useIsChanging";
@@ -13,8 +13,7 @@ const Ruler = ({
   cursorPos: MotionValue<number>;
 }) => {
   const isHorizontal = orientation === "horizontal";
-  const { overlayActive, overlayMetas, overlayTransformsRef } =
-    useOverlayContext();
+  const { overlayActive, overlayMetas, overlayTransformsRef } = useOverlay();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);

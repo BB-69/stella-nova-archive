@@ -4,7 +4,7 @@ import type { ItemData } from "../../../../scripts/structs/item-data";
 
 interface ArchiveContextType {
   tlBarCollapsed: boolean;
-  onToggleTlBar: () => void;
+  setTlBarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   item: ItemData | null;
   setItem: React.Dispatch<React.SetStateAction<ItemData | null>>;
   imgSrc: string;
@@ -27,15 +27,11 @@ export function ArchiveProvider({ children }: { children: ReactNode }) {
     useDebugValue("editing", editing, "/archive");
   }
 
-  const onToggleTlBar = () => {
-    () => item != null && setTlBarCollapsed((s) => !s);
-  };
-
   return (
     <ArchiveContext.Provider
       value={{
         tlBarCollapsed,
-        onToggleTlBar,
+        setTlBarCollapsed,
         item,
         setItem,
         imgSrc,

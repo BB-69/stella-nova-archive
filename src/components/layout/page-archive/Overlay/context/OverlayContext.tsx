@@ -6,12 +6,8 @@ import {
   useRef,
   type RefObject,
 } from "react";
-import {
-  positionMetaDefault,
-  type positionMeta,
-} from "../../../../../scripts/distance";
+import { type positionMeta } from "../../../../../scripts/distance";
 import { useDebugValue } from "../../../../_DebugTools/useDebugValue";
-import { getColorId } from "../../../../../scripts/color";
 import OverlayApplier from "../OverlayApplier";
 
 export type OverlayMetaType = {
@@ -26,17 +22,14 @@ export type OverlayTransformType = RefObject<{
 
 interface OverlayContextType {
   overlayActive: boolean;
-  toggleOverlayActive: () => void;
+  setOverlayActive: React.Dispatch<React.SetStateAction<boolean>>;
   overlayMetas: OverlayMetaType;
-  setOverlayMeta: (meta: OverlayMetaType) => void;
+  setOverlayMetas: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: { color: string; hover: boolean };
+    }>
+  >;
   overlayTransformsRef: OverlayTransformType;
-  setOverlayTransform: (
-    isOverlay: boolean,
-    id: string,
-    transform: positionMeta
-  ) => void;
-  removeOverlay: (id: string) => void;
-  resetOverlayData: () => void;
 }
 
 export const OverlayContext = createContext<OverlayContextType | null>(null);
@@ -58,69 +51,14 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     // useDebugValue("overlayTransformsRef", overlayTransformsRef.current, "/archive");
   }
 
-  const toggleOverlayActive = () => {
-    setOverlayActive((prev) => !prev);
-  };
-
-  const resetOverlayData = () => {
-    setOverlayMetas({});
-    overlayTransformsRef.current = {};
-  };
-
-  const setOverlayMeta = (meta: OverlayMetaType) => {
-    setOverlayMetas((prev) => {
-      const next = { ...prev };
-      for (const [key, value] of Object.entries(meta)) {
-        next[key] = {
-          color: value.color ?? prev[key]?.color ?? getColorId(key),
-          hover: value.hover,
-        };
-      }
-      return next;
-    });
-  };
-
-  const setOverlayTransform = (
-    isOverlay: boolean,
-    id: string,
-    transform: positionMeta
-  ) => {
-    const prev = overlayTransformsRef.current;
-    overlayTransformsRef.current = {
-      ...prev,
-      [id]: {
-        overlay: isOverlay
-          ? transform
-          : prev[id]?.overlay ?? positionMetaDefault(),
-        side: !isOverlay ? transform : prev[id]?.side ?? positionMetaDefault(),
-      },
-    };
-  };
-
-  const removeOverlay = (id: string) => {
-    setOverlayMetas((prev) => {
-      const { [id]: _, ...rest } = prev;
-      return rest;
-    });
-
-    overlayTransformsRef.current = (() => {
-      const prev = overlayTransformsRef.current;
-      const { [id]: _, ...rest } = prev;
-      return rest;
-    })();
-  };
-
   return (
     <OverlayContext.Provider
       value={{
         overlayActive,
-        toggleOverlayActive,
+        setOverlayActive,
         overlayMetas,
-        setOverlayMeta,
+        setOverlayMetas,
         overlayTransformsRef,
-        setOverlayTransform,
-        removeOverlay,
-        resetOverlayData,
       }}
     >
       {children}

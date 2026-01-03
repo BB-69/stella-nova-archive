@@ -2,11 +2,11 @@ import { memo, useRef, useState } from "react";
 import type { ItemData } from "../../../scripts/structs/item-data";
 import HighlightedText from "../../common/highlighted-text";
 import TagLabels from "../../common/tag-labels";
-import { useSearchContext } from "../context/SearchContext";
 import QMark from "/assets/fallback/question-mark.svg";
 import BrowseItemModal from "./BrowseItemModal";
 import { CircleAlert } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useSearchQuery } from "../context/useSearchQuery";
 
 const BrowseItem = ({
   item,
@@ -19,8 +19,8 @@ const BrowseItem = ({
 }) => {
   const [hovered, setHovered] = useState<boolean>(false);
   const browseItemRef = useRef<HTMLDivElement>(null);
-  const { searchQuery } = useSearchContext();
 
+  const search = useSearchQuery();
   const navigate = useNavigate();
 
   const startIdx = url.search("/data/");
@@ -46,7 +46,7 @@ const BrowseItem = ({
         group-hover:border-white/30 group-hover:text-white"
       >
         {item.title ? (
-          <HighlightedText text={item.title} highlight={searchQuery} />
+          <HighlightedText text={item.title} highlight={search.query} />
         ) : (
           "< Untitled >"
         )}

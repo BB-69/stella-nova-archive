@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useRef, Fragment } from "react";
-import { useOverlayContext } from "./context/OverlayContext";
+import { useOverlay } from "./context/useOverlay";
 import { getColorId } from "../../../../scripts/color";
-import { useArchiveContext } from "../context/ArchiveContext";
+import { useArchive } from "../context/useArchive";
 
 const Overlay = ({
   resolution,
@@ -15,7 +15,7 @@ const Overlay = ({
     y: number;
   };
 }) => {
-  const { item, editing } = useArchiveContext();
+  const { item, editing } = useArchive();
 
   const overlays = useMemo(() => {
     if (!item || !item?.overlays || resolution.w === 0 || resolution.h === 0)
@@ -40,7 +40,7 @@ const Overlay = ({
   }, [item, resolution, display]);
 
   const { overlayActive, overlayMetas, setOverlayMeta, setOverlayTransform } =
-    useOverlayContext();
+    useOverlay();
 
   useEffect(() => {
     if (!item?.overlays) return;

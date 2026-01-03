@@ -1,9 +1,6 @@
-import { useEffect } from "react";
 import { useSearchContext } from "./SearchContext";
-export function useSearchQuery(query: string) {
-  const { setSearchQuery } = useSearchContext();
+export function useSearchQuery() {
+  const { searchQuery, setSearchQuery } = useSearchContext();
 
-  useEffect(() => {
-    setSearchQuery(query);
-  }, [query, setSearchQuery]);
+  return { query: searchQuery, setQuery: setSearchQuery };
 }

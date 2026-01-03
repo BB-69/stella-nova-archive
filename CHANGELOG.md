@@ -1,5 +1,10 @@
 # CHANGELOGS
 
+## v4.5 - 2026/01/03 [#154](https://github.com/BB-69/stella-nova-archive/pull/154)
+
+- Added middle hook
+  - useSearchQuery, useFilterQuery, useSortQuery, useArchive, useOverlay
+
 ## v4.4 - 2026/01/02 [#149](https://github.com/BB-69/stella-nova-archive/pull/149)
 
 - Turn props into context

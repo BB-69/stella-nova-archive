@@ -1,10 +1,7 @@
-import { useEffect } from "react";
 import { useFilterContext } from "./FilterContext";
 
-export function useFilterQuery(query: string[]) {
-  const { setFilterQuery } = useFilterContext();
+export function useFilterQuery() {
+  const { filterQuery, setFilterQuery } = useFilterContext();
 
-  useEffect(() => {
-    setFilterQuery(query);
-  }, [query, setFilterQuery]);
+  return { query: filterQuery, setQuery: setFilterQuery };
 }

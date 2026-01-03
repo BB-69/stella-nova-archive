@@ -1,9 +1,9 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useArchiveContext } from "./context/ArchiveContext";
+import { useArchive } from "./context/useArchive";
 
 const InfoHeader = () => {
-  const { item } = useArchiveContext();
+  const { item } = useArchive();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({
