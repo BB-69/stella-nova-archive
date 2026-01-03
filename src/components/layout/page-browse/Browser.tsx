@@ -6,9 +6,9 @@ import {
 import { isItemData } from "../../../scripts/structs/item-data";
 import BrowseItem from "./BrowseItem";
 import { useDebugValue } from "../../_DebugTools/useDebugValue";
-import { useSortContext } from "./skibidi-context/SortContext";
+import { useSortContext } from "./context/SortContext";
 import { useSearchQuery } from "../context/useSearchQuery";
-import { useFilterQuery } from "./skibidi-context/useFilterQuery";
+import { useFilterQuery } from "./context/useFilterQuery";
 
 /* ---LOCAL_TEST--- */
 // const test_items: FetchedFile[] = [

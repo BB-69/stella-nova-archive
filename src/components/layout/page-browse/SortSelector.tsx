@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import ButtonToggle from "../../common/button-toggle";
-import { useSortContext } from "./skibidi-context/SortContext";
+import { useSortContext } from "./context/SortContext";
 
 const SortSelector = () => {
   const [collapsed, setCollapsed] = useState(true);
