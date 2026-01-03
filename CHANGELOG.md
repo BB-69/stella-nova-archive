@@ -1,5 +1,10 @@
 # CHANGELOGS
 
+## v4.6 - 2026/01/03 [#158](https://github.com/BB-69/stella-nova-archive/pull/158)
+
+- Added custom css classes
+  - most reused related: `flex`, `width`, `height`
+
 ## v4.5 - 2026/01/03 [#154](https://github.com/BB-69/stella-nova-archive/pull/154)
 
 - [backend] Added middle hook
