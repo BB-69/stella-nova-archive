@@ -11,12 +11,14 @@
   - Added ArchiveContext
   - Moved some existing contexts to respective folders
 
-## v4.3 - 2026/01/01 [#146](https://github.com/BB-69/stella-nova-archive/pull/146)
+## v4.3 - 2026/01/03 [#155](https://github.com/BB-69/stella-nova-archive/pull/155)
 
-- Reduce React rerenders
+- [backend] Reduce React rerenders
   - memo some static children components
   - useRef + rAF for some occasionally constantly animating component
   - MotionValue applied specially to Overlays related component *(still paired with useState for force update)*
+
+
 
 ## v4.2 - 2025/12/31 [#138](https://github.com/BB-69/stella-nova-archive/pull/138)
 
