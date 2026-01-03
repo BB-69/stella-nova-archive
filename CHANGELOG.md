@@ -1,5 +1,12 @@
 # CHANGELOGS
 
+## v5.0 - 2026/01/03 [#160](https://github.com/BB-69/stella-nova-archive/pull/160)
+
+- [backend] Backend cleanup.
+  - Split big components into multiple different smaller components and logics (`common`, `context`, `hook`) for easier reuse and expansion.
+  - Reduced *some* React rerenders.
+  - Added custom css classes.
+
 ## v4.6 - 2026/01/03 [#158](https://github.com/BB-69/stella-nova-archive/pull/158)
 
 - [backend] Added custom css classes
