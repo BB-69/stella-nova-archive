@@ -2,21 +2,21 @@
 
 ## v4.5 - 2026/01/03 [#154](https://github.com/BB-69/stella-nova-archive/pull/154)
 
-- Added middle hook
+- [backend] Added middle hook
   - useSearchQuery, useFilterQuery, useSortQuery, useArchive, useOverlay
 
 ## v4.4 - 2026/01/02 [#149](https://github.com/BB-69/stella-nova-archive/pull/149)
 
-- Turn props into context
+- [backend] Turn props into context
   - Added ArchiveContext
   - Moved some existing contexts to respective folders
 
 ## v4.3 - 2026/01/01 [#146](https://github.com/BB-69/stella-nova-archive/pull/146)
 
-- Reduce React rerenders
+- [backend] Reduce React rerenders
   - memo some static children components
   - useRef + rAF for some occasionally constantly animating component
-  - MotionValue applied specially to Overlays related component *(still paired with useState for force update)*
+  - MotionValue applied specially to Overlays related component _(still paired with useState for force update)_
 
 ## v4.2 - 2025/12/31 [#138](https://github.com/BB-69/stella-nova-archive/pull/138)
 
