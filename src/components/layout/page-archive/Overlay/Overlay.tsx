@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useRef, Fragment } from "react";
-import { useOverlayContext } from "./context/OverlayContext";
+import { useOverlay } from "./context/useOverlay";
 import { getColorId } from "../../../../scripts/color";
 import { useArchive } from "../context/useArchive";
 
@@ -40,7 +40,7 @@ const Overlay = ({
   }, [item, resolution, display]);
 
   const { overlayActive, overlayMetas, setOverlayMeta, setOverlayTransform } =
-    useOverlayContext();
+    useOverlay();
 
   useEffect(() => {
     if (!item?.overlays) return;

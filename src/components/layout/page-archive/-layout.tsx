@@ -9,7 +9,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { FetchFilesFromFolder } from "../../../scripts/database-loader";
 import InfoHeader from "./InfoHeader";
-import { useOverlayContext } from "./Overlay/context/OverlayContext";
+import { useOverlay } from "./Overlay/context/useOverlay";
 import EditorDisclaimerModal from "./edit/EditorDisclaimerModal";
 import { useArchive } from "./context/useArchive";
 
@@ -41,7 +41,7 @@ const ArchiveLayout = () => {
     }
   }
 
-  const { resetOverlayData } = useOverlayContext();
+  const { resetOverlayData } = useOverlay();
   const navigate = useNavigate();
   const [editorPopup, setEditorPopup] = useState(false);
 
