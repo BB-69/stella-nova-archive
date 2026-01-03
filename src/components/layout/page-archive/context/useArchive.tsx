@@ -12,9 +12,7 @@ export function useArchive() {
     setEditing,
   } = useArchiveContext();
 
-  const onToggleTlBar = () => {
-    () => item != null && setTlBarCollapsed((s) => !s);
-  };
+  const onToggleTlBar = () => item != null && setTlBarCollapsed((s) => !s);
 
   return {
     tlBarCollapsed,

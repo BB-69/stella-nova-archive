@@ -22,6 +22,7 @@ export function ArchiveProvider({ children }: { children: ReactNode }) {
   const [editing, setEditing] = useState(false);
 
   {
+    useDebugValue("tlBarCollapsed", tlBarCollapsed, "/archive");
     useDebugValue("itemId", item?.id, "/archive");
     useDebugValue("imgSrc", imgSrc, "/archive");
     useDebugValue("editing", editing, "/archive");
