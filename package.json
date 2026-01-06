@@ -1,7 +1,7 @@
 {
   "name": "stella-nova-archive",
   "private": true,
-  "version": "5.0.1",
+  "version": "5.0.2",
   "type": "module",
   "homepage": "https://BB-69.github.io/stella-nova-archive",
   "scripts": {
