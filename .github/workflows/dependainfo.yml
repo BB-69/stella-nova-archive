@@ -52,17 +52,19 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Update README.md
-        run: node .github/scripts/update-dependency-info.js
-
       - name: Set Git Identity
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Pull previous changes
+        run: git pull --rebase origin ${{ github.head_ref }}
+
+      - name: Update README.md
+        run: node .github/scripts/update-dependency-info.js
+
       - name: Push changes back to PR branch
         run: |
-          git pull --no-rebase origin ${{ github.head_ref }}
           git add README.md
           git commit -m "Update dependency info in README.md" || echo "No changes to commit"
           git push origin HEAD:${{ github.head_ref }}
