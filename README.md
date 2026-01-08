@@ -27,11 +27,11 @@ Development changelogs: [CHANGELOG.md](/CHANGELOG.md)
 | Package | Version |
 |---|---|
 | @tailwindcss/vite | ^4.1.18 |
-| framer-motion | ^12.23.26 |
+| framer-motion | ^12.24.12 |
 | lucide-react | ^0.562.0 |
 | react | ^19.2.3 |
 | react-dom | ^19.2.3 |
-| react-router-dom | ^7.11.0 |
+| react-router-dom | ^7.12.0 |
 | tailwindcss | ^4.1.17 |
 | @eslint/js | ^9.39.2 |
 | @types/node | ^25.0.3 |
@@ -46,8 +46,8 @@ Development changelogs: [CHANGELOG.md](/CHANGELOG.md)
 | globals | ^16.5.0 |
 | postcss | ^8.5.6 |
 | typescript | ~5.9.3 |
-| typescript-eslint | ^8.51.0 |
-| vite | ^7.3.0 |
+| typescript-eslint | ^8.52.0 |
+| vite | ^7.3.1 |
 <!-- DEPENDENCIES_END -->
 
 ## CONTRIBUTION
