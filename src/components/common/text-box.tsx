@@ -34,7 +34,6 @@ const TextBox = ({
 
   useEffect(() => {
     if (text) updateQuery(text);
-    console.log("updated: " + text);
   }, [text]);
 
   function checkNum(s: string, isInt: boolean): boolean {
