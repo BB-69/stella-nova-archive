@@ -43,9 +43,9 @@ const TlContent = ({
     if (!item) return;
     // Initialize all tags as unchecked
     item.overlays.forEach((i) => {
-      setFoldedTl((prev) => ({ ...prev, [i.id]: true }));
+      setFoldedTl((prev) => ({ ...prev, [i.uid]: true }));
       // sub.forEach((s) => {
-      //   setCollapsedTl((prev) => ({ ...prev, [`${i.id}-${s}`]: false }));
+      //   setFoldedTl((prev) => ({ ...prev, [`${i.uid}-${s}`]: false }));
       // });
     });
   }, []);
@@ -81,12 +81,12 @@ const TlContent = ({
       rafId = requestAnimationFrame(() => {
         rafId = null;
 
-        Object.entries(item?.overlays ?? []).forEach(([_, { id }]) => {
-          if (!overlayHeader[id] || !overlayHeader[id].head) return;
+        Object.entries(item?.overlays ?? []).forEach(([_, { uid }]) => {
+          if (!overlayHeader[uid] || !overlayHeader[uid].head) return;
 
-          const rect = overlayHeader[id].head.getBoundingClientRect();
+          const rect = overlayHeader[uid].head.getBoundingClientRect();
 
-          setOverlayTransform(false, id, {
+          setOverlayTransform(false, uid, {
             p: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
             t: rect.top,
             b: rect.bottom,
@@ -195,17 +195,18 @@ const TlContent = ({
         {(() => {
           let index = 1;
           return item?.overlays.map((it) => {
-            const om = overlayMetas[it.id];
+            const om = overlayMetas[it.uid];
+            if (!it.uid) it.uid = crypto.randomUUID();
             return (
-              <div key={it.id} className="flex flex-col w-full h-full">
+              <div key={it.uid} className="flex flex-col w-full h-full">
                 <div
                   ref={(el) => {
-                    if (!overlayInfoRefs.current[it.id])
-                      overlayInfoRefs.current[it.id] = {
+                    if (!overlayInfoRefs.current[it.uid])
+                      overlayInfoRefs.current[it.uid] = {
                         head: null,
                         child: null,
                       };
-                    overlayInfoRefs.current[it.id].head = el;
+                    overlayInfoRefs.current[it.uid].head = el;
                   }}
                   className={`group group-unselectable relative flex items-center p-[10px_8.8px] rounded-md
                   font-semibold text-[var(--t-c)] [.dark_&]:text-[var(--t-c-dark)]
@@ -216,7 +217,7 @@ const TlContent = ({
                         ? `${om.color}19`
                         : "#00000000",
                     borderColor:
-                      (!tlBarCollapsed && !foldedTl[it.id]) || (om && om.hover)
+                      (!tlBarCollapsed && !foldedTl[it.uid]) || (om && om.hover)
                         ? om && om.color
                           ? om.color
                           : "black-500/50"
@@ -224,12 +225,12 @@ const TlContent = ({
                     color: om && om.color && om.hover ? om.color : "inherit",
                   }}
                   onPointerEnter={() =>
-                    setOverlayMeta({ [it.id]: { hover: true } })
+                    setOverlayMeta({ [it.uid]: { hover: true } })
                   }
                   onPointerLeave={() =>
-                    setOverlayMeta({ [it.id]: { hover: false } })
+                    setOverlayMeta({ [it.uid]: { hover: false } })
                   }
-                  onClick={() => !tlBarCollapsed && toggleFoldedTl(it.id)}
+                  onClick={() => !tlBarCollapsed && toggleFoldedTl(it.uid)}
                 >
                   <span className="absolute w-6 text-center text-xl">
                     {it.id == "title" ? <Type /> : index++}
@@ -292,7 +293,7 @@ const TlContent = ({
 
                           const overlays = prev.overlays
                             .map((o) => {
-                              return o.id == it.id ? null : o;
+                              return o.uid == it.uid ? null : o;
                             })
                             .filter((o) => o != null);
 
@@ -302,9 +303,9 @@ const TlContent = ({
                           };
                         });
 
-                        removeOverlay(it.id);
+                        removeOverlay(it.uid);
 
-                        const { [it.id]: _, ...restFolded } = foldedTl;
+                        const { [it.uid]: _, ...restFolded } = foldedTl;
                         setFoldedTl(restFolded);
                       }}
                     >
@@ -318,24 +319,24 @@ const TlContent = ({
                         : "md:scale-100 md:opacity-100"
                     }`}
                   >
-                    {foldedTl[it.id] ? <ChevronDown /> : <ChevronUp />}
+                    {foldedTl[it.uid] ? <ChevronDown /> : <ChevronUp />}
                   </span>
                 </div>
 
                 <div
                   ref={(el) => {
-                    if (!overlayInfoRefs.current[it.id])
-                      overlayInfoRefs.current[it.id] = {
+                    if (!overlayInfoRefs.current[it.uid])
+                      overlayInfoRefs.current[it.uid] = {
                         head: null,
                         child: null,
                       };
-                    overlayInfoRefs.current[it.id].child = el;
+                    overlayInfoRefs.current[it.uid].child = el;
                   }}
                   className={`bg-[#ababab77] [.dark_&]:bg-[#2a2a2a77]
-                  rounded-[8px] origin-top duration-200 overflow-hidden
+                  rounded-[8px] origin-top duration-200 overflow-x-hidden
                   ${
-                    !tlBarCollapsed && !foldedTl[it.id]
-                      ? "opacity-100 scale-y-100 max-h-69 p-[8px_12px] mb-3"
+                    !tlBarCollapsed && !foldedTl[it.uid]
+                      ? "opacity-100 scale-y-100 max-h-50 p-[8px_12px] mb-3"
                       : "opacity-0 scale-y-0 max-h-0 p-0 mb-0"
                   }`}
                 >
@@ -345,7 +346,7 @@ const TlContent = ({
                     setOverlay={(o) => {
                       applyItem({
                         overlays: item.overlays.map((overlay) =>
-                          overlay.id === it.id ? o : overlay
+                          overlay.uid === it.uid ? o : overlay
                         ),
                       });
                     }}

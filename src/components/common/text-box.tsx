@@ -8,10 +8,12 @@ import {
 
 const TextBox = ({
   text,
+  foldOnInactive,
   edit,
   setText,
 }: {
   text: string | null;
+  foldOnInactive?: boolean;
   edit?: {
     initText?: string;
     placeholder: string;
@@ -126,7 +128,11 @@ const TextBox = ({
           flex justify-center items-center
           bg-white [.dark_&]:bg-black border rounded-md
           border-black/70 [.dark_&]:border-white/70
-          ${text == null && "italic"}`}
+          ${text == null && "italic"}
+          ${
+            foldOnInactive &&
+            "justify-start overflow-hidden whitespace-nowrap hover:whitespace-normal"
+          }`}
         >
           <div>{text ?? "< null >"}</div>
         </span>

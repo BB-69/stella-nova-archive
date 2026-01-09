@@ -6,6 +6,7 @@ export interface ItemMeta {
 }
 
 export interface ItemOverlay {
+  uid: string;
   id: string;
   frame: { s: number; e: number } | null;
   bounds: { x: number; y: number; w: number; h: number };
@@ -18,6 +19,7 @@ export interface ItemOverlay {
 }
 
 export interface ItemOverlayFraction {
+  uid?: string;
   id?: string;
   frame?: { s: number; e: number } | null;
   bounds?: { x: number; y: number; w: number; h: number };
@@ -69,6 +71,7 @@ export function isItemData(x: any): x is ItemData {
 
 export function defaultItemOverlay(id?: string): ItemOverlay {
   return {
+    uid: crypto.randomUUID(),
     id: id ?? "new_overlay",
     frame: null,
     bounds: { x: 0, y: 0, w: 300, h: 300 },
@@ -139,9 +142,11 @@ export function processItemData(i: ItemData): ItemData {
     i.source = [`${prefix}.webp`, `${prefix}.png`];
   }
 
-  i.overlays.map((o) => {
-    return { ...defaultItemOverlay(), ...o };
-  });
+  i.overlays.map((o) => processItemOverlay(o));
 
   return i;
+}
+
+export function processItemOverlay(o: ItemOverlay): ItemOverlay {
+  return { ...defaultItemOverlay(), ...o };
 }

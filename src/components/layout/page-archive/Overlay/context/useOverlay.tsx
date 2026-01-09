@@ -38,30 +38,30 @@ export function useOverlay() {
 
   const setOverlayTransform = (
     isOverlay: boolean,
-    id: string,
+    uid: string,
     transform: positionMeta
   ) => {
     const prev = overlayTransformsRef.current;
     overlayTransformsRef.current = {
       ...prev,
-      [id]: {
+      [uid]: {
         overlay: isOverlay
           ? transform
-          : prev[id]?.overlay ?? positionMetaDefault(),
-        side: !isOverlay ? transform : prev[id]?.side ?? positionMetaDefault(),
+          : prev[uid]?.overlay ?? positionMetaDefault(),
+        side: !isOverlay ? transform : prev[uid]?.side ?? positionMetaDefault(),
       },
     };
   };
 
-  const removeOverlay = (id: string) => {
+  const removeOverlay = (uid: string) => {
     setOverlayMetas((prev) => {
-      const { [id]: _, ...rest } = prev;
+      const { [uid]: _, ...rest } = prev;
       return rest;
     });
 
     overlayTransformsRef.current = (() => {
       const prev = overlayTransformsRef.current;
-      const { [id]: _, ...rest } = prev;
+      const { [uid]: _, ...rest } = prev;
       return rest;
     })();
   };

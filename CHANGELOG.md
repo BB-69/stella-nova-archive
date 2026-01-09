@@ -1,5 +1,10 @@
 # CHANGELOGS
 
+## v5.1 - 2026/01/09 [#169](https://github.com/BB-69/stella-nova-archive/pull/169)
+
+- Proper overlay cleanup using uid
+  - [backend] `overlayMetas` & `overlayTransforms` key uses `uid` instead of `id` to avoid unsync on `id` change
+
 ## v5.0 - 2026/01/03 [#160](https://github.com/BB-69/stella-nova-archive/pull/160)
 
 - [backend] Backend cleanup.
