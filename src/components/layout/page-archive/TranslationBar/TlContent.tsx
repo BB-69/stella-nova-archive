@@ -196,6 +196,7 @@ const TlContent = ({
           let index = 1;
           return item?.overlays.map((it) => {
             const om = overlayMetas[it.id];
+            if (!it.uid) it.uid = crypto.randomUUID();
             return (
               <div key={it.id} className="flex flex-col w-full h-full">
                 <div

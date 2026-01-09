@@ -29,6 +29,12 @@ const OverlayProperty = ({
 
   return (
     <div className="group-selectable grid grid-cols-[60px_auto] auto-rows-[minmax(30px,auto)] gap-1">
+      {editing && (
+        <>
+          <span className="text-sm flex items-center">UID</span>
+          <TextBox text={itemOverlay.uid} />
+        </>
+      )}
       {!editing ? (
         <>
           <TextBox text={"Text"} />
