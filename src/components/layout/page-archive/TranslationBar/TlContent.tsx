@@ -333,10 +333,10 @@ const TlContent = ({
                     overlayInfoRefs.current[it.id].child = el;
                   }}
                   className={`bg-[#ababab77] [.dark_&]:bg-[#2a2a2a77]
-                  rounded-[8px] origin-top duration-200 overflow-hidden
+                  rounded-[8px] origin-top duration-200 overflow-x-hidden
                   ${
                     !tlBarCollapsed && !foldedTl[it.id]
-                      ? "opacity-100 scale-y-100 max-h-69 p-[8px_12px] mb-3"
+                      ? "opacity-100 scale-y-100 max-h-50 p-[8px_12px] mb-3"
                       : "opacity-0 scale-y-0 max-h-0 p-0 mb-0"
                   }`}
                 >
