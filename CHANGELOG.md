@@ -1,5 +1,9 @@
 # CHANGELOGS
 
+## v5.4 - 2026/01/11 [#185](https://github.com/BB-69/stella-nova-archive/pull/185)
+
+- Added real time JSON -> ItemData conversion
+
 ## v5.3 - 2026/01/11 [#182](https://github.com/BB-69/stella-nova-archive/pull/182)
 
 - [backend] Archive page remounts on param change.

@@ -52,6 +52,7 @@ const TranslationBar = () => {
   const tlOptions = useTlOptions({
     // passing props, no separation i know :)
     item,
+    setItem,
     applyItem,
     setImgSrc,
   }).filter(({ appearOn }) =>

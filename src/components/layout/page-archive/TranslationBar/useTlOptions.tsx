@@ -37,10 +37,12 @@ export interface TlOptionProps {
 
 const useTlOptions = ({
   item,
+  setItem,
   applyItem,
   setImgSrc,
 }: {
   item: ItemData | null;
+  setItem: Dispatch<SetStateAction<ItemData | null>>;
   applyItem: (newI: ItemDataFraction) => void;
   setImgSrc: Dispatch<SetStateAction<string>>;
 }): TlOptionProps[] => {
@@ -135,11 +137,11 @@ const useTlOptions = ({
     },
     {
       id: "json",
-      label: "Get JSON",
+      label: "JSON",
       icon: <CodeXml />,
       appearOn: { md: false, edit: true },
       alwaysShowContentOnFull: false,
-      content: item ? <ItemJson item={item} /> : <></>,
+      content: item ? <ItemJson item={item} onItemChange={setItem} /> : <></>,
     },
     {
       id: "config",

@@ -5,12 +5,34 @@ import {
   type ItemData,
 } from "../../../scripts/structs/item-data";
 import ButtonToggle from "../../common/button-toggle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const ItemJson = ({ item }: { item: ItemData }) => {
-  const itemJson = JSON.stringify(processItemData(item), null, 2);
+const ItemJson = ({
+  item,
+  onItemChange,
+}: {
+  item: ItemData;
+  onItemChange: (item: ItemData | null) => void;
+}) => {
+  const formattedJson = JSON.stringify(processItemData(item), null, 2);
+
+  const [itemJson, setItemJson] = useState(formattedJson);
   const [isCopied, setIsCopied] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
+
+  useEffect(() => {
+    setItemJson(formattedJson);
+  }, [formattedJson]);
+
+  const handleBlur = () => {
+    try {
+      const parsed = JSON.parse(itemJson);
+      onItemChange(processItemData(parsed));
+    } catch (err) {
+      console.warn("Invalid JSON. Reverting...\n", err);
+      setItemJson(formattedJson);
+    }
+  };
 
   const handleCopy = async () => {
     try {
@@ -39,19 +61,16 @@ const ItemJson = ({ item }: { item: ItemData }) => {
 
   return (
     <div className="flex flex-col gap-3 w-full h-full">
-      <div
+      <textarea
+        value={itemJson}
+        onChange={(e) => setItemJson(e.target.value)}
+        onBlur={handleBlur}
+        spellCheck={false}
         className="selectable p-4 bg-white [.dark_&]:bg-black
-        min-w-[80vw] md:min-w-[60vw] max-w-[70vw] max-h-[60vh] overflow-y-auto
-        border-2 border-black [.dark_&]:border-white"
-      >
-        {item ? (
-          <pre>{itemJson}</pre>
-        ) : (
-          <span className="w-full flex justify-center opacity-50">
-            ! item not found !
-          </span>
-        )}
-      </div>
+        min-w-[80vw] md:min-w-[60vw] max-w-[70vw] h-[50vh]
+        border-2 border-black [.dark_&]:border-white
+        font-mono text-sm resize-none overflow-y-auto"
+      />
       <div className="flex flex-row justify-end">
         <div className="relative">
           <div
