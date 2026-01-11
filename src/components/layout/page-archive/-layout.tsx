@@ -79,7 +79,7 @@ const ArchiveLayout = () => {
           ${
             tlBarCollapsed
               ? "grid-rows-[1fr_84px] md:grid-cols-[1fr_72px]"
-              : "grid-rows-[1fr_calc(48vh-16vw)] md:grid-cols-[1fr_260px]"
+              : "grid-rows-[1fr_calc(48vh-16vw)] md:grid-cols-[1fr_300px]"
           }`}
         style={{ height: "calc(100vh - 64px)" }}
       >

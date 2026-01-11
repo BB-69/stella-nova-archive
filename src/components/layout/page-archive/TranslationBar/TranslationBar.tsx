@@ -68,7 +68,7 @@ const TranslationBar = () => {
         bg-gradient-to-b from-[#f3fdff] to-white
         [.dark_&]:from-[#0b1220] [.dark_&]:to-black
         md:transition-[width] md:duration-200 z-10
-        ${tlBarCollapsed ? "md:w-[72px]" : "md:w-[260px]"}`}
+        ${tlBarCollapsed ? "md:w-[72px]" : "md:w-[300px]"}`}
       >
         <TlHeader
           options={tlOptions.filter(({ appearOn }) =>
