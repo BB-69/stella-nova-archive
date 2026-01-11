@@ -53,7 +53,6 @@ export function useOverlay() {
         side: !isOverlay ? transform : prev[uid]?.side ?? positionMetaDefault(),
       },
     };
-    console.log({ uid, transform });
   };
 
   const removeOverlay = (uid: string) => {
