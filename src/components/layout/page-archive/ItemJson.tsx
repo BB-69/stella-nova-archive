@@ -1,6 +1,7 @@
 import { Check, Copy, Download } from "lucide-react";
 import {
   getFileName,
+  isItemData,
   processItemData,
   type ItemData,
 } from "../../../scripts/structs/item-data";
@@ -27,6 +28,8 @@ const ItemJson = ({
   const handleBlur = () => {
     try {
       const parsed = JSON.parse(itemJson);
+      if (!isItemData(parsed))
+        throw new Error("Invalid ItemData! Properties mismatched.");
       onItemChange(processItemData(parsed));
     } catch (err) {
       console.warn("Invalid JSON. Reverting...\n", err);

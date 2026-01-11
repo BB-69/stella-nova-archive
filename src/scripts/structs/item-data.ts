@@ -61,6 +61,16 @@ export interface ItemDataFraction {
 
 export function isItemData(x: any): x is ItemData {
   return (
+    x &&
+    x.id &&
+    x.type &&
+    x.category &&
+    x.sub_category &&
+    x.title &&
+    x.description &&
+    x.source &&
+    x.meta &&
+    x.overlays &&
     typeof x === "object" &&
     x !== null &&
     typeof x.id === "string" &&
