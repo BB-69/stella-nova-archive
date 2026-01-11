@@ -43,7 +43,7 @@ Development changelogs: [CHANGELOG.md](/CHANGELOG.md)
 | eslint-plugin-react-hooks | ^7.0.1 |
 | eslint-plugin-react-refresh | ^0.4.26 |
 | gh-pages | ^6.3.0 |
-| globals | ^16.5.0 |
+| globals | ^17.0.0 |
 | postcss | ^8.5.6 |
 | typescript | ~5.9.3 |
 | typescript-eslint | ^8.51.0 |
