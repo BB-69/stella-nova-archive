@@ -1,3 +1,5 @@
+import { getTagLevel } from "./tag-data";
+
 export interface ItemMeta {
   width: number;
   height: number;
@@ -59,23 +61,103 @@ export interface ItemDataFraction {
   overlays?: ItemOverlay[];
 }
 
+export function isItemMeta(x: any): x is ItemMeta {
+  return (
+    x &&
+    x.width &&
+    x.height &&
+    x.version &&
+    typeof x === "object" &&
+    typeof x.width === "number" &&
+    typeof x.height === "number" &&
+    (x.frames === null || typeof x.frames === "number") &&
+    typeof x.version === "string"
+  );
+}
+
+export function isItemOverlay(x: any): x is ItemOverlay {
+  return (
+    x &&
+    /* prevent 'uid' deep copy for now since
+    not all data has this property yet... */
+    // x.uid &&
+    x.id &&
+    x.bounds &&
+    x.rotation !== undefined &&
+    x.shear !== undefined &&
+    x.text &&
+    x.color !== undefined &&
+    typeof x === "object" &&
+    // typeof x.uid === "string" &&
+    typeof x.id === "string" &&
+    (x.frame === null ||
+      (typeof x.frame === "object" &&
+        typeof x.frame.s === "number" &&
+        typeof x.frame.e === "number")) &&
+    typeof x.bounds === "object" &&
+    typeof x.bounds.x === "number" &&
+    typeof x.bounds.y === "number" &&
+    typeof x.bounds.w === "number" &&
+    typeof x.bounds.h === "number" &&
+    (x.bounds_end === null ||
+      (typeof x.bounds_end === "object" &&
+        typeof x.bounds_end.x === "number" &&
+        typeof x.bounds_end.y === "number" &&
+        typeof x.bounds_end.w === "number" &&
+        typeof x.bounds_end.h === "number")) &&
+    typeof x.rotation === "number" &&
+    typeof x.shear === "number" &&
+    typeof x.text === "string" &&
+    (x.notes === null || typeof x.notes === "string") &&
+    typeof x.color === "string"
+  );
+}
+
 export function isItemData(x: any): x is ItemData {
   return (
     x &&
     x.id &&
     x.type &&
     x.category &&
-    x.sub_category &&
     x.title &&
     x.description &&
-    x.source &&
     x.meta &&
-    x.overlays &&
     typeof x === "object" &&
-    x !== null &&
     typeof x.id === "string" &&
     typeof x.type === "string" &&
-    Array.isArray(x.source)
+    typeof x.category === "string" &&
+    getTagLevel(x.category) === "primary" &&
+    Array.isArray(x.sub_category) &&
+    (x.sub_category.length > 0
+      ? (() => {
+          for (let c of x.sub_category) {
+            if (typeof c !== "string" || getTagLevel(c) !== "secondary")
+              return false;
+          }
+          return true;
+        })()
+      : true) &&
+    typeof x.title === "string" &&
+    typeof x.description === "string" &&
+    Array.isArray(x.source) &&
+    (x.source.length > 0
+      ? (() => {
+          for (let s of x.source) {
+            if (typeof s !== "string") return false;
+          }
+          return true;
+        })()
+      : true) &&
+    isItemMeta(x.meta) &&
+    Array.isArray(x.overlays) &&
+    (x.overlays.length > 0
+      ? (() => {
+          for (let o of x.overlays) {
+            if (!isItemOverlay(o)) return false;
+          }
+          return true;
+        })()
+      : true)
   );
 }
 
