@@ -75,8 +75,6 @@ const OverlayConnector = ({
       (Math.atan2(to.y - from.y, to.x - from.x) * 180) / Math.PI,
       tweenConfig
     );
-
-    console.log(overlayTransformsRef.current);
   }, [from.x, from.y, to.x, to.y]);
 
   const color = useMemo(
@@ -112,7 +110,7 @@ const OverlayConnector = ({
         translateY: "-50%",
         transformOrigin: "center",
         backgroundColor: color,
-        opacity: isVisible ? 1 : 1,
+        opacity: isVisible ? 1 : 0,
       }}
     >
       <div
