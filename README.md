@@ -1,7 +1,7 @@
 # STELLA NOVA ARCHIVE
 
 <!-- VERSION_START -->
-> v5.1.3
+> v5.1.4
 <!-- VERSION_END -->
 
 A website that acts like an archive containing inscriptions and translations of 'Nova' language from the game 'Stella Sora'
@@ -31,7 +31,7 @@ Development changelogs: [CHANGELOG.md](/CHANGELOG.md)
 | lucide-react | ^0.562.0 |
 | react | ^19.2.3 |
 | react-dom | ^19.2.3 |
-| react-router-dom | ^7.11.0 |
+| react-router-dom | ^7.12.0 |
 | tailwindcss | ^4.1.17 |
 | @eslint/js | ^9.39.2 |
 | @types/node | ^25.0.3 |
