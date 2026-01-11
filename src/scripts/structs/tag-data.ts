@@ -43,7 +43,7 @@ export const filterTags = [
   },
 ];
 
-function getTagLevel(tag: string): string {
+export function getTagLevel(tag: string): string {
   for (const tl of tags) {
     if (tl.tag.includes(tag)) return tl.level;
   }
