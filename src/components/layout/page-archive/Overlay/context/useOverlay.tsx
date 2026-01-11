@@ -41,6 +41,8 @@ export function useOverlay() {
     uid: string,
     transform: positionMeta
   ) => {
+    if (!uid) return;
+
     const prev = overlayTransformsRef.current;
     overlayTransformsRef.current = {
       ...prev,
@@ -51,9 +53,12 @@ export function useOverlay() {
         side: !isOverlay ? transform : prev[uid]?.side ?? positionMetaDefault(),
       },
     };
+    console.log({ uid, transform });
   };
 
   const removeOverlay = (uid: string) => {
+    if (!uid) return;
+
     setOverlayMetas((prev) => {
       const { [uid]: _, ...rest } = prev;
       return rest;

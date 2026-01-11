@@ -121,7 +121,7 @@ const TlContent = ({
         updateOverlayTransform
       );
     };
-  }, [item]);
+  }, [item?.overlays]);
 
   return (
     <div
@@ -194,9 +194,11 @@ const TlContent = ({
 
         {(() => {
           let index = 1;
-          return item?.overlays.map((it) => {
+          let uidList: string[] = [];
+          const overlayData = item?.overlays.map((it) => {
             const om = overlayMetas[it.uid];
             if (!it.uid) it.uid = crypto.randomUUID();
+            uidList.push(it.uid);
             return (
               <div key={it.uid} className="flex flex-col w-full h-full">
                 <div
@@ -355,6 +357,15 @@ const TlContent = ({
               </div>
             );
           });
+
+          Object.keys(overlayInfoRefs.current).forEach((uid) => {
+            if (!uidList.includes(uid)) {
+              const { [uid]: _, ...rest } = overlayInfoRefs.current;
+              overlayInfoRefs.current = rest;
+            }
+          });
+
+          return overlayData;
         })() ??
           (!editing && (
             <div
