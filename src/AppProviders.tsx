@@ -11,6 +11,11 @@ import { ArchiveProvider } from "./components/layout/page-archive/context/Archiv
 const AppProviders = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
   const path = location.pathname;
+  const params = new URLSearchParams(location.search);
+
+  /*--- /archive ---*/
+  const urlId = params.get("id");
+  const urlEdit: boolean = params.get("edit") == "true";
 
   return (
     <DebugProvider>
@@ -23,7 +28,7 @@ const AppProviders = ({ children }: { children: ReactNode }) => {
           </SearchProvider>
         ) : path == "/archive" ? (
           <SearchProvider>
-            <OverlayProvider>
+            <OverlayProvider key={`${urlId}-${urlEdit}`}>
               <ArchiveProvider>{children}</ArchiveProvider>
             </OverlayProvider>
           </SearchProvider>

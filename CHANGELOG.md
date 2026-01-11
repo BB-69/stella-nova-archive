@@ -1,5 +1,10 @@
 # CHANGELOGS
 
+## v5.3 - 2026/01/11 [#182](https://github.com/BB-69/stella-nova-archive/pull/182)
+
+- [backend] Archive page remounts on param change.
+  - Using key change on url params for the the page subtree. This saves a lot of hustle on handling every variable in existence to avoid bugs just for param change in /archive page.
+
 ## v5.2 - 2026/01/11 [#180](https://github.com/BB-69/stella-nova-archive/pull/180)
 
 - Fixed archive scroll related bug
