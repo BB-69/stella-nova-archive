@@ -78,7 +78,7 @@ export function isItemMeta(x: any): x is ItemMeta {
 export function isItemOverlay(x: any): x is ItemOverlay {
   return (
     x &&
-    /* prevent 'uid' deep copy for now since
+    /* prevent 'uid' deep check for now since
     not all data has this property yet... */
     // x.uid &&
     x.id &&
