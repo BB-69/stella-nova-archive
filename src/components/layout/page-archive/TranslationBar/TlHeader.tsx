@@ -3,6 +3,7 @@ import ButtonToggle from "../../../common/button-toggle";
 import type { Dispatch, SetStateAction } from "react";
 import type { TlOptionProps } from "./useTlOptions";
 import { useArchive } from "../context/useArchive";
+import { useIsMd } from "../../../../hooks/useIsMd";
 
 const TlHeader = ({
   options,
@@ -14,10 +15,11 @@ const TlHeader = ({
   setActiveModal: Dispatch<SetStateAction<string | null>>;
 }) => {
   const { tlBarCollapsed, toggleTlBar, editing } = useArchive();
+  const isMd = useIsMd();
 
   return (
     <div
-      className="group-unselectable flex items-center min-h-16 pb-3 min-w-full
+      className="group-unselectable flex items-center min-h-[64px] h-[64px] pb-3 min-w-full
       border-b border-black/30 [.dark_&]:border-white/30"
     >
       <button
@@ -46,23 +48,24 @@ const TlHeader = ({
         </span>
       </button>
 
-      {options.map((o) => (
-        <div
-          key={o.id}
-          className="min-w-[50px] h-full"
-          onClick={(e) => {
-            o.method?.() ?? e.stopPropagation();
-          }}
-        >
-          <ButtonToggle
-            toggle={o.content ? o.id !== activeModal : undefined}
-            onToggle={() => setActiveModal(o.id)}
-            fullSize={true}
+      {!(tlBarCollapsed && !isMd) &&
+        options.map((o) => (
+          <div
+            key={o.id}
+            className="min-w-[50px] h-full"
+            onClick={(e) => {
+              o.method?.() ?? e.stopPropagation();
+            }}
           >
-            {o.icon}
-          </ButtonToggle>
-        </div>
-      ))}
+            <ButtonToggle
+              toggle={o.content ? o.id !== activeModal : undefined}
+              onToggle={() => setActiveModal(o.id)}
+              fullSize={true}
+            >
+              {o.icon}
+            </ButtonToggle>
+          </div>
+        ))}
     </div>
   );
 };

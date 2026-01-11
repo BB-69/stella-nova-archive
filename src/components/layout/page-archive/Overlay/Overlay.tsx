@@ -129,7 +129,7 @@ const Overlay = ({
                 }}
               >
                 <div
-                  className="absolute z-[1] w-[20px] h-[4px]
+                  className="pointer-events-none absolute z-[1] w-[20px] h-[4px]
                   -translate-x-[10px] -translate-y-[2px]"
                   style={{
                     backgroundColor: `${color}${
@@ -139,7 +139,7 @@ const Overlay = ({
                   }}
                 />
                 <div
-                  className={`absolute z-[1] w-[20px] h-[4px]
+                  className={`pointer-events-none absolute z-[1] w-[20px] h-[4px]
                     -translate-x-[10px] -translate-y-[2px]
                     bg-black [.dark_&]:bg-white
                     ${!overlayMetas[o.uid]?.hover && "opacity-0"}

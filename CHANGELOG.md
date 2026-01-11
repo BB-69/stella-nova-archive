@@ -1,5 +1,13 @@
 # CHANGELOGS
 
+## v5.2 - 2026/01/11 [#180](https://github.com/BB-69/stella-nova-archive/pull/180)
+
+- Fixed archive scroll related bug
+  - Added custom `no-scroll` css class to remove scrollbar while still making it scrollable
+  - [backend] Removed `tailwind-utils` since it's better anyway to cram all tailwind classes inside each component
+  - `TranslationBar` content scrolling space are now bounded properly using `overflow-hidden` instead of excessive paddings & margins
+- Increase `TranslationBar` unfold width
+
 ## v5.1 - 2026/01/09 [#169](https://github.com/BB-69/stella-nova-archive/pull/169)
 
 - Proper overlay cleanup using uid

@@ -71,7 +71,7 @@ if (hasVersion && shouldOverride) {
 
   updated = content.replace(
     new RegExp(`## v${version} - [\\s\\S]*?(?=\\n## v|$)`, "g"),
-    block + "\n"
+    block.trimEnd() + "\n"
   );
 } else {
   const rest = content.replace(/^# CHANGELOGS\s*/m, "");

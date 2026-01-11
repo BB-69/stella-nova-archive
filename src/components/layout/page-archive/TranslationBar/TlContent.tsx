@@ -125,68 +125,66 @@ const TlContent = ({
 
   return (
     <div
-      className={`flex flex-col justify-between
-      origin-top md:h-full pb-14 md:pb-0
-      md:scale-y-100 md:opacity-100 md:max-h-full
+      className={`flex flex-col justify-between overflow-hidden
+      origin-top md:h-full md:scale-y-100 md:opacity-100 max-h-full
       transition-[height] md:transition-none duration-200 md:duration-0
       ${tlBarCollapsed ? "scale-y-0 h-0" : "scale-y-100 h-full"}`}
     >
-      {/*
-      Bottom pad/margin from both divs here caused the elements to slip.
-      But if i take it off, it would overflow layout.
-      (need to fix overflow but idk how so pb for now)
-      */}
       <nav
         ref={overlayContainerRef}
-        className="md:flex md:flex-col grid md:grid-cols-none
+        className={`md:flex md:flex-col grid md:grid-cols-none
         grid-cols-[repeat(auto-fit,minmax(240px,1fr))] max-[240px]:grid-cols-none
-        gap-2 mt-3 md:mb-14 px-2 md:px-0 pb-12
-        overflow-x-hidden overflow-y-auto"
+        gap-2 mt-3 px-2 max-h-full
+        overflow-x-hidden overflow-y-auto
+        ${tlBarCollapsed ? "md:px-0 no-scrollbar" : "md:px-2"}`}
         aria-label="Translation bar"
       >
         {options.length > 0 && (
           <div
-            className={`duration-200 origin-top md:origin-top-right
-            ${
-              tlBarCollapsed
-                ? "scale-y-0 md:scale-0 opacity-0 max-h-0"
-                : "scale-y-100 md:scale-100 opacity-100 max-h-full"
-            }
-          `}
+            className={`
+              duration-200 origin-top md:origin-top-right
+              ${
+                tlBarCollapsed
+                  ? "scale-y-0 md:scale-0 opacity-0 max-h-0 mb-0"
+                  : "scale-y-100 md:scale-100 opacity-100 max-h-[240px] mb-2"
+              }
+            `}
           >
-            {options.map((o) =>
-              o.alwaysShowContentOnFull ? (
-                o.content
-              ) : (
-                <div
-                  key={o.id}
-                  className="group-unselectable p-[4px] my-1 w-full max-h-full
-                  flex justify-center items-start"
-                >
+            <div className="h-full overflow-x-hidden overflow-y-auto">
+              {options.map((o) =>
+                o.alwaysShowContentOnFull ? (
+                  o.content
+                ) : (
                   <div
-                    className="group relative flex justify-center items-center
-                    max-w-full max-h-full text-sm font-bold"
+                    key={o.id}
+                    className="group-unselectable p-[4px] my-1 w-full max-h-full
+                    flex justify-center items-start"
                   >
-                    <ButtonToggle
-                      toggle={o.id !== activeModal}
-                      onToggle={() =>
-                        o.content ? setActiveModal(o.id) : o.method?.()
-                      }
-                      fullSize={true}
-                      alwaysBorder={true}
+                    <div
+                      className="group relative flex justify-center items-center
+                      max-w-full max-h-full text-sm font-bold"
                     >
-                      <span
-                        className="flex flex-row items-center py-2 pl-2 pr-3
-                        h-full gap-2 opacity-70 group-hover:opacity-100"
+                      <ButtonToggle
+                        toggle={o.id !== activeModal}
+                        onToggle={() =>
+                          o.content ? setActiveModal(o.id) : o.method?.()
+                        }
+                        fullSize={true}
+                        alwaysBorder={true}
                       >
-                        {o.icon}
-                        <span className="pb-[1.7px]">{o.label}</span>
-                      </span>
-                    </ButtonToggle>
+                        <span
+                          className="flex flex-row items-center py-2 pl-2 pr-3
+                          h-full gap-2 opacity-70 group-hover:opacity-100"
+                        >
+                          {o.icon}
+                          <span className="pb-[1.7px]">{o.label}</span>
+                        </span>
+                      </ButtonToggle>
+                    </div>
                   </div>
-                </div>
-              )
-            )}
+                )
+              )}
+            </div>
           </div>
         )}
 
@@ -388,7 +386,7 @@ const TlContent = ({
 
         {editing && (
           <div
-            className="group-unselectable p-[4px] mt-1 w-full max-h-full
+            className="group-unselectable p-[4px] mb-1 w-full max-h-full
             flex justify-center items-start"
           >
             <span

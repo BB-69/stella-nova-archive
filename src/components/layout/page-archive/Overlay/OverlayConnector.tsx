@@ -35,7 +35,7 @@ const OverlayConnector = ({
     const to = getAllDirPosition(ref).sort(
       (a, b) => getDistance(a, pos.p) - getDistance(b, pos.p)
     )[0];
-    const PAD = 6;
+    const PAD = 7;
     return {
       from: getBounded(from, {
         s: { x: PAD, y: PAD },
@@ -45,7 +45,7 @@ const OverlayConnector = ({
         s: { x: to.x, y: scrollBounds.y },
         e: {
           x: to.x,
-          y: scrollBounds.y + scrollBounds.h,
+          y: Math.min(scrollBounds.y + scrollBounds.h, windowSize.height - PAD),
         },
       }),
     };
@@ -99,7 +99,7 @@ const OverlayConnector = ({
   return (
     <motion.div
       key={id}
-      className="absolute z-10 rounded-full transition-opacity duration-100"
+      className="absolute z-10 rounded-full transition-opacity duration-100 pointer-events-none"
       style={{
         left: midPos.x,
         top: midPos.y,
@@ -114,7 +114,7 @@ const OverlayConnector = ({
       }}
     >
       <div
-        className="absolute top-1/2 rounded-full"
+        className="absolute top-1/2 rounded-full pointer-events-none"
         style={{
           width: 8,
           height: 8,
@@ -125,7 +125,7 @@ const OverlayConnector = ({
       />
 
       <div
-        className="absolute top-1/2 rounded-full"
+        className="absolute top-1/2 rounded-full pointer-events-none"
         style={{
           width: 8,
           height: 8,

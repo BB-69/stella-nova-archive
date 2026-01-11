@@ -79,6 +79,15 @@ img {
   user-select: none;
 }
 
+/* hide scrollbar but keep scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE + Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
 @font-face {
   font-family: "NovaModern";
   src: url("/assets/fonts/NovaModern.woff2") format("woff2");
