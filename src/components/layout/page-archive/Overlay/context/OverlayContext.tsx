@@ -38,7 +38,7 @@ export const OverlayContext = createContext<OverlayContextType | null>(null);
 
 export function OverlayProvider({ children }: { children: ReactNode }) {
   const [overlayActive, setOverlayActive] = useState<boolean>(true);
-  const [connectorActive, setConnectorActive] = useState<boolean>(false);
+  const [connectorActive, setConnectorActive] = useState<boolean>(true);
   const [overlayMetas, setOverlayMetas] = useState<{
     [key: string]: { color: string; hover: boolean };
   }>({});

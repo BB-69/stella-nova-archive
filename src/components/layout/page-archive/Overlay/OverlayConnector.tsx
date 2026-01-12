@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useLayoutEffect, useMemo, useRef } from "react";
 import { useIsMd } from "../../../../hooks/useIsMd";
 import {
   getAllDirPosition,
@@ -9,7 +9,6 @@ import {
 import { useOverlay } from "./context/useOverlay";
 import { getScrollBounds } from "../TranslationBar/TlContent";
 import { getColorId } from "../../../../scripts/color";
-import { animate, motion, useMotionValue } from "framer-motion";
 import useWindowSize from "../../../../hooks/useWindowSize";
 
 const OverlayConnector = ({
@@ -26,7 +25,7 @@ const OverlayConnector = ({
   const { connectorActive, overlayMetas, overlayTransformsRef } = useOverlay();
   const t = overlayTransformsRef.current[id];
 
-  if (!t.overlay || !t.side) return;
+  if (!t.overlay || !t.side) return null;
 
   function getNearestPair(pos: positionMeta, ref: positionMeta) {
     const from = getAllDirPosition(pos).sort(
@@ -35,7 +34,9 @@ const OverlayConnector = ({
     const to = getAllDirPosition(ref).sort(
       (a, b) => getDistance(a, pos.p) - getDistance(b, pos.p)
     )[0];
+
     const PAD = 7;
+
     return {
       from: getBounded(from, {
         s: { x: PAD, y: PAD },
@@ -53,28 +54,24 @@ const OverlayConnector = ({
 
   const { from, to } = getNearestPair(t.overlay, t.side);
 
-  const transformRef = useRef({
-    midPos: { x: useMotionValue(0), y: useMotionValue(0) },
-    length: useMotionValue(0),
-    angle: useMotionValue(0),
-  });
+  const connectorRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const tweenConfig = {
-      type: "tween",
-      duration: 0.03,
-      ease: "linear",
-    } as const;
-    const { midPos, length, angle } = transformRef.current;
+  useLayoutEffect(() => {
+    const el = connectorRef.current;
+    if (!el) return;
 
-    animate(midPos.x, (from.x + to.x) / 2, tweenConfig);
-    animate(midPos.y, (from.y + to.y) / 2, tweenConfig);
-    animate(length, getDistance(from, to), tweenConfig);
-    animate(
-      angle,
-      (Math.atan2(to.y - from.y, to.x - from.x) * 180) / Math.PI,
-      tweenConfig
-    );
+    const midX = (from.x + to.x) / 2;
+    const midY = (from.y + to.y) / 2;
+    const length = getDistance(from, to);
+    const angle = (Math.atan2(to.y - from.y, to.x - from.x) * 180) / Math.PI;
+
+    el.style.left = `${midX}px`;
+    el.style.top = `${midY}px`;
+    el.style.width = `${length}px`;
+    el.style.transform = `
+      translate(-50%, -50%)
+      rotate(${angle}deg)
+    `;
   }, [from.x, from.y, to.x, to.y]);
 
   const color = useMemo(
@@ -94,20 +91,12 @@ const OverlayConnector = ({
     [hovering, isMd, isEdge]
   );
 
-  const { midPos, length, angle } = transformRef.current;
-
   return (
-    <motion.div
-      key={id}
-      className="absolute z-10 rounded-full transition-opacity duration-100 pointer-events-none"
+    <div
+      ref={connectorRef}
+      className="absolute z-10 rounded-full pointer-events-none transition-opacity duration-100"
       style={{
-        left: midPos.x,
-        top: midPos.y,
-        width: length,
         height: 2,
-        rotate: angle,
-        translateX: "-50%",
-        translateY: "-50%",
         transformOrigin: "center",
         backgroundColor: `${color}${
           connectorActive && !isVisible ? "86" : "FF"
@@ -136,7 +125,7 @@ const OverlayConnector = ({
           backgroundColor: color,
         }}
       />
-    </motion.div>
+    </div>
   );
 };
 
