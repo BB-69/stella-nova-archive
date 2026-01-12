@@ -23,6 +23,8 @@ export type OverlayTransformType = RefObject<{
 interface OverlayContextType {
   overlayActive: boolean;
   setOverlayActive: React.Dispatch<React.SetStateAction<boolean>>;
+  connectorActive: boolean;
+  setConnectorActive: React.Dispatch<React.SetStateAction<boolean>>;
   overlayMetas: OverlayMetaType;
   setOverlayMetas: React.Dispatch<
     React.SetStateAction<{
@@ -36,6 +38,7 @@ export const OverlayContext = createContext<OverlayContextType | null>(null);
 
 export function OverlayProvider({ children }: { children: ReactNode }) {
   const [overlayActive, setOverlayActive] = useState<boolean>(true);
+  const [connectorActive, setConnectorActive] = useState<boolean>(false);
   const [overlayMetas, setOverlayMetas] = useState<{
     [key: string]: { color: string; hover: boolean };
   }>({});
@@ -56,6 +59,8 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
       value={{
         overlayActive,
         setOverlayActive,
+        connectorActive,
+        setConnectorActive,
         overlayMetas,
         setOverlayMetas,
         overlayTransformsRef,

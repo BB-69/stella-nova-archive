@@ -9,6 +9,8 @@ export function useOverlay() {
   const {
     overlayActive,
     setOverlayActive,
+    connectorActive,
+    setConnectorActive,
     overlayMetas,
     setOverlayMetas,
     overlayTransformsRef,
@@ -16,6 +18,10 @@ export function useOverlay() {
 
   const toggleOverlayActive = () => {
     setOverlayActive((prev) => !prev);
+  };
+
+  const toggleConnectorActive = () => {
+    setConnectorActive((prev) => !prev);
   };
 
   const resetOverlayData = () => {
@@ -73,6 +79,8 @@ export function useOverlay() {
   return {
     overlayActive,
     toggleOverlayActive,
+    connectorActive,
+    toggleConnectorActive,
     overlayMetas,
     setOverlayMeta,
     overlayTransformsRef,

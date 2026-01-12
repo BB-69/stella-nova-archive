@@ -1,14 +1,13 @@
-import { ChevronLeft, ChevronRight, Layers2, Wrench } from "lucide-react";
+import { ChevronLeft, ChevronRight, Wrench } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useArchive } from "./context/useArchive";
 import ButtonDropdown from "../../common/button-dropdown";
-import ButtonToggle from "../../common/button-toggle";
-import { useOverlay } from "./Overlay/context/useOverlay";
 import { useHorizontalScroll } from "../../../hooks/useHorizontalScroll";
+import useOverlayConfig from "./useOverlayConfig";
 
 const InfoHeader = () => {
   const { item } = useArchive();
-  const { overlayActive, toggleOverlayActive } = useOverlay();
+  const configOptions = useOverlayConfig();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({
@@ -149,15 +148,7 @@ const InfoHeader = () => {
         </div>
         <ButtonDropdown
           icon={<Wrench width={28} height={28} />}
-          divs={[
-            <ButtonToggle
-              toggle={!overlayActive}
-              onToggle={toggleOverlayActive ?? (() => {})}
-              fullSize={true}
-            >
-              <Layers2 width={28} height={28} />
-            </ButtonToggle>,
-          ]}
+          divs={configOptions}
         />
       </div>
     </div>

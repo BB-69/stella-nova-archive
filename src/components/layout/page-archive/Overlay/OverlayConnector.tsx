@@ -23,7 +23,7 @@ const OverlayConnector = ({
   const isMd = useIsMd();
   const scrollBounds = getScrollBounds();
 
-  const { overlayMetas, overlayTransformsRef } = useOverlay();
+  const { connectorActive, overlayMetas, overlayTransformsRef } = useOverlay();
   const t = overlayTransformsRef.current[id];
 
   if (!t.overlay || !t.side) return;
@@ -109,8 +109,10 @@ const OverlayConnector = ({
         translateX: "-50%",
         translateY: "-50%",
         transformOrigin: "center",
-        backgroundColor: color,
-        opacity: isVisible ? 1 : 0,
+        backgroundColor: `${color}${
+          connectorActive && !isVisible ? "86" : "FF"
+        }`,
+        opacity: isVisible || connectorActive ? 1 : 0,
       }}
     >
       <div
