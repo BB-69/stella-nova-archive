@@ -1,23 +1,19 @@
-import { ChevronLeft, ChevronRight, Wrench } from "lucide-react";
+import { ChevronLeft, ChevronRight, Layers2, Wrench } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useArchive } from "./context/useArchive";
 import ButtonDropdown from "../../common/button-dropdown";
+import ButtonToggle from "../../common/button-toggle";
+import { useOverlay } from "./Overlay/context/useOverlay";
 
 const InfoHeader = () => {
   const { item } = useArchive();
+  const { overlayActive, toggleOverlayActive } = useOverlay();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({
     atLeft: true,
     atRight: true,
   });
-
-  // const scroll = (direction: "left" | "right" | null) => {
-  //   containerRef.current?.scrollBy({
-  //     left: direction == "left" ? -120 : 120,
-  //     behavior: "smooth",
-  //   });
-  // };
 
   const [holdScrolling, setHoldScrolling] = useState<-1 | 0 | 1>(0);
 
@@ -148,6 +144,18 @@ const InfoHeader = () => {
             />
           </button>
         </div>
+        <ButtonDropdown
+          icon={<Wrench width={28} height={28} />}
+          divs={[
+            <ButtonToggle
+              toggle={!overlayActive}
+              onToggle={toggleOverlayActive ?? (() => {})}
+              fullSize={true}
+            >
+              <Layers2 width={28} height={28} />
+            </ButtonToggle>,
+          ]}
+        />
       </div>
     </div>
   );
