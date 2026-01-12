@@ -1,5 +1,11 @@
 # CHANGELOGS
 
+## v5.5 - 2026/01/12 [#190](https://github.com/BB-69/stella-nova-archive/pull/190)
+
+- Added Overlay toolbox
+  - All overlay related config can be tweaked inside a single dropdown toolbox
+- `OverlayConnector` active visibility can now be manually toggled
+
 ## v5.4 - 2026/01/11 [#185](https://github.com/BB-69/stella-nova-archive/pull/185)
 
 - Added real time JSON -> ItemData conversion
