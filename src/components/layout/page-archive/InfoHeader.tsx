@@ -4,6 +4,7 @@ import { useArchive } from "./context/useArchive";
 import ButtonDropdown from "../../common/button-dropdown";
 import ButtonToggle from "../../common/button-toggle";
 import { useOverlay } from "./Overlay/context/useOverlay";
+import { useHorizontalScroll } from "../../../hooks/useHorizontalScroll";
 
 const InfoHeader = () => {
   const { item } = useArchive();
@@ -63,6 +64,8 @@ const InfoHeader = () => {
     el.addEventListener("scroll", handleEdges);
     return () => el.removeEventListener("scroll", handleEdges);
   }, [containerRef.current?.scrollWidth]);
+
+  useHorizontalScroll(containerRef);
 
   return (
     <div
