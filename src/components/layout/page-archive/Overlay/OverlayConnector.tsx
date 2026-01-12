@@ -4,6 +4,7 @@ import {
   getAllDirPosition,
   getBounded,
   getDistance,
+  type position,
   type positionMeta,
 } from "../../../../scripts/distance";
 import { useOverlay } from "./context/useOverlay";
@@ -28,27 +29,43 @@ const OverlayConnector = ({
   if (!t.overlay || !t.side) return null;
 
   function getNearestPair(pos: positionMeta, ref: positionMeta) {
-    const from = getAllDirPosition(pos).sort(
-      (a, b) => getDistance(a, ref.p) - getDistance(b, ref.p)
-    )[0];
-    const to = getAllDirPosition(ref).sort(
-      (a, b) => getDistance(a, pos.p) - getDistance(b, pos.p)
-    )[0];
-
-    const PAD = 7;
-
-    return {
-      from: getBounded(from, {
+    function getBoundedViewport(p: position) {
+      return getBounded(p, {
         s: { x: PAD, y: PAD },
         e: { x: windowSize.width - PAD, y: windowSize.height - PAD },
-      }),
-      to: getBounded(to, {
-        s: { x: to.x, y: scrollBounds.y },
-        e: {
-          x: to.x,
-          y: Math.min(scrollBounds.y + scrollBounds.h, windowSize.height - PAD),
-        },
-      }),
+      });
+    }
+
+    const PAD = 7;
+    const from = getAllDirPosition(pos)
+      .map((p) => getBoundedViewport(p))
+      .sort(
+        (a, b) =>
+          getDistance(a, getBoundedViewport(ref.p)) -
+          getDistance(b, getBoundedViewport(ref.p))
+      )[0];
+    const to = getAllDirPosition(ref)
+      .map((p) =>
+        getBounded(p, {
+          s: { x: p.x, y: scrollBounds.y },
+          e: {
+            x: p.x,
+            y: Math.min(
+              scrollBounds.y + scrollBounds.h,
+              windowSize.height - PAD
+            ),
+          },
+        })
+      )
+      .sort(
+        (a, b) =>
+          getDistance(a, getBoundedViewport(pos.p)) -
+          getDistance(b, getBoundedViewport(pos.p))
+      )[0];
+
+    return {
+      from,
+      to,
     };
   }
 
