@@ -5,6 +5,7 @@ import Content from "./Content";
 import {
   defaultItemData,
   isItemData,
+  processItemData,
 } from "../../../scripts/structs/item-data";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FetchFilesFromFolder } from "../../../scripts/database-loader";
@@ -32,7 +33,7 @@ const ArchiveLayout = () => {
     const data = res[0];
     if (isItemData(data.item)) {
       const item = data.item;
-      setItem(item);
+      setItem(processItemData(item));
 
       if (item.source.length > 0) {
         const img = await FetchFilesFromFolder(item.source[0], "webp");

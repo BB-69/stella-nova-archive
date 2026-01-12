@@ -91,8 +91,9 @@ const ButtonDropdown = ({
             ${open ? "translate-y-0" : "-translate-y-full"}
           `}
         >
-          {divs.map((d) => (
+          {divs.map((d, idx) => (
             <div
+              key={idx}
               className="flex justify-center items-center
               bg-white [.dark_&]:bg-black p-1"
               style={{

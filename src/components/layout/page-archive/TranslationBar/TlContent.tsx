@@ -82,8 +82,12 @@ const TlContent = ({
         rafId = null;
 
         Object.entries(item?.overlays ?? []).forEach(([_, { uid }]) => {
-          if (!overlayHeader[uid] || !overlayHeader[uid].head) return;
-
+          if (
+            !overlayHeader[uid] ||
+            !overlayHeader[uid].head ||
+            !overlayHeader[uid].head.offsetParent
+          )
+            return;
           const rect = overlayHeader[uid].head.getBoundingClientRect();
 
           setOverlayTransform(false, uid, {
