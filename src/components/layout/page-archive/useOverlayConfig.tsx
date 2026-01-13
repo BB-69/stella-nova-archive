@@ -13,14 +13,14 @@ const useOverlayConfig = () => {
   return [
     <ButtonToggle
       toggle={!overlayActive}
-      onToggle={toggleOverlayActive ?? (() => {})}
+      onToggle={toggleOverlayActive}
       fullSize={true}
     >
       <Layers2 width={28} height={28} />
     </ButtonToggle>,
     <ButtonToggle
       toggle={!connectorActive}
-      onToggle={toggleConnectorActive ?? (() => {})}
+      onToggle={toggleConnectorActive}
       fullSize={true}
     >
       <Workflow width={28} height={28} rotate={135} />
