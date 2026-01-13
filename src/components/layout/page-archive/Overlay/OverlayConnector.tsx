@@ -118,7 +118,7 @@ const OverlayConnector = ({
         backgroundColor: `${color}${
           connectorActive && !isVisible ? "86" : "FF"
         }`,
-        opacity: isVisible || connectorActive ? 1 : 0,
+        opacity: isVisible || hovering || (connectorActive && !isEdge) ? 1 : 0,
       }}
     >
       <div

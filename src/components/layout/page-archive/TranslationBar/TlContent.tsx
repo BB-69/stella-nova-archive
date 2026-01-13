@@ -33,8 +33,14 @@ const TlContent = ({
   activeModal: string | null;
   setActiveModal: Dispatch<SetStateAction<string | null>>;
 }) => {
-  const { overlayMetas, setOverlayMeta, setOverlayTransform, removeOverlay } =
-    useOverlay();
+  const {
+    hoveringOverlayUID: hoveringOverlay,
+    overlayMetas,
+    setOverlayMeta,
+    overlayTransformsRef,
+    setOverlayTransform,
+    removeOverlay,
+  } = useOverlay();
   const { tlBarCollapsed, item, setItem, editing } = useArchive();
 
   const [foldedTl, setFoldedTl] = useState<{ [key: string]: boolean }>({});
@@ -126,6 +132,47 @@ const TlContent = ({
       );
     };
   }, [item?.overlays]);
+
+  /* Auto scroll on overlay hover */
+  const [scrollUID, setScrollUID] = useState<string | null>(null);
+  useEffect(() => {
+    if (hoveringOverlay) setScrollUID(hoveringOverlay);
+    if (!hoveringOverlay && !scrollUID) return;
+
+    let raf: number = 0;
+    const SCROLL_SPEED = 40;
+
+    const isEdge = (connectorY: number, offset: number) => {
+      const scrollDown = connectorY + offset < scrollBounds.y + 1 ? -1 : 0;
+      const scrollUp =
+        connectorY - offset > scrollBounds.y + scrollBounds.h - 1 ? 1 : 0;
+      return scrollDown + scrollUp;
+    };
+
+    const handleScroll = () => {
+      const connectorSide = overlayTransformsRef.current[scrollUID!].side;
+      if (connectorSide) {
+        const scroll = isEdge(
+          connectorSide.p.y,
+          (connectorSide.t - connectorSide.b) / 2
+        );
+        if (scroll != 0) {
+          overlayContainerRef.current?.scrollBy({
+            top: scroll * SCROLL_SPEED,
+          });
+
+          raf = requestAnimationFrame(handleScroll);
+        } else {
+          setScrollUID(null);
+        }
+      } else {
+        setScrollUID(null);
+      }
+    };
+
+    raf = requestAnimationFrame(handleScroll);
+    return () => cancelAnimationFrame(raf);
+  }, [hoveringOverlay, getScrollBounds, scrollUID]);
 
   return (
     <div

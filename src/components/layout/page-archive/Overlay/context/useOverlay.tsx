@@ -14,6 +14,8 @@ export function useOverlay() {
     overlayMetas,
     setOverlayMetas,
     overlayTransformsRef,
+    hoveringOverlayUID,
+    setHoveringOverlayUID,
   } = useOverlayContext();
 
   const toggleOverlayActive = () => {
@@ -37,6 +39,9 @@ export function useOverlay() {
           color: value.color ?? prev[key]?.color ?? getColorId(key),
           hover: value.hover,
         };
+        if (value.hover && !hoveringOverlayUID) setHoveringOverlayUID(key);
+        else if (!value.hover && hoveringOverlayUID)
+          setHoveringOverlayUID(null);
       }
       return next;
     });
@@ -81,6 +86,7 @@ export function useOverlay() {
     toggleOverlayActive,
     connectorActive,
     toggleConnectorActive,
+    hoveringOverlayUID,
     overlayMetas,
     setOverlayMeta,
     overlayTransformsRef,
