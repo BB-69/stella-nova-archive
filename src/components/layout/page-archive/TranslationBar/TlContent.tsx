@@ -138,11 +138,12 @@ const TlContent = ({
   const [scrollUID, setScrollUID] = useState<string | null>(null);
   useEffect(() => {
     if (!infoAutoScroll) return;
-    if (hoveringOverlayUID) setScrollUID(hoveringOverlayUID);
-    if (!hoveringOverlayUID && !scrollUID) return;
+    if (hoveringOverlayUID.length > 0)
+      setScrollUID(hoveringOverlayUID[hoveringOverlayUID.length - 1]);
+    if (hoveringOverlayUID.length < 1 || !scrollUID) return;
 
     let raf: number = 0;
-    const SCROLL_SPEED = 40;
+    const SCROLL_SPEED = 20;
 
     const isEdge = (connectorY: number, offset: number) => {
       const scrollDown = connectorY + offset < scrollBounds.y + 1 ? -1 : 0;

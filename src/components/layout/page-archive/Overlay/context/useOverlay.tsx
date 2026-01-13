@@ -37,6 +37,13 @@ export function useOverlay() {
     overlayTransformsRef.current = {};
   };
 
+  const applyHoveringOverlayUID = (uid: string) => {
+    setHoveringOverlayUID((prev) => [...prev, uid]);
+  };
+  const removeHoveringOverlayUID = (uid: string) => {
+    setHoveringOverlayUID((prev) => prev.filter((id) => id !== uid));
+  };
+
   const setOverlayMeta = (meta: OverlayMetaType) => {
     setOverlayMetas((prev) => {
       const next = { ...prev };
@@ -45,9 +52,10 @@ export function useOverlay() {
           color: value.color ?? prev[key]?.color ?? getColorId(key),
           hover: value.hover,
         };
-        if (value.hover && !hoveringOverlayUID) setHoveringOverlayUID(key);
-        else if (!value.hover && hoveringOverlayUID)
-          setHoveringOverlayUID(null);
+        if (value.hover && !hoveringOverlayUID.includes(key))
+          applyHoveringOverlayUID(key);
+        else if (!value.hover && hoveringOverlayUID.includes(key))
+          removeHoveringOverlayUID(key);
       }
       return next;
     });
