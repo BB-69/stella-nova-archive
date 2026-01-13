@@ -11,6 +11,8 @@ export function useOverlay() {
     setOverlayActive,
     connectorActive,
     setConnectorActive,
+    infoAutoScroll,
+    setInfoAutoScroll,
     overlayMetas,
     setOverlayMetas,
     overlayTransformsRef,
@@ -24,6 +26,10 @@ export function useOverlay() {
 
   const toggleConnectorActive = () => {
     setConnectorActive((prev) => !prev);
+  };
+
+  const toggleInfoAutoScroll = () => {
+    setInfoAutoScroll((prev) => !prev);
   };
 
   const resetOverlayData = () => {
@@ -86,6 +92,8 @@ export function useOverlay() {
     toggleOverlayActive,
     connectorActive,
     toggleConnectorActive,
+    infoAutoScroll,
+    toggleInfoAutoScroll,
     hoveringOverlayUID,
     overlayMetas,
     setOverlayMeta,

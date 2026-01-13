@@ -34,7 +34,8 @@ const TlContent = ({
   setActiveModal: Dispatch<SetStateAction<string | null>>;
 }) => {
   const {
-    hoveringOverlayUID: hoveringOverlay,
+    infoAutoScroll,
+    hoveringOverlayUID,
     overlayMetas,
     setOverlayMeta,
     overlayTransformsRef,
@@ -136,8 +137,9 @@ const TlContent = ({
   /* Auto scroll on overlay hover */
   const [scrollUID, setScrollUID] = useState<string | null>(null);
   useEffect(() => {
-    if (hoveringOverlay) setScrollUID(hoveringOverlay);
-    if (!hoveringOverlay && !scrollUID) return;
+    if (!infoAutoScroll) return;
+    if (hoveringOverlayUID) setScrollUID(hoveringOverlayUID);
+    if (!hoveringOverlayUID && !scrollUID) return;
 
     let raf: number = 0;
     const SCROLL_SPEED = 40;
@@ -172,7 +174,7 @@ const TlContent = ({
 
     raf = requestAnimationFrame(handleScroll);
     return () => cancelAnimationFrame(raf);
-  }, [hoveringOverlay, getScrollBounds, scrollUID]);
+  }, [hoveringOverlayUID, getScrollBounds, scrollUID]);
 
   return (
     <div
