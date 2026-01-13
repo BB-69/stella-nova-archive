@@ -1,5 +1,10 @@
 # CHANGELOGS
 
+## v5.6 - 2026/01/13 [#190](https://github.com/BB-69/stella-nova-archive/pull/190)
+
+- Added auto scroll on overlay hover
+  - Toggleable inside Overlay toolbox
+
 ## v5.5 - 2026/01/12 [#190](https://github.com/BB-69/stella-nova-archive/pull/190)
 
 - Added Overlay toolbox
