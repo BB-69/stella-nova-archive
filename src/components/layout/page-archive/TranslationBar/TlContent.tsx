@@ -175,14 +175,13 @@ const TlContent = ({
 
     raf = requestAnimationFrame(handleScroll);
     return () => cancelAnimationFrame(raf);
-  }, [hoveringOverlayUID, getScrollBounds, scrollUID]);
+  }, [hoveringOverlayUID, scrollBounds, scrollUID]);
 
   return (
     <div
-      className={`flex flex-col justify-between overflow-hidden
+      className="flex flex-col justify-between overflow-hidden
       origin-top md:h-full md:scale-y-100 md:opacity-100 max-h-full
-      transition-[height] md:transition-none duration-200 md:duration-0
-      ${tlBarCollapsed ? "scale-y-0 h-0" : "scale-y-100 h-full"}`}
+      transition-[height] md:transition-none duration-200 md:duration-0"
     >
       <nav
         ref={overlayContainerRef}
