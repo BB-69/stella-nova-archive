@@ -240,5 +240,7 @@ export function processItemData(i: ItemData): ItemData {
 }
 
 export function processItemOverlay(o: ItemOverlay): ItemOverlay {
+  if (!o.uid) o.uid = crypto.randomUUID();
+
   return { ...defaultItemOverlay(), ...o };
 }

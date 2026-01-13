@@ -2,11 +2,10 @@
 import StudyNovian from "/assets/study-novian.png";
 import { ThemeSwitcher } from "../common/theme";
 import SearchBar from "../common/search-bar";
-import { ArrowLeftToLine, Layers2, SlidersHorizontal } from "lucide-react";
+import { ArrowLeftToLine, SlidersHorizontal } from "lucide-react";
 import SortSelector from "./page-browse/SortSelector";
 import ButtonToggle from "../common/button-toggle";
 import { useNavigate } from "react-router-dom";
-import { useOverlay } from "./page-archive/Overlay/context/useOverlay";
 import pkg from "../../../package.json";
 
 const Header = ({
@@ -19,10 +18,6 @@ const Header = ({
   isBrowsing: boolean;
 }) => {
   const navigate = useNavigate();
-
-  const { overlayActive, toggleOverlayActive } = !isBrowsing
-    ? useOverlay()
-    : {};
 
   return (
     <header
@@ -70,18 +65,9 @@ const Header = ({
               </ButtonToggle>
             </>
           ) : (
-            <>
-              <ButtonToggle onToggle={() => navigate("/browse")}>
-                <ArrowLeftToLine />
-              </ButtonToggle>
-
-              <ButtonToggle
-                toggle={!overlayActive}
-                onToggle={toggleOverlayActive ?? (() => {})}
-              >
-                <Layers2 />
-              </ButtonToggle>
-            </>
+            <ButtonToggle onToggle={() => navigate("/browse")}>
+              <ArrowLeftToLine />
+            </ButtonToggle>
           )}
 
           <SearchBar isBrowsing={isBrowsing} />

@@ -9,13 +9,27 @@ export function useOverlay() {
   const {
     overlayActive,
     setOverlayActive,
+    connectorActive,
+    setConnectorActive,
+    infoAutoScroll,
+    setInfoAutoScroll,
     overlayMetas,
     setOverlayMetas,
     overlayTransformsRef,
+    hoveringOverlayUID,
+    setHoveringOverlayUID,
   } = useOverlayContext();
 
   const toggleOverlayActive = () => {
     setOverlayActive((prev) => !prev);
+  };
+
+  const toggleConnectorActive = () => {
+    setConnectorActive((prev) => !prev);
+  };
+
+  const toggleInfoAutoScroll = () => {
+    setInfoAutoScroll((prev) => !prev);
   };
 
   const resetOverlayData = () => {
@@ -31,6 +45,9 @@ export function useOverlay() {
           color: value.color ?? prev[key]?.color ?? getColorId(key),
           hover: value.hover,
         };
+        if (value.hover && !hoveringOverlayUID) setHoveringOverlayUID(key);
+        else if (!value.hover && hoveringOverlayUID)
+          setHoveringOverlayUID(null);
       }
       return next;
     });
@@ -73,6 +90,11 @@ export function useOverlay() {
   return {
     overlayActive,
     toggleOverlayActive,
+    connectorActive,
+    toggleConnectorActive,
+    infoAutoScroll,
+    toggleInfoAutoScroll,
+    hoveringOverlayUID,
     overlayMetas,
     setOverlayMeta,
     overlayTransformsRef,
