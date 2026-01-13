@@ -34,8 +34,8 @@ interface OverlayContextType {
     }>
   >;
   overlayTransformsRef: OverlayTransformType;
-  hoveringOverlayUID: string | null;
-  setHoveringOverlayUID: React.Dispatch<React.SetStateAction<string | null>>;
+  hoveringOverlayUID: string[];
+  setHoveringOverlayUID: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export const OverlayContext = createContext<OverlayContextType | null>(null);
@@ -53,9 +53,7 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
       side: positionMeta;
     };
   }>({});
-  const [hoveringOverlayUID, setHoveringOverlayUID] = useState<string | null>(
-    null
-  );
+  const [hoveringOverlayUID, setHoveringOverlayUID] = useState<string[]>([]);
 
   {
     useDebugValue("overlayMetas", overlayMetas, "/archive");
