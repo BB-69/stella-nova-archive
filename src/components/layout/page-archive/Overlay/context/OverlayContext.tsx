@@ -5,6 +5,7 @@ import {
   useContext,
   useRef,
   type RefObject,
+  useEffect,
 } from "react";
 import { type positionMeta } from "../../../../../scripts/distance";
 import { useDebugValue } from "../../../../_DebugTools/useDebugValue";
@@ -41,9 +42,21 @@ interface OverlayContextType {
 export const OverlayContext = createContext<OverlayContextType | null>(null);
 
 export function OverlayProvider({ children }: { children: ReactNode }) {
-  const [overlayActive, setOverlayActive] = useState<boolean>(true);
-  const [connectorActive, setConnectorActive] = useState<boolean>(true);
-  const [infoAutoScroll, setInfoAutoScroll] = useState<boolean>(true);
+  const [overlayActive, setOverlayActive] = useState<boolean>(
+    localStorage?.getItem("overlogConfig-overlayActive")
+      ? localStorage.getItem("overlogConfig-overlayActive") === "true"
+      : true
+  );
+  const [connectorActive, setConnectorActive] = useState<boolean>(
+    localStorage?.getItem("overlogConfig-connectorActive")
+      ? localStorage.getItem("overlogConfig-connectorActive") === "true"
+      : true
+  );
+  const [infoAutoScroll, setInfoAutoScroll] = useState<boolean>(
+    localStorage?.getItem("overlogConfig-infoAutoScroll")
+      ? localStorage.getItem("overlogConfig-infoAutoScroll") === "true"
+      : true
+  );
   const [overlayMetas, setOverlayMetas] = useState<{
     [key: string]: { color: string; hover: boolean };
   }>({});
@@ -59,6 +72,21 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
     useDebugValue("overlayMetas", overlayMetas, "/archive");
     // useDebugValue("overlayTransformsRef", overlayTransformsRef.current, "/archive");
   }
+
+  useEffect(() => {
+    localStorage?.setItem(
+      "overlogConfig-overlayActive",
+      overlayActive ? "true" : "false"
+    );
+    localStorage?.setItem(
+      "overlogConfig-connectorActive",
+      connectorActive ? "true" : "false"
+    );
+    localStorage?.setItem(
+      "overlogConfig-infoAutoScroll",
+      infoAutoScroll ? "true" : "false"
+    );
+  }, [overlayActive, connectorActive, infoAutoScroll]);
 
   return (
     <OverlayContext.Provider
