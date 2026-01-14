@@ -7,6 +7,8 @@ import { useOverlayContext, type OverlayMetaType } from "./OverlayContext";
 
 export function useOverlay() {
   const {
+    cursorGuideMode,
+    setCursorGuideMode,
     overlayActive,
     setOverlayActive,
     connectorActive,
@@ -19,6 +21,21 @@ export function useOverlay() {
     hoveringOverlayUID,
     setHoveringOverlayUID,
   } = useOverlayContext();
+
+  const toggleCursorGuideMode = () => {
+    setCursorGuideMode((prev) => {
+      switch (prev) {
+        case "always":
+          return "onMove";
+        case "onMove":
+          return "none";
+        case "none":
+          return "always";
+        default:
+          return "onMove";
+      }
+    });
+  };
 
   const toggleOverlayActive = () => {
     setOverlayActive((prev) => !prev);
@@ -96,6 +113,8 @@ export function useOverlay() {
   };
 
   return {
+    cursorGuideMode,
+    toggleCursorGuideMode,
     overlayActive,
     toggleOverlayActive,
     connectorActive,
