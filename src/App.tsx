@@ -3,6 +3,7 @@ import { createElement, useMemo, type JSX } from "react";
 
 import { appRoutes } from ".";
 import DebugBoxContainer from "./components/_DebugTools/DebugBoxContainer";
+import { GlobalPointerEffect } from "./components/_DebugTools/GlobalPointerEffect";
 
 function App() {
   const routes = useMemo(() => {
@@ -29,7 +30,12 @@ function App() {
 
   return (
     <div className="app">
-      {import.meta.env.DEV && <DebugBoxContainer routes={routes} />}
+      {import.meta.env.DEV && (
+        <>
+          <DebugBoxContainer routes={routes} />
+          <GlobalPointerEffect />
+        </>
+      )}
       <Routes>
         <Route path="/" element={<Navigate to={defaultRoute} replace />} />
         {routeList.map(({ path, element }) => (
