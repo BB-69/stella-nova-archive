@@ -3,11 +3,11 @@ import {
   defaultItemData,
   type ItemData,
   type ItemDataFraction,
-} from "../../../scripts/structs/item-data";
-import { tags, filterTags } from "../../../scripts/structs/tag-data";
-import Collapsible from "../../common/collapsible";
-import Dropdown from "../../common/dropdown";
-import TextBox from "../../common/text-box";
+} from "../../../../scripts/structs/item-data";
+import { tags, filterTags } from "../../../../scripts/structs/tag-data";
+import Collapsible from "../../../common/collapsible";
+import Dropdown from "../../../common/dropdown";
+import TextBox from "../../../common/text-box";
 import { useMemo } from "react";
 
 const ImageMetadata = ({
@@ -122,7 +122,7 @@ const ImageMetadata = ({
               checkFinal: (s) => {
                 return Math.max(
                   0,
-                  Math.min(Number.MAX_SAFE_INTEGER, Number(s))
+                  Math.min(Number.MAX_SAFE_INTEGER, Number(s)),
                 ).toString();
               },
             }}
@@ -148,7 +148,7 @@ const ImageMetadata = ({
               checkFinal: (s) => {
                 return Math.max(
                   0,
-                  Math.min(Number.MAX_SAFE_INTEGER, Number(s))
+                  Math.min(Number.MAX_SAFE_INTEGER, Number(s)),
                 ).toString();
               },
             }}

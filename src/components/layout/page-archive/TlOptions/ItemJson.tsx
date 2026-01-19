@@ -4,8 +4,8 @@ import {
   isItemData,
   processItemData,
   type ItemData,
-} from "../../../scripts/structs/item-data";
-import ButtonToggle from "../../common/button-toggle";
+} from "../../../../scripts/structs/item-data";
+import ButtonToggle from "../../../common/button-toggle";
 import { useEffect, useState } from "react";
 
 const ItemJson = ({

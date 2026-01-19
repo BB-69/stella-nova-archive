@@ -1,6 +1,6 @@
-import ImageMetadata from "../ImageData";
+import ImageMetadata from "../TlOptions/ImageData";
 import HyperLink from "../../../common/hyperlink";
-import ItemJson from "../ItemJson";
+import ItemJson from "../TlOptions/ItemJson";
 import {
   type ChangeEvent,
   type Dispatch,
@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { getImageDimensions } from "../../../../scripts/image";
 import ButtonInput from "../../../common/button-input";
 import { useIsMd } from "../../../../hooks/useIsMd";
+import ChangeImage from "../TlOptions/ChangeImage";
 
 export interface TlOptionProps {
   id: string;
@@ -76,7 +77,7 @@ const useTlOptions = ({
     navigate?.(
       `/archive?edit=true${
         item ? `&id=${getFileName(item).split(".")[0]}` : ""
-      }`
+      }`,
     );
   };
 
@@ -119,20 +120,11 @@ const useTlOptions = ({
       label: "Change Image",
       icon: <Images />,
       appearOn: { md: false, edit: true },
-      alwaysShowContentOnFull: true,
+      alwaysShowContentOnFull: false,
       content: (
-        <ButtonInput
-          label="Upload Image"
-          icon={<Upload />}
-          htmlInput={
-            <input
-              className="absolute inset-0 opacity-0"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          }
-        />
+        <div className="max-w-[400px]">
+          <ChangeImage handleImageChange={handleImageChange} />
+        </div>
       ),
     },
     {
