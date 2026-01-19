@@ -1,12 +1,7 @@
 import ImageMetadata from "../TlOptions/ImageData";
 import HyperLink from "../../../common/hyperlink";
 import ItemJson from "../TlOptions/ItemJson";
-import {
-  type ChangeEvent,
-  type Dispatch,
-  type JSX,
-  type SetStateAction,
-} from "react";
+import { type Dispatch, type JSX, type SetStateAction } from "react";
 import {
   getFileName,
   type ItemData,
@@ -18,11 +13,8 @@ import {
   FileCog,
   Images,
   PenLine,
-  Upload,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getImageDimensions } from "../../../../scripts/image";
-import ButtonInput from "../../../common/button-input";
 import { useIsMd } from "../../../../hooks/useIsMd";
 import ChangeImage from "../TlOptions/ChangeImage";
 
@@ -49,29 +41,6 @@ const useTlOptions = ({
 }): TlOptionProps[] => {
   const navigate = useNavigate();
   const isMd = useIsMd();
-
-  const applyImageData = async (name: string, imgSrc: string) => {
-    if (!item || !applyItem) return;
-
-    const imgDim = await getImageDimensions(imgSrc);
-    applyItem({
-      id: name.substring(0, name.lastIndexOf(".")),
-      meta: {
-        ...item.meta,
-        width: imgDim.width,
-        height: imgDim.height,
-      },
-    });
-  };
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file: File | undefined = e.target.files?.[0];
-    if (!file) return;
-
-    const imgUrl: string = URL.createObjectURL(file);
-    setImgSrc(imgUrl);
-    applyImageData(file.name, imgUrl);
-  };
 
   const handleNavigate = () => {
     navigate?.(
@@ -122,8 +91,12 @@ const useTlOptions = ({
       appearOn: { md: false, edit: true },
       alwaysShowContentOnFull: false,
       content: (
-        <div className="max-w-[400px]">
-          <ChangeImage handleImageChange={handleImageChange} />
+        <div className="max-w-[400px] max-h-[360px]">
+          <ChangeImage
+            item={item}
+            applyItem={applyItem}
+            setImgSrc={setImgSrc}
+          />
         </div>
       ),
     },
