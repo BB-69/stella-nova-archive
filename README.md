@@ -1,7 +1,7 @@
 # STELLA NOVA ARCHIVE
 
 <!-- VERSION_START -->
-> v5.6.5
+> v5.6.6
 <!-- VERSION_END -->
 
 A website that acts like an archive containing inscriptions and translations of 'Nova' language from the game 'Stella Sora'
