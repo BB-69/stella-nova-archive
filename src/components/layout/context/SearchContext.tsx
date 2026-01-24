@@ -6,24 +6,31 @@ interface SearchContextType {
   setSearchQuery: (query: string) => void;
 }
 
-export const SearchContext = createContext<SearchContextType | null>(null);
+function createSearchContext() {
+  const Context = createContext<SearchContextType | null>(null);
 
-export function SearchProvider({ children }: { children: ReactNode }) {
-  const [searchQuery, setSearchQuery] = useState("");
+  function Provider({ children }: { children: ReactNode }) {
+    const [searchQuery, setSearchQuery] = useState("");
 
-  {
-    useDebugValue("searchQuery", searchQuery, "/browse");
+    {
+      useDebugValue("searchQuery", searchQuery, "/browse");
+    }
+
+    return (
+      <Context.Provider value={{ searchQuery, setSearchQuery }}>
+        {children}
+      </Context.Provider>
+    );
   }
 
-  return (
-    <SearchContext.Provider value={{ searchQuery, setSearchQuery }}>
-      {children}
-    </SearchContext.Provider>
-  );
+  const useSearch = () => {
+    const ctx = useContext(Context);
+    if (!ctx) throw new Error("SearchContext missing provider!");
+    return ctx;
+  };
+
+  return { Provider, useSearch };
 }
 
-export const useSearchContext = () => {
-  const ctx = useContext(SearchContext);
-  if (!ctx) throw new Error("SearchContext missing provider!");
-  return ctx;
-};
+export const BrowseSearch = createSearchContext();
+export const ArchiveImageSearch = createSearchContext();

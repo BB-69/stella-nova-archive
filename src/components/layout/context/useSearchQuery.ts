@@ -1,6 +1,7 @@
-import { useSearchContext } from "./SearchContext";
+import { BrowseSearch } from "./SearchContext";
+
 export function useSearchQuery() {
-  const { searchQuery, setSearchQuery } = useSearchContext();
+  const { searchQuery, setSearchQuery } = BrowseSearch.useSearch();
 
   return { query: searchQuery, setQuery: setSearchQuery };
 }

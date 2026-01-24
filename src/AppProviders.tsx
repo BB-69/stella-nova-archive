@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { DebugProvider } from "./components/_DebugTools/VariableContext";
 import { ThemeProvider } from "./components/common/theme";
 import { FilterProvider } from "./components/layout/page-browse/context/FilterContext";
-import { SearchProvider } from "./components/layout/context/SearchContext";
+import { BrowseSearch } from "./components/layout/context/SearchContext";
 import { SortProvider } from "./components/layout/page-browse/context/SortContext";
 import { OverlayProvider } from "./components/layout/page-archive/Overlay/context/OverlayContext";
 import { ArchiveProvider } from "./components/layout/page-archive/context/ArchiveContext";
@@ -21,17 +21,17 @@ const AppProviders = ({ children }: { children: ReactNode }) => {
     <DebugProvider>
       <ThemeProvider>
         {path == "/browse" ? (
-          <SearchProvider>
+          <BrowseSearch.Provider>
             <FilterProvider>
               <SortProvider>{children}</SortProvider>
             </FilterProvider>
-          </SearchProvider>
+          </BrowseSearch.Provider>
         ) : path == "/archive" ? (
-          <SearchProvider>
+          <BrowseSearch.Provider>
             <OverlayProvider key={`${urlId}-${urlEdit}`}>
               <ArchiveProvider>{children}</ArchiveProvider>
             </OverlayProvider>
-          </SearchProvider>
+          </BrowseSearch.Provider>
         ) : (
           children
         )}
