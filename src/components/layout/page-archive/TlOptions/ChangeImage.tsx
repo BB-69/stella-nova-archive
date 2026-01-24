@@ -1,4 +1,4 @@
-import { Check, Upload, X } from "lucide-react";
+import { Check, LayoutGrid, Upload, X } from "lucide-react";
 import {
   useState,
   type ChangeEvent,
@@ -12,6 +12,7 @@ import type {
   ItemDataFraction,
 } from "../../../../scripts/structs/item-data";
 import QMark from "/assets/fallback/question-mark.svg";
+import ButtonToggle from "../../../common/button-toggle";
 
 const ChangeImage = ({
   item,
@@ -27,6 +28,7 @@ const ChangeImage = ({
     src: string;
   } | null>(null);
   const [uploadRemount, setUploadRemount] = useState(false);
+  const [imgBrowserActive, setImgBrowserActive] = useState(false);
 
   const applyImageData = async (name: string, imgSrc: string) => {
     if (!item || !applyItem) return;
@@ -66,20 +68,58 @@ const ChangeImage = ({
   };
 
   return (
-    <div className="flex flex-col gap-3 w-full h-full">
-      <ButtonInput
-        key={`${uploadRemount}`}
-        label="Upload Image"
-        icon={<Upload />}
-        htmlInput={
-          <input
-            className="absolute inset-0 opacity-0"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
+    <div className="flex flex-col gap-6 w-full h-full">
+      <span
+        className="selectable group-selectable text-sm
+        flex flex-row items-center gap-2 overflow-hidden"
+      >
+        Current Image:
+        <div
+          className="text-sm p-[4px_8px] max-w-full
+          bg-white/60 [.dark_&]:bg-black/60 border rounded-md
+          border-black/20 [.dark_&]:border-white/20"
+        >
+          {imgData ? imgData.name : <span className="italic">null</span>}
+        </div>
+      </span>
+
+      <div
+        className="flex flex-row items-center justify-center
+        w-full h-[40px] gap-2"
+      >
+        <div className="max-w-full h-full">
+          <ButtonToggle
+            toggle={!imgBrowserActive}
+            onToggle={() => setImgBrowserActive((prev) => !prev)}
+            fullSize={true}
+            alwaysBorder={true}
+          >
+            <div
+              className="flex flex-row items-center gap-2
+              text-sm px-2 opacity-70"
+            >
+              <LayoutGrid />
+              {"Image Browser"}
+            </div>
+          </ButtonToggle>
+        </div>
+
+        <div>
+          <ButtonInput
+            key={`${uploadRemount}`}
+            label="Upload Image"
+            icon={<Upload />}
+            htmlInput={
+              <input
+                className="absolute inset-0 opacity-0"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            }
           />
-        }
-      />
+        </div>
+      </div>
 
       <div
         className={`
