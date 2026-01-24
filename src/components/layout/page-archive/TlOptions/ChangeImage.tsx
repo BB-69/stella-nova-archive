@@ -13,6 +13,8 @@ import type {
 } from "../../../../scripts/structs/item-data";
 import QMark from "/assets/fallback/question-mark.svg";
 import ButtonToggle from "../../../common/button-toggle";
+import OverlayModal from "../../../common/overlay-modal";
+import ImgBrowser from "./ImgBrowser";
 
 const ChangeImage = ({
   item,
@@ -202,6 +204,18 @@ const ChangeImage = ({
           </span>
         </div>
       </div>
+
+      {/* Image Browser */}
+
+      <OverlayModal
+        onClose={() => setImgBrowserActive(false)}
+        active={imgBrowserActive}
+        title="Image Browser"
+      >
+        <div className="max-w-[400px] max-h-[360px]">
+          <ImgBrowser />
+        </div>
+      </OverlayModal>
     </div>
   );
 };
