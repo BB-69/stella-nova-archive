@@ -46,6 +46,29 @@ const ButtonDropdown = ({
     return () => cancelAnimationFrame(rafId);
   }, [open]);
 
+  useLayoutEffect(() => {
+    if (!open) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+
+      if (
+        buttonRef.current?.contains(target) ||
+        dropdownRef.current?.contains(target)
+      ) {
+        return; // clicked inside → do nothing
+      }
+
+      setOpen(false); // clicked outside → close
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
+
   return (
     <div className="relative">
       <button
@@ -79,7 +102,7 @@ const ButtonDropdown = ({
 
       <div
         ref={dropdownRef}
-        className="fixed z-[20] overflow-hidden"
+        className={`fixed z-[20] overflow-hidden ${!open ? "pointer-events-none" : ""}`}
         style={{
           maxWidth: buttonSize.width,
         }}
