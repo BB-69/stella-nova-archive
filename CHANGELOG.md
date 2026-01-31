@@ -1,5 +1,14 @@
 # CHANGELOGS
 
+## v5.7 - 2026/01/31 [#194](https://github.com/BB-69/stella-nova-archive/pull/194)
+
+- Added image related tools (archive-edit)
+  - Can be pasted from clipboard
+  - Can browse and select via built-in image  browser that fetches existing images from DB
+- Redo cursor guide + added toggle
+- Added ButtonDropdown
+  - *Currently coded to be on front-most layer, not prefered and need changes later*
+
 ## v5.6 - 2026/01/13 [#190](https://github.com/BB-69/stella-nova-archive/pull/190)
 
 - Added auto scroll on overlay hover
