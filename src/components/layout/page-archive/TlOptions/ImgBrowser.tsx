@@ -8,7 +8,11 @@ import { useDebugValue } from "../../../_DebugTools/useDebugValue";
 import { useImageSearchQuery } from "../context/useImageSearchQuery";
 import BrowseImg from "./BrowseImg";
 
-const ImgBrowser = () => {
+const ImgBrowser = ({
+  handleImageSelect,
+}: {
+  handleImageSelect: (name: string, src: string) => void;
+}) => {
   const [data, setData] = useState<FetchedFile[]>([]);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [noMoreData, setNoMoreData] = useState(false);
@@ -91,7 +95,6 @@ const ImgBrowser = () => {
   const items = data
     ?.map(({ item, url }, idx) => {
       if (isItemData(item) || item === null) return undefined;
-      console.log(item);
       const path = item.substring(
         item.lastIndexOf("assets/") + 7,
         item.lastIndexOf("."),
@@ -99,11 +102,14 @@ const ImgBrowser = () => {
       if (!path.toLowerCase().includes(search.query.toLowerCase()))
         return undefined;
       const title = path.substring(path.lastIndexOf("/") + 1);
-      console.log(title);
 
       return (
         <article key={`${idx}-${title}`} className="h-[160px]">
-          <BrowseImg name={title} url={url} imgSrc={url} />
+          <BrowseImg
+            name={title}
+            imgSrc={url}
+            handleImageSelect={handleImageSelect}
+          />
         </article>
       );
     })
@@ -120,7 +126,7 @@ const ImgBrowser = () => {
   }
 
   return (
-    <div className={`p-5 overflow-y-auto w-full h-full`}>
+    <div className={`px-5 overflow-y-auto w-full h-full`}>
       {items != undefined && items?.length > 0 ? (
         <>
           <section

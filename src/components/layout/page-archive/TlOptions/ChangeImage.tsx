@@ -15,6 +15,7 @@ import QMark from "/assets/fallback/question-mark.svg";
 import ButtonToggle from "../../../common/button-toggle";
 import OverlayModal from "../../../common/overlay-modal";
 import ImgBrowser from "./ImgBrowser";
+import ImgSearchBar from "./ImgSearchBar";
 
 const ChangeImage = ({
   item,
@@ -69,10 +70,16 @@ const ChangeImage = ({
     }
   };
 
+  const handleImageSelect = (name: string, src: string) => {
+    setImgData({ name, src });
+    setUploadRemount((prev) => !prev);
+    setImgBrowserActive(false);
+  };
+
   return (
     <div className="flex flex-col gap-6 w-full h-full">
       <span
-        className="selectable group-selectable text-sm
+        className="selectable group-selectable text-sm h-[32px]
         flex flex-row items-center gap-2 overflow-hidden"
       >
         Current Image:
@@ -140,9 +147,9 @@ const ChangeImage = ({
             Click & Paste image from clipboard here
           </span>
         ) : (
-          <div className="flex justify-center items-center w-full h-full">
+          <div className="flex justify-center items-center w-full h-[150px]">
             <img
-              src={` ${imgData?.src || ""}`}
+              src={`${imgData?.src || ""}`}
               onError={(e) => {
                 const img = e.currentTarget;
                 img.onerror = null;
@@ -212,8 +219,14 @@ const ChangeImage = ({
         active={imgBrowserActive}
         title="Image Browser"
       >
-        <div className="w-[460px] h-[360px] overflow-hidden">
-          <ImgBrowser />
+        <div
+          className="w-[460px] h-[360px] overflow-hidden
+          flex flex-col gap-4"
+        >
+          <div className="py-1">
+            <ImgSearchBar />
+          </div>
+          <ImgBrowser handleImageSelect={handleImageSelect} />
         </div>
       </OverlayModal>
     </div>

@@ -1,27 +1,20 @@
 import { useRef, memo } from "react";
-import { useNavigate } from "react-router-dom";
 import HighlightedText from "../../../common/highlighted-text";
 import QMark from "/assets/fallback/question-mark.svg";
-import { useSearchQuery } from "../../context/useSearchQuery";
+import { useImageSearchQuery } from "../context/useImageSearchQuery";
 
 const BrowseImg = ({
   name,
-  url,
   imgSrc,
+  handleImageSelect,
 }: {
   name: string;
-  url: string;
   imgSrc: string;
+  handleImageSelect: (name: string, src: string) => void;
 }) => {
   const browseItemRef = useRef<HTMLDivElement>(null);
 
-  const search = useSearchQuery();
-  const navigate = useNavigate();
-
-  const startIdx = url.search("/data/");
-  const endIdx = url.search(".json");
-  const id =
-    startIdx != -1 && endIdx != -1 ? url.substring(startIdx + 6, endIdx) : null;
+  const search = useImageSearchQuery();
 
   return (
     <div
@@ -33,7 +26,7 @@ const BrowseImg = ({
       [.dark_&]:hover:from-blue-700 [.dark_&]:hover:to-purple-700
       rounded-xl border-2
       cursor-pointer"
-      onClick={() => navigate(`/archive?id=${id}`)}
+      onClick={() => handleImageSelect(name, imgSrc)}
     >
       <h3
         className="flex justify-between items-top font-semibold text-md
