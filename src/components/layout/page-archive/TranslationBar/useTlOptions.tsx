@@ -1,12 +1,7 @@
-import ImageMetadata from "../ImageData";
+import ImageMetadata from "../TlOptions/ImageData";
 import HyperLink from "../../../common/hyperlink";
-import ItemJson from "../ItemJson";
-import {
-  type ChangeEvent,
-  type Dispatch,
-  type JSX,
-  type SetStateAction,
-} from "react";
+import ItemJson from "../TlOptions/ItemJson";
+import { type Dispatch, type JSX, type SetStateAction } from "react";
 import {
   getFileName,
   type ItemData,
@@ -18,12 +13,11 @@ import {
   FileCog,
   Images,
   PenLine,
-  Upload,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getImageDimensions } from "../../../../scripts/image";
-import ButtonInput from "../../../common/button-input";
 import { useIsMd } from "../../../../hooks/useIsMd";
+import ChangeImage from "../TlOptions/ChangeImage";
+import { ArchiveImageSearch } from "../../context/SearchContext";
 
 export interface TlOptionProps {
   id: string;
@@ -49,34 +43,11 @@ const useTlOptions = ({
   const navigate = useNavigate();
   const isMd = useIsMd();
 
-  const applyImageData = async (name: string, imgSrc: string) => {
-    if (!item || !applyItem) return;
-
-    const imgDim = await getImageDimensions(imgSrc);
-    applyItem({
-      id: name.substring(0, name.lastIndexOf(".")),
-      meta: {
-        ...item.meta,
-        width: imgDim.width,
-        height: imgDim.height,
-      },
-    });
-  };
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file: File | undefined = e.target.files?.[0];
-    if (!file) return;
-
-    const imgUrl: string = URL.createObjectURL(file);
-    setImgSrc(imgUrl);
-    applyImageData(file.name, imgUrl);
-  };
-
   const handleNavigate = () => {
     navigate?.(
       `/archive?edit=true${
         item ? `&id=${getFileName(item).split(".")[0]}` : ""
-      }`
+      }`,
     );
   };
 
@@ -119,20 +90,17 @@ const useTlOptions = ({
       label: "Change Image",
       icon: <Images />,
       appearOn: { md: false, edit: true },
-      alwaysShowContentOnFull: true,
+      alwaysShowContentOnFull: false,
       content: (
-        <ButtonInput
-          label="Upload Image"
-          icon={<Upload />}
-          htmlInput={
-            <input
-              className="absolute inset-0 opacity-0"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
+        <div className="max-w-[400px] max-h-[360px]">
+          <ArchiveImageSearch.Provider>
+            <ChangeImage
+              item={item}
+              applyItem={applyItem}
+              setImgSrc={setImgSrc}
             />
-          }
-        />
+          </ArchiveImageSearch.Provider>
+        </div>
       ),
     },
     {

@@ -45,6 +45,8 @@ async function FetchContent(url: string, type: FileType) {
     case "jpg":
     case "png":
       return url;
+    default:
+      return url;
   }
 }
 
@@ -52,25 +54,25 @@ async function FetchFilesFromFolder(
   folderPath: string,
   fileType: FileType,
   offset?: number,
-  limit?: number
+  limit?: number,
 ): Promise<FetchedFile[] | null> {
   try {
     const indexRes = await fetch(
-      `${baseUrl}/${owner}/${repo}/${branch}/fileIndex.json`
+      `${baseUrl}/${owner}/${repo}/${branch}/fileIndex.json`,
     );
     const allFiles: string[] = await indexRes.json();
 
     const filteredFiles = allFiles.filter(
       (file) =>
         file.startsWith(folderPath) &&
-        file.toLowerCase().endsWith(`.${fileType}`)
+        file.toLowerCase().endsWith(`.${fileType}`),
     );
 
     if (offset == null) offset = 0;
     if (offset > filteredFiles.length - 1) return null;
     const batch = filteredFiles.slice(
       offset,
-      offset + (limit ?? filteredFiles.length)
+      offset + (limit ?? filteredFiles.length),
     );
 
     return Promise.all(
@@ -78,7 +80,7 @@ async function FetchFilesFromFolder(
         const url = `${baseUrl}/${owner}/${repo}/${branch}/${file}`;
         const item = await FetchContent(url, fileType);
         return { url, item };
-      })
+      }),
     );
   } catch (error) {
     console.error("Error fetching files:", error);

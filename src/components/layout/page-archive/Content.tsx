@@ -5,6 +5,7 @@ import { useDebugValue } from "../../_DebugTools/useDebugValue";
 import Overlay from "./Overlay/Overlay";
 import { useMotionValue } from "framer-motion";
 import { useArchive } from "./context/useArchive";
+import Guide from "../../common/guide";
 
 let imgBounds = { x: 0, y: 0, w: 0, h: 0 };
 export const getImageBounds = () => {
@@ -163,6 +164,9 @@ const Content = () => {
           rounded-md outline-4 outline-black/30 [.dark_]:outline-white/30"
           alt={item != null && imgSrc ? item.title : "< null >"}
         />
+
+        <Guide orientation="horizontal" pos={cursorRef.current.x} />
+        <Guide orientation="vertical" pos={cursorRef.current.y} />
 
         <Overlay
           resolution={resolution}

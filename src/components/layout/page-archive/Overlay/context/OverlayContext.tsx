@@ -11,6 +11,7 @@ import { type positionMeta } from "../../../../../scripts/distance";
 import { useDebugValue } from "../../../../_DebugTools/useDebugValue";
 import OverlayApplier from "../OverlayApplier";
 
+type CursorGuideModeType = "always" | "onMove" | "none";
 export type OverlayMetaType = {
   [key: string]: { color?: string; hover: boolean };
 };
@@ -22,6 +23,8 @@ export type OverlayTransformType = RefObject<{
 }>;
 
 interface OverlayContextType {
+  cursorGuideMode: CursorGuideModeType;
+  setCursorGuideMode: React.Dispatch<React.SetStateAction<CursorGuideModeType>>;
   overlayActive: boolean;
   setOverlayActive: React.Dispatch<React.SetStateAction<boolean>>;
   connectorActive: boolean;
@@ -42,19 +45,30 @@ interface OverlayContextType {
 export const OverlayContext = createContext<OverlayContextType | null>(null);
 
 export function OverlayProvider({ children }: { children: ReactNode }) {
+  const [cursorGuideMode, setCursorGuideMode] = useState<CursorGuideModeType>(
+    (() => {
+      const isCursorGuideMode = (
+        value: string | null
+      ): value is CursorGuideModeType =>
+        value === "always" || value === "onMove" || value === "none";
+
+      const value = localStorage?.getItem("overlayConfig-cursorGuideMode");
+      return isCursorGuideMode(value) ? value : "onMove";
+    })()
+  );
   const [overlayActive, setOverlayActive] = useState<boolean>(
-    localStorage?.getItem("overlogConfig-overlayActive")
-      ? localStorage.getItem("overlogConfig-overlayActive") === "true"
+    localStorage?.getItem("overlayConfig-overlayActive")
+      ? localStorage.getItem("overlayConfig-overlayActive") === "true"
       : true
   );
   const [connectorActive, setConnectorActive] = useState<boolean>(
-    localStorage?.getItem("overlogConfig-connectorActive")
-      ? localStorage.getItem("overlogConfig-connectorActive") === "true"
+    localStorage?.getItem("overlayConfig-connectorActive")
+      ? localStorage.getItem("overlayConfig-connectorActive") === "true"
       : true
   );
   const [infoAutoScroll, setInfoAutoScroll] = useState<boolean>(
-    localStorage?.getItem("overlogConfig-infoAutoScroll")
-      ? localStorage.getItem("overlogConfig-infoAutoScroll") === "true"
+    localStorage?.getItem("overlayConfig-infoAutoScroll")
+      ? localStorage.getItem("overlayConfig-infoAutoScroll") === "true"
       : true
   );
   const [overlayMetas, setOverlayMetas] = useState<{
@@ -71,19 +85,25 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
   {
     useDebugValue("overlayMetas", overlayMetas, "/archive");
     // useDebugValue("overlayTransformsRef", overlayTransformsRef.current, "/archive");
+
+    /* remove typos */
+    localStorage.removeItem("overlogConfig-overlayActive");
+    localStorage.removeItem("overlogConfig-connectorActive");
+    localStorage.removeItem("overlogConfig-infoAutoScroll");
   }
 
   useEffect(() => {
+    localStorage?.setItem("overlayConfig-cursorGuideMode", cursorGuideMode);
     localStorage?.setItem(
-      "overlogConfig-overlayActive",
+      "overlayConfig-overlayActive",
       overlayActive ? "true" : "false"
     );
     localStorage?.setItem(
-      "overlogConfig-connectorActive",
+      "overlayConfig-connectorActive",
       connectorActive ? "true" : "false"
     );
     localStorage?.setItem(
-      "overlogConfig-infoAutoScroll",
+      "overlayConfig-infoAutoScroll",
       infoAutoScroll ? "true" : "false"
     );
   }, [overlayActive, connectorActive, infoAutoScroll]);
@@ -91,6 +111,8 @@ export function OverlayProvider({ children }: { children: ReactNode }) {
   return (
     <OverlayContext.Provider
       value={{
+        cursorGuideMode,
+        setCursorGuideMode,
         overlayActive,
         setOverlayActive,
         connectorActive,

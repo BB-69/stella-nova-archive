@@ -2,8 +2,8 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { useOverlay } from "./Overlay/context/useOverlay";
 import type { positionMeta } from "../../../scripts/distance";
 import { getColorId } from "../../../scripts/color";
-import { useIsChanging } from "../../../hooks/useIsChanging";
 import { motion, MotionValue } from "framer-motion";
+import { useIsMovingCursor } from "../../../hooks/useIsMovingCursor";
 
 const Ruler = ({
   orientation,
@@ -13,7 +13,8 @@ const Ruler = ({
   cursorPos: MotionValue<number>;
 }) => {
   const isHorizontal = orientation === "horizontal";
-  const { overlayActive, overlayMetas, overlayTransformsRef } = useOverlay();
+  const { cursorGuideMode, overlayActive, overlayMetas, overlayTransformsRef } =
+    useOverlay();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
@@ -26,7 +27,7 @@ const Ruler = ({
     setOffset(isHorizontal ? rect.left : rect.top);
   }, [isHorizontal]);
 
-  const isMovingCursor = useIsChanging(cursorPos, 1000);
+  const isMovingCursor = useIsMovingCursor();
 
   return (
     <div
@@ -87,19 +88,25 @@ const Ruler = ({
         })}
 
       {/* --- Cursor marker --- */}
-      {isMovingCursor && (
-        <motion.div
-          className={`
+      <motion.div
+        className={`
           absolute bg-red-500 pointer-events-none outline-white
           ${
             isHorizontal
               ? "top-0 bottom-0 w-[2px] outline-[1.5px]"
               : "left-0 right-0 h-[2px] outline-[1.5px]"
           }
+          transition-opacity duration-100
         `}
-          style={isHorizontal ? { left: cursorPos } : { top: cursorPos }}
-        />
-      )}
+        style={{
+          ...(isHorizontal ? { left: cursorPos } : { top: cursorPos }),
+          opacity:
+            cursorGuideMode === "always" ||
+            (cursorGuideMode === "onMove" ? isMovingCursor : false)
+              ? 1
+              : 0,
+        }}
+      />
     </div>
   );
 };
