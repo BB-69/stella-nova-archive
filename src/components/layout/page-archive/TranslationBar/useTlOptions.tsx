@@ -17,6 +17,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useIsMd } from "../../../../hooks/useIsMd";
 import ChangeImage from "../TlOptions/ChangeImage";
+import { ArchiveImageSearch } from "../../context/SearchContext";
 
 export interface TlOptionProps {
   id: string;
@@ -92,11 +93,13 @@ const useTlOptions = ({
       alwaysShowContentOnFull: false,
       content: (
         <div className="max-w-[400px] max-h-[360px]">
-          <ChangeImage
-            item={item}
-            applyItem={applyItem}
-            setImgSrc={setImgSrc}
-          />
+          <ArchiveImageSearch.Provider>
+            <ChangeImage
+              item={item}
+              applyItem={applyItem}
+              setImgSrc={setImgSrc}
+            />
+          </ArchiveImageSearch.Provider>
         </div>
       ),
     },

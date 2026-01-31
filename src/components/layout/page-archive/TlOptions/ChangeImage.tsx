@@ -212,7 +212,7 @@ const ChangeImage = ({
         active={imgBrowserActive}
         title="Image Browser"
       >
-        <div className="max-w-[400px] max-h-[360px]">
+        <div className="w-[460px] h-[360px] overflow-hidden">
           <ImgBrowser />
         </div>
       </OverlayModal>
