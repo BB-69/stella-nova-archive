@@ -26,27 +26,27 @@ Development changelogs: [CHANGELOG.md](/CHANGELOG.md)
 <!-- DEPENDENCIES_START -->
 | Package | Version |
 |---|---|
-| @tailwindcss/vite | ^4.2.0 |
-| framer-motion | ^12.34.2 |
+| @tailwindcss/vite | ^4.2.2 |
+| framer-motion | ^12.38.0 |
 | lucide-react | ^0.574.0 |
-| react | ^19.2.4 |
-| react-dom | ^19.2.4 |
-| react-router-dom | ^7.13.0 |
+| react | ^19.2.5 |
+| react-dom | ^19.2.5 |
+| react-router-dom | ^7.14.0 |
 | tailwindcss | ^4.1.17 |
 | @eslint/js | ^9.39.2 |
-| @types/node | ^25.2.3 |
+| @types/node | ^25.5.2 |
 | @types/react | ^19.2.14 |
 | @types/react-dom | ^19.2.2 |
-| @vitejs/plugin-react-swc | ^4.2.3 |
-| autoprefixer | ^10.4.24 |
+| @vitejs/plugin-react-swc | ^4.3.0 |
+| autoprefixer | ^10.4.27 |
 | eslint | ^9.39.2 |
 | eslint-plugin-react-hooks | ^7.0.1 |
-| eslint-plugin-react-refresh | ^0.5.0 |
+| eslint-plugin-react-refresh | ^0.5.2 |
 | gh-pages | ^6.3.0 |
 | globals | ^16.5.0 |
-| postcss | ^8.5.6 |
+| postcss | ^8.5.9 |
 | typescript | ~5.9.3 |
-| typescript-eslint | ^8.56.0 |
+| typescript-eslint | ^8.58.1 |
 | vite | ^7.3.1 |
 <!-- DEPENDENCIES_END -->
 
