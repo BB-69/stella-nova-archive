@@ -3,7 +3,7 @@
   "private": true,
   "version": "5.7.0",
   "type": "module",
-  "homepage": "https://BB-69.github.io/stella-nova-archive",
+  "homepage": "https://bright9th.github.io/stella-nova-archive",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

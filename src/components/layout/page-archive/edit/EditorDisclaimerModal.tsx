@@ -26,7 +26,7 @@ const EditorDisclaimerModal = ({
           contribution only. Follow the{" "}
           <span className="text-blue-600 [.dark_&]:text-blue-400">
             <HyperLink
-              link="https://github.com/BB-69/stella-nova-archive-db/blob/main/doc/contribution.md#translation-overlays"
+              link="https://github.com/bright9th/stella-nova-archive-db/blob/main/doc/contribution.md#translation-overlays"
               text="link"
             />{" "}
           </span>

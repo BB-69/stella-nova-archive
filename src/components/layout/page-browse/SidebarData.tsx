@@ -68,7 +68,7 @@ const options: SidebarOptionProps[] = [
           />
           <div className="flex flex-col">
             <div className="font-bold">Stella Nova Archive</div>
-            <HyperLink link="https://github.com/BB-69/stella-nova-archive.git" />
+            <HyperLink link="https://github.com/bright9th/stella-nova-archive.git" />
           </div>
         </div>
         <div className="flex flex-row gap-4 underline-offset-1">
@@ -79,7 +79,7 @@ const options: SidebarOptionProps[] = [
           />
           <div className="flex flex-col">
             <div className="font-bold">Stella Nova Archive Database</div>
-            <HyperLink link="https://github.com/BB-69/stella-nova-archive-db.git" />
+            <HyperLink link="https://github.com/bright9th/stella-nova-archive-db.git" />
           </div>
         </div>
         <div className="flex flex-row gap-4 underline-offset-1">

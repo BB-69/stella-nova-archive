@@ -10,7 +10,7 @@ A website that acts like an archive containing inscriptions and translations of 
 
 React + Vite + Tailwind
 
-Static database: https://github.com/BB-69/stella-nova-archive-db.git
+Static database: https://github.com/bright9th/stella-nova-archive-db.git
 
 Development changelogs: [CHANGELOG.md](/CHANGELOG.md)
 

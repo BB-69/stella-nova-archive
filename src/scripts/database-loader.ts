@@ -8,7 +8,7 @@ export interface FetchedFile {
 }
 
 const baseUrl: string = "https://raw.githubusercontent.com";
-const owner: string = "BB-69";
+const owner: string = "bright9th";
 const repo: string = "stella-nova-archive-db";
 const branch: string = "main";
 

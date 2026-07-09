@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: "daily"
     reviewers:
-      - "BB-69"
+      - "bright9th"
     open-pull-requests-limit: 10
 
     groups:
