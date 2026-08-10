@@ -27,27 +27,27 @@ Development changelogs: [CHANGELOG.md](/CHANGELOG.md)
 | Package | Version |
 |---|---|
 | @tailwindcss/vite | ^4.2.0 |
-| framer-motion | ^12.34.2 |
-| lucide-react | ^0.574.0 |
+| framer-motion | ^13.0.0 |
+| lucide-react | ^1.30.0 |
 | react | ^19.2.4 |
 | react-dom | ^19.2.4 |
 | react-router-dom | ^7.13.0 |
 | tailwindcss | ^4.1.17 |
-| @eslint/js | ^9.39.2 |
-| @types/node | ^25.2.3 |
+| @eslint/js | ^10.0.1 |
+| @types/node | ^26.1.2 |
 | @types/react | ^19.2.14 |
 | @types/react-dom | ^19.2.2 |
 | @vitejs/plugin-react-swc | ^4.2.3 |
 | autoprefixer | ^10.4.24 |
-| eslint | ^9.39.2 |
+| eslint | ^10.8.0 |
 | eslint-plugin-react-hooks | ^7.0.1 |
 | eslint-plugin-react-refresh | ^0.5.0 |
 | gh-pages | ^6.3.0 |
-| globals | ^16.5.0 |
+| globals | ^17.9.0 |
 | postcss | ^8.5.6 |
-| typescript | ~5.9.3 |
+| typescript | ~7.0.2 |
 | typescript-eslint | ^8.56.0 |
-| vite | ^7.3.1 |
+| vite | ^8.2.1 |
 <!-- DEPENDENCIES_END -->
 
 ## CONTRIBUTION
